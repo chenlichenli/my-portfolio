@@ -7,35 +7,16 @@ type PlaceholderPageProps = {
 
 export function PlaceholderPage({ title, description }: PlaceholderPageProps) {
   return (
-    <div
-      style={{
-        maxWidth: '42rem',
-        margin: '0 auto',
-        padding: '4rem 1.5rem',
-      }}
-    >
-      <h1
-        style={{
-          fontFamily: 'var(--font-display)',
-          fontWeight: 400,
-          fontSize: '2.25rem',
-          color: 'var(--text-heading)',
-          margin: '0 0 1rem',
-        }}
-      >
+    <div className="mx-auto max-w-2xl px-6 py-16 md:px-8">
+      <h1 className="mb-4 font-sans text-4xl font-normal tracking-tight text-[var(--text-heading)]">
         {title}
       </h1>
       {description ? (
-        <p style={{ color: 'var(--text-muted)', margin: '0 0 2rem' }}>
-          {description}
-        </p>
+        <p className="mb-8 text-[var(--text-muted)] leading-relaxed">{description}</p>
       ) : null}
       <Link
         to="/"
-        style={{
-          fontWeight: 700,
-          color: 'var(--accent)',
-        }}
+        className="font-bold text-[var(--accent)] underline-offset-4 hover:underline"
       >
         ← Back to Design
       </Link>
