@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import { Home, PlaceholderPage } from './pages'
+import { About, Home, PlaceholderPage } from './pages'
 
 export function AppRoutes() {
   return (
@@ -14,15 +14,7 @@ export function AppRoutes() {
           />
         }
       />
-      <Route
-        path="/about"
-        element={
-          <PlaceholderPage
-            title="About Me"
-            description="Add your story, process, and background here."
-          />
-        }
-      />
+      <Route path="/about" element={<About />} />
       <Route
         path="/tempus-one"
         element={

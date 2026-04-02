@@ -180,15 +180,14 @@
   }
 }
 
-/* Between main and footer; replaces a plain full-width border-top on the footer */
+/* Top of footer; full-width rule + glyph above links */
 .site-footer-divider {
   display: flex;
   align-items: center;
   gap: 1rem 1.35rem;
   box-sizing: border-box;
-  width: 100vw;
-  max-width: none;
-  margin: 2.75rem calc(50% - 50vw) 0;
+  width: 100%;
+  margin: 2.75rem 0 0;
   user-select: none;
 }
 
@@ -210,15 +209,16 @@
   opacity: 0.65;
 }
 
-/* Match .site-header-inner vertical rhythm (1.1rem 1.5rem) */
+/* Divider is first child; padding lives on inner so the rule stays edge-to-edge */
 .site-footer {
-  padding: 1.1rem 1.5rem;
+  padding: 0;
   margin-top: 0;
 }
 
 .site-footer-inner {
   max-width: 1120px;
   margin: 0 auto;
+  padding: 1.1rem 1.5rem;
   display: flex;
   flex-wrap: wrap;
   align-items: center;
