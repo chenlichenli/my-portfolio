@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useCallback, useLayoutEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { HeaderSocialNav } from '../HeaderSocialNav'
 
@@ -6,6 +7,84 @@ const FOOTER_EMAIL = 'mailto:designer.chenli@gmail.com'
 const FOOTER_LINKEDIN = 'https://www.linkedin.com/in/li-chen-8060b3155/'
 const FOOTER_RESUME =
   'https://cdn.prod.website-files.com/663b86ab9b3d0891099847b0/67d088cada2c6cd7a6c22d32_Resume_Li%20Chen_2025.pdf'
+
+/**
+ * Clipped width = one arrow + gap + label. Row is [→][label][→]; default translate shows
+ * label+right arrow; hover translate 0 shows left+label (right clipped) — text moves with arrows.
+ */
+function SiteFooterLink({
+  href,
+  label,
+  external,
+}: {
+  href: string
+  label: string
+  external?: boolean
+}) {
+  const linkRef = useRef<HTMLAnchorElement>(null)
+  const rowRef = useRef<HTMLSpanElement>(null)
+  const labelRef = useRef<HTMLSpanElement>(null)
+  const leftSlotRef = useRef<HTMLSpanElement>(null)
+
+  const syncFooterLinkBox = useCallback(() => {
+    const link = linkRef.current
+    const row = rowRef.current
+    const labelEl = labelRef.current
+    const leftSlot = leftSlotRef.current
+    if (!link || !row || !labelEl || !leftSlot) return
+
+    const gapStr = getComputedStyle(row).gap
+    const gapPx = Number.parseFloat(gapStr) || 0
+    const slotW = leftSlot.offsetWidth
+    const labelW = labelEl.offsetWidth
+    const boxW = slotW + gapPx + labelW
+    const restShift = -(slotW + gapPx)
+
+    link.style.setProperty('--footer-box-w', `${boxW}px`)
+    link.style.setProperty('--footer-rest-shift', `${restShift}px`)
+  }, [])
+
+  useLayoutEffect(() => {
+    const row = rowRef.current
+    const labelEl = labelRef.current
+    const leftSlot = leftSlotRef.current
+    if (!row || !labelEl || !leftSlot) return
+
+    syncFooterLinkBox()
+    const ro = new ResizeObserver(syncFooterLinkBox)
+    ro.observe(row)
+    ro.observe(labelEl)
+    ro.observe(leftSlot)
+    window.addEventListener('resize', syncFooterLinkBox)
+    return () => {
+      ro.disconnect()
+      window.removeEventListener('resize', syncFooterLinkBox)
+    }
+  }, [label, syncFooterLinkBox])
+
+  return (
+    <a
+      ref={linkRef}
+      href={href}
+      className="site-footer-link"
+      {...(external ? ({ target: '_blank', rel: 'noreferrer' } as const) : {})}
+    >
+      <span className="site-footer-link-window">
+        <span ref={rowRef} className="site-footer-link-row">
+          <span ref={leftSlotRef} className="site-footer-link-slot" aria-hidden="true">
+            →
+          </span>
+          <span ref={labelRef} className="site-footer-link-label">
+            {label}
+          </span>
+          <span className="site-footer-link-slot" aria-hidden="true">
+            →
+          </span>
+        </span>
+      </span>
+    </a>
+  )
+}
 
 /** Two stacked copies; hover slides vertically from the first line to the second. */
 function PrimaryNavSlide({ label }: { label: string }) {
@@ -86,18 +165,14 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <footer className="site-footer">
         <div className="site-footer-inner">
           <nav className="site-footer-links" aria-label="Contact links">
-            <a href={FOOTER_EMAIL}>Email →</a>
-            <a href={FOOTER_LINKEDIN} target="_blank" rel="noreferrer">
-              LinkedIn →
-            </a>
-            <a href={FOOTER_RESUME} target="_blank" rel="noreferrer">
-              Resume →
-            </a>
+            <SiteFooterLink href={FOOTER_EMAIL} label="Email" />
+            <SiteFooterLink href={FOOTER_LINKEDIN} label="LinkedIn" external />
+            <SiteFooterLink href={FOOTER_RESUME} label="Resume" external />
           </nav>
           <div className="site-footer-stack">
             <span className="site-footer-copyright">© Li Chen {new Date().getFullYear()}</span>
             <span className="site-footer-meta">
-              <span>Updated 4/2026</span>
+              <span>Vibe coded 4/2026</span>
               <span aria-hidden="true">with</span>
               <span aria-label="love">💜</span>
             </span>
