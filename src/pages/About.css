@@ -1,0 +1,86 @@
+/* About: photo + text one row; whole block centered on the page */
+
+.about-page {
+  width: 100%;
+  max-width: none;
+  margin: 0 auto;
+  padding: clamp(3.5rem, 10vw, 6.5rem) 1.5rem 4rem;
+}
+
+@media (min-width: 768px) {
+  .about-page {
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: clamp(4rem, 9vw, 7rem);
+  }
+}
+
+/* Centers the photo+text group horizontally */
+.about-page-shell {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.about-page-split {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+  width: 100%;
+  max-width: min(42rem, 100%);
+  text-align: center;
+}
+
+.about-page-split-media {
+  flex-shrink: 0;
+  margin-top: -1.25rem;
+}
+
+.about-page-split-media .stacked-gallery-scene {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: min(30rem, 100%);
+}
+
+.about-page-split-media .stacked-gallery {
+  align-items: center;
+  text-align: center;
+}
+
+.about-page-split-copy {
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 900px) {
+  .about-page-split {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    gap: clamp(2rem, 5vw, 3.75rem);
+    width: fit-content;
+    max-width: min(1120px, 100%);
+    text-align: left;
+  }
+
+  .about-page-split-media {
+    flex: 0 0 clamp(27rem, 42vw, 32rem);
+    margin-top: -1.25rem;
+  }
+
+  .about-page-split-media .stacked-gallery-scene {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .about-page-split-media .stacked-gallery {
+    align-items: flex-start;
+    text-align: left;
+  }
+
+  .about-page-split-copy {
+    flex: 0 1 min(26rem, 38vw);
+    padding-top: 0.15rem;
+  }
+}
