@@ -15,8 +15,7 @@
   scroll-snap-type: y mandatory;
   scroll-padding-block: 0;
   -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--text-muted) 35%, transparent) transparent;
+  scrollbar-width: none;
 }
 
 .about-experience__viewport:focus-visible {
@@ -26,17 +25,14 @@
 }
 
 .about-experience__viewport::-webkit-scrollbar {
-  width: 6px;
-}
-
-.about-experience__viewport::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--text-muted) 38%, transparent);
-  border-radius: 999px;
+  width: 0;
+  height: 0;
+  display: none;
 }
 
 .about-experience__list {
-  --exp-rail-w: 1.35rem;
-  --exp-dot-size: 0.75rem;
+  --exp-rail-w: 1.55rem;
+  --exp-dot-size: 0.95rem;
   --exp-line-gap: 0.22rem;
   --exp-pad-top: 0.65rem;
   --exp-dot-margin-top: 0.42rem;
@@ -110,7 +106,7 @@
   height: var(--exp-dot-size);
   border-radius: 50%;
   box-sizing: border-box;
-  background: var(--text-heading);
+  background: #333;
   flex-shrink: 0;
   z-index: 2;
 }
