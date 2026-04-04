@@ -154,6 +154,11 @@ export type HeroGlassSceneProps = HeroGlassLandingProps & {
   contentClassName: string
   /** Austin location + local time chip (Design hero only). */
   showLocationWeather?: boolean
+  /**
+   * `true` (default): full-bleed with `w-screen` + side margins (Design home).
+   * `false`: stay within parent width — avoids `100vw` scrollbar overflow on About inside flex `main`.
+   */
+  breakout?: boolean
 }
 
 /**
@@ -168,6 +173,7 @@ export function HeroGlassScene({
   sectionMinClass,
   contentClassName,
   showLocationWeather = true,
+  breakout = true,
 }: HeroGlassSceneProps) {
   const reduceMotion = useReducedMotion()
   const blobGradient = useMemo(
@@ -348,12 +354,16 @@ export function HeroGlassScene({
   const circleTargetX = mouseX
   const circleTargetY = mouseY
 
+  const breakoutLayout = breakout
+    ? 'ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen'
+    : 'w-full min-w-0 max-w-full'
+
   return (
     <section
       ref={sectionRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={`relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen ${sectionMinClass} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25`}
+      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25`}
     >
       <div className="absolute inset-0">
         {reduceMotion ? (

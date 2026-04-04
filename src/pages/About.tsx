@@ -19,8 +19,9 @@ export function About() {
         tempF={tempF}
         weatherCode={weatherCode}
         weatherStatus={weatherStatus}
+        breakout={false}
         sectionMinClass="flex min-h-0 flex-1 flex-col"
-        contentClassName="relative z-[2] mx-auto flex min-h-0 w-full max-w-[1120px] flex-1 flex-col justify-center overflow-y-auto px-6 py-10 md:px-10 md:py-12"
+        contentClassName="relative z-[2] mx-auto flex min-h-0 w-full max-w-[1120px] flex-1 flex-col justify-center overflow-y-auto overflow-x-hidden px-6 py-10 md:px-10 md:py-12"
         showLocationWeather={false}
       >
         <article className="about-page">
@@ -34,7 +35,7 @@ export function About() {
 
               <div className="about-page-split-copy space-y-6 text-[var(--text)] leading-relaxed">
                 <div className="space-y-3">
-                  <h1 className="whitespace-nowrap font-sans text-4xl font-normal leading-[1.1] tracking-tight text-[var(--text-heading)] md:text-5xl lg:text-6xl">
+                  <h1 className="text-balance font-sans text-4xl font-normal leading-[1.1] tracking-tight text-[var(--text-heading)] sm:whitespace-nowrap md:text-5xl lg:text-6xl">
                     nice to meet you!
                   </h1>
                   <p>Hi there, this is Li.</p>
