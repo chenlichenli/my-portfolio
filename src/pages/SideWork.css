@@ -1,8 +1,11 @@
 /* Side work: Motion Graphics GIFs + other tagged placeholders */
 
 .side-work {
+  box-sizing: border-box;
+  width: 100%;
   max-width: 1120px;
-  margin: 0 auto;
+  min-width: 0;
+  margin-inline: auto;
   padding: clamp(3rem, 8vw, 5rem) 1.5rem 4rem;
 }
 

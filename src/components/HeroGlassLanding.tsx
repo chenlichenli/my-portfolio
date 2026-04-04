@@ -7,6 +7,7 @@ import {
   useTransform,
   useReducedMotion,
 } from 'framer-motion'
+import type { ReactNode } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { AustinWeatherStatus } from '../hooks/useAustinWeather'
 import { blobGradientForTempF } from '../hooks/useAustinWeather'
@@ -126,7 +127,8 @@ function separatePair(s: Pt, t: Pt, minD: number) {
 const COLLISION_ITERS = 10
 
 /** Space left under the hero so “Selected Works” / stat peek above the fold */
-const HERO_MIN_H =
+/** Viewport minus sticky header and footer band so the glass section + site footer fit without page scroll. */
+export const HERO_MIN_H =
   'min-h-[calc(100svh-var(--site-header-height)-clamp(6.5rem,13.5vh,10.25rem))]'
 
 /** Public asset: `public/glass effect.png` — frosted texture above blur, below copy (z-[1] stack order). */
@@ -144,7 +146,29 @@ export type HeroGlassLandingProps = {
   weatherStatus: AustinWeatherStatus
 }
 
-export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlassLandingProps) {
+export type HeroGlassSceneProps = HeroGlassLandingProps & {
+  children: ReactNode
+  /** Section layout classes (Tailwind). Landing uses `HERO_MIN_H`; About uses `flex-1` to fill `main` under header. */
+  sectionMinClass: string
+  /** Inner column: z-index, max-width, padding, flex (landing centers copy vertically). */
+  contentClassName: string
+  /** Austin location + local time chip (Design hero only). */
+  showLocationWeather?: boolean
+}
+
+/**
+ * Full landing visual stack: pointer-driven jelly blobs, collision separation, frosted blur + texture,
+ * Austin weather chip. Reused by the Design hero and About so behavior matches exactly.
+ */
+export function HeroGlassScene({
+  tempF,
+  weatherCode,
+  weatherStatus,
+  children,
+  sectionMinClass,
+  contentClassName,
+  showLocationWeather = true,
+}: HeroGlassSceneProps) {
   const reduceMotion = useReducedMotion()
   const blobGradient = useMemo(
     () => blobGradientForTempF(weatherStatus === 'ready' ? tempF : null),
@@ -329,7 +353,7 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
       ref={sectionRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={`relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen ${HERO_MIN_H} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25`}
+      className={`relative ml-[calc(50%-50vw)] mr-[calc(50%-50vw)] w-screen ${sectionMinClass} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25`}
     >
       <div className="absolute inset-0">
         {reduceMotion ? (
@@ -420,32 +444,44 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
         aria-hidden
       />
 
-      <div
-        className={`relative z-[2] mx-auto flex w-full max-w-[1120px] ${HERO_MIN_H} flex-col items-start justify-center px-6 py-20 md:px-10 -translate-y-14 md:-translate-y-24`}
-      >
-        <div className="mb-8 sm:mb-10">
-          <TypingEyebrow />
-        </div>
-        <h1 className="max-w-[24ch] text-left text-[clamp(2.1rem,5.9vw,3.85rem)] font-medium leading-[1.06] tracking-[-0.03em] text-[#1a1816]">
-          Hi, I&apos;m Li! 👋
-        </h1>
-        <p className="mt-6 max-w-md text-left text-[1.0625rem] font-normal leading-[1.65] text-[#5c5650] md:max-w-xl md:text-[1.1875rem]">
-          A product designer focused on building intuitive tools for complex systems — from
-          generative AI to healthcare platforms.
-        </p>
-      </div>
+      <div className={contentClassName}>{children}</div>
 
-      <div className="pointer-events-none absolute bottom-6 right-6 z-[2] max-w-[min(calc(100vw-3rem),26rem)] sm:bottom-8 md:bottom-10 md:right-10">
-        <div className="pointer-events-auto text-right">
-          <HeroLocationWeather
-            className="mt-0 max-w-full text-right"
-            tempF={tempF}
-            weatherCode={weatherCode}
-            status={weatherStatus}
-          />
+      {showLocationWeather ? (
+        <div className="pointer-events-none absolute bottom-6 right-6 z-[2] max-w-[min(calc(100vw-3rem),26rem)] sm:bottom-8 md:bottom-10 md:right-10">
+          <div className="pointer-events-auto text-right">
+            <HeroLocationWeather
+              className="mt-0 max-w-full text-right"
+              tempF={tempF}
+              weatherCode={weatherCode}
+              status={weatherStatus}
+            />
+          </div>
         </div>
-      </div>
+      ) : null}
     </section>
+  )
+}
+
+export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlassLandingProps) {
+  return (
+    <HeroGlassScene
+      tempF={tempF}
+      weatherCode={weatherCode}
+      weatherStatus={weatherStatus}
+      sectionMinClass={HERO_MIN_H}
+      contentClassName={`relative z-[2] mx-auto flex w-full max-w-[1120px] ${HERO_MIN_H} flex-col items-start justify-center px-6 py-20 md:px-10 -translate-y-14 md:-translate-y-24`}
+    >
+      <div className="mb-8 sm:mb-10">
+        <TypingEyebrow />
+      </div>
+      <h1 className="max-w-[24ch] text-left text-[clamp(2.1rem,5.9vw,3.85rem)] font-medium leading-[1.06] tracking-[-0.03em] text-[#1a1816]">
+        Hi, I&apos;m Li! 👋
+      </h1>
+      <p className="mt-6 max-w-md text-left text-[1.0625rem] font-normal leading-[1.65] text-[#5c5650] md:max-w-xl md:text-[1.1875rem]">
+        A product designer focused on building intuitive tools for complex systems — from generative AI
+        to healthcare platforms.
+      </p>
+    </HeroGlassScene>
   )
 }
 

@@ -154,13 +154,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <main className="site-main">{children}</main>
 
       <footer className="site-footer">
-        <div className="site-footer-divider" role="presentation">
-          <span className="site-footer-divider-line" aria-hidden="true" />
-          <span className="site-footer-divider-glyph" aria-hidden="true">
-            ≽^•⩊•^≼
-          </span>
-          <span className="site-footer-divider-line" aria-hidden="true" />
-        </div>
+        <hr className="site-footer-divider" aria-hidden="true" />
         <div className="site-footer-inner">
           <nav className="site-footer-links" aria-label="Contact links">
             <SiteFooterLink href={FOOTER_EMAIL} label="Email" />

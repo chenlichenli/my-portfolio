@@ -1,6 +1,10 @@
+/* `site-main` is flex column: explicit width avoids flex shrink-wrap narrowing cards. */
 .home {
+  box-sizing: border-box;
+  width: 100%;
   max-width: 1120px;
-  margin: 0 auto;
+  min-width: 0;
+  margin-inline: auto;
   padding: 0 1.5rem 4rem;
 }
 
