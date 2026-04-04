@@ -157,7 +157,7 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
   const offsetsInitializedRef = useRef(false)
 
   const { squareSize, triW, triH } = useMemo(() => {
-    const sq = Math.min(Math.max(Math.round(bubbleSize * 0.38), 96), 244)
+    const sq = Math.min(Math.max(Math.round(bubbleSize * 0.48), 104), 300)
     const tw = Math.min(Math.max(Math.round(bubbleSize * 0.78), 168), 460)
     const th = Math.round(tw * 0.866)
     return { squareSize: sq, triW: tw, triH: th }
@@ -375,7 +375,7 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
               damping={SPRING_DEFLECT.damping}
               mass={SPRING_DEFLECT.mass}
               gradient={HERO_TRIANGLE_FILL}
-              jelly={false}
+              jelly
             />
             <MotionHeroBlob
               shape="square"
@@ -389,7 +389,7 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
               damping={SPRING_DEFLECT.damping}
               mass={SPRING_DEFLECT.mass}
               gradient={HERO_SQUARE_FILL}
-              jelly={false}
+              jelly
             />
             <MotionHeroBlob
               shape="circle"
