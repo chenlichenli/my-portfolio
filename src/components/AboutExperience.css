@@ -6,7 +6,7 @@
 
 .about-experience__viewport {
   box-sizing: border-box;
-  height: min(16rem, 52vh);
+  height: min(17.5rem, 56vh);
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -132,18 +132,18 @@
 }
 
 .about-experience__dates {
-  margin: 0 0 0.3rem;
+  margin: 0 0 0.35rem;
   font-family: var(--font-ui);
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   font-weight: 600;
   letter-spacing: 0.02em;
   color: var(--text-heading);
 }
 
 .about-experience__title {
-  margin: 0 0 0.15rem;
+  margin: 0 0 0.18rem;
   font-family: var(--font-ui);
-  font-size: 0.98rem;
+  font-size: 1.2rem;
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.25;
@@ -151,15 +151,33 @@
 }
 
 .about-experience__org {
-  margin: 0 0 0.35rem;
-  font-size: 0.82rem;
+  margin: 0 0 0.4rem;
+  font-size: 1rem;
   font-weight: 500;
   color: var(--text);
 }
 
+.about-experience__org-link {
+  color: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent) 50%, transparent);
+  text-underline-offset: 0.18em;
+}
+
+.about-experience__org-link:hover {
+  text-decoration-color: var(--accent);
+}
+
+.about-experience__org-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 0.2rem;
+}
+
 .about-experience__blurb {
   margin: 0;
-  font-size: 0.8rem;
-  line-height: 1.5;
+  font-size: 0.96rem;
+  line-height: 1.55;
   color: var(--text-muted);
 }

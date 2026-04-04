@@ -8,6 +8,8 @@ export type AboutExperienceItem = {
   dates: string
   title: string
   org: string
+  /** Official org site — opens in a new tab. */
+  website: string
   blurb?: string
 }
 
@@ -17,6 +19,7 @@ const ITEMS: AboutExperienceItem[] = [
     dates: '2022 — current',
     title: 'Sr. Product Designer',
     org: 'Tempus AI',
+    website: 'https://www.tempus.com',
     blurb: 'AI and healthcare product experiences.',
   },
   {
@@ -24,6 +27,7 @@ const ITEMS: AboutExperienceItem[] = [
     dates: '2020 — 2022',
     title: 'Designer',
     org: 'Real Chemistry',
+    website: 'https://www.realchemistry.com',
     blurb: 'Enterprise healthcare and marketing platforms.',
   },
   {
@@ -31,6 +35,7 @@ const ITEMS: AboutExperienceItem[] = [
     dates: '2019 — 2020',
     title: 'Product Designer',
     org: 'LeanTaaS',
+    website: 'https://www.leantaas.com',
     blurb: 'Hospital operations and predictive analytics UX.',
   },
   {
@@ -38,12 +43,14 @@ const ITEMS: AboutExperienceItem[] = [
     dates: '2019',
     title: 'Design intern',
     org: 'Precision Strategy',
+    website: 'https://www.precisionstrategies.com',
   },
   {
     id: 'parsons',
     dates: '2017 — 2019',
     title: 'MFA, Design & Technology',
     org: 'Parsons School of Design',
+    website: 'https://www.newschool.edu/parsons/',
     blurb: 'New York City.',
   },
   {
@@ -51,18 +58,21 @@ const ITEMS: AboutExperienceItem[] = [
     dates: '2015',
     title: 'Visual Communication (exchange)',
     org: 'Hochschule für Gestaltung Offenbach',
+    website: 'https://www.hfg-offenbach.de',
   },
   {
     id: 'nanjing-arts',
     dates: '2013 — 2016',
     title: 'MA in Graphic Design',
     org: 'Nanjing University of the Arts',
+    website: 'https://www.nua.edu.cn',
   },
   {
     id: 'jiangnan',
     dates: '2009 — 2013',
     title: 'BA, Fine art',
     org: 'Jiangnan University',
+    website: 'https://www.jiangnan.edu.cn',
   },
 ]
 
@@ -133,7 +143,16 @@ function ExperienceSlide({
     <>
       <p className="about-experience__dates">{item.dates}</p>
       <h3 className="about-experience__title">{item.title}</h3>
-      <p className="about-experience__org">{item.org}</p>
+      <p className="about-experience__org">
+        <a
+          href={item.website}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="about-experience__org-link"
+        >
+          {item.org}
+        </a>
+      </p>
       {item.blurb ? <p className="about-experience__blurb">{item.blurb}</p> : null}
     </>
   )
