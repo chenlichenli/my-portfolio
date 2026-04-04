@@ -26,11 +26,11 @@
 .about-page-split {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 2.25rem;
   width: 100%;
   max-width: min(42rem, 100%);
-  text-align: center;
+  text-align: left;
 }
 
 .about-page-intro {
@@ -42,7 +42,7 @@
 .about-page-split-inner {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-start;
   gap: 2.25rem;
   width: 100%;
 }
@@ -56,7 +56,7 @@
   position: relative;
   width: 100%;
   max-width: min(30rem, 100%);
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
 }
 
@@ -87,10 +87,6 @@
 
 @media (min-width: 900px) {
   .about-page-photo-heading {
-    text-align: left;
-    left: 0;
-    right: auto;
-    max-width: min(28rem, 100%);
     font-size: clamp(1.85rem, 2.8vw, 3rem);
   }
 }
@@ -99,6 +95,7 @@
   margin-left: auto;
   margin-right: auto;
   max-width: min(30rem, 100%);
+  transform: translateX(-1.15rem);
 }
 
 .about-page-split-media .stacked-gallery {
@@ -135,9 +132,9 @@
   .about-page-split-inner {
     flex-direction: row;
     align-items: flex-start;
-    justify-content: center;
+    justify-content: flex-start;
     gap: clamp(2rem, 5vw, 3.75rem);
-    width: fit-content;
+    width: 100%;
     max-width: 100%;
   }
 
@@ -154,13 +151,13 @@
   }
 
   .about-page-split-media .stacked-gallery-scene {
-    margin-left: 0;
+    margin-left: auto;
     margin-right: auto;
   }
 
   .about-page-split-media .stacked-gallery {
-    align-items: flex-start;
-    text-align: left;
+    align-items: center;
+    text-align: center;
   }
 
   .about-page-split-copy {
