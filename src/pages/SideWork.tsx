@@ -55,6 +55,15 @@ const ALICE_WONDERLAND_GIFS = [
 
 const MOTION_GRAPHICS_BASE = '/Motion Graphics'
 
+/** Embedded interactive piece (GitHub Pages). */
+const DATA_VIZ_PROGRAMMING_LANG = {
+  url: 'https://chenlichenli.github.io/DVIA_F18_Social/',
+  title: 'The Development of Programming Language',
+  description:
+    'Interactive data visualization: explore how programming languages spread across nationality, native language, gender, and decade.',
+  iframeTitle: 'The Development of Programming Language — interactive visualization',
+} as const
+
 /** Display titles that shouldn’t be derived from the filename alone. */
 const MOTION_GIF_TITLE_OVERRIDES: Record<string, string> = {
   'GiveMeFish_Li.gif': 'Give Me Fish',
@@ -123,12 +132,6 @@ const OTHER_PIECES: {
   description: string
 }[] = [
   {
-    id: 'dv',
-    tag: 'Data viz',
-    title: 'Patient flow diagram',
-    description: 'Sankey exploration for how cases move through a clinic day.',
-  },
-  {
     id: 'vc',
     tag: 'Vibe Code',
     title: 'Prompt playground',
@@ -166,8 +169,9 @@ export function SideWork() {
     <article className="side-work">
       <header className="side-work-header">
         <p className="side-work-lede">
-          Motion graphics below (GIFs from the Motion Graphics library), plus placeholders for{' '}
-          <strong>Data viz</strong> and <strong>Vibe Code</strong>.
+          Motion graphics below (GIFs from the Motion Graphics library), an embedded{' '}
+          <strong>data visualization</strong> you can use in-page, and a placeholder for{' '}
+          <strong>Vibe Code</strong>.
         </p>
       </header>
 
@@ -310,6 +314,36 @@ export function SideWork() {
                 )
               })}
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="side-work-section" aria-labelledby="side-work-dataviz-heading">
+        <h2 id="side-work-dataviz-heading" className="side-work-section-title">
+          Data visualization
+        </h2>
+        <div className="side-work-dataviz-card side-work-bento__cell">
+          <span className="side-work-bento__tag side-work-bento__tag--dataviz">Data viz</span>
+          <div className="side-work-dataviz__title-row">
+            <h3 className="side-work-bento__cell-title">{DATA_VIZ_PROGRAMMING_LANG.title}</h3>
+            <a
+              className="side-work-dataviz__title-link"
+              href={DATA_VIZ_PROGRAMMING_LANG.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open in new tab
+            </a>
+          </div>
+          <p className="side-work-bento__cell-desc">{DATA_VIZ_PROGRAMMING_LANG.description}</p>
+          <div className="side-work-dataviz__frame">
+            <iframe
+              src={DATA_VIZ_PROGRAMMING_LANG.url}
+              title={DATA_VIZ_PROGRAMMING_LANG.iframeTitle}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allow="fullscreen"
+            />
           </div>
         </div>
       </section>

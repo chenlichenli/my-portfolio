@@ -1,4 +1,4 @@
-/* Side work: Motion Graphics GIFs + other tagged placeholders */
+/* Side work: Motion Graphics GIFs + embedded data viz + other placeholders */
 
 .side-work {
   box-sizing: border-box;
@@ -35,6 +35,68 @@
 
 .side-work-section {
   margin-bottom: clamp(2.5rem, 5vw, 3.25rem);
+}
+
+.side-work-dataviz-card {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.side-work-dataviz__title-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.5rem 1rem;
+  align-items: baseline;
+  margin-bottom: 0.4rem;
+}
+
+.side-work-dataviz__title-row .side-work-bento__cell-title {
+  margin: 0;
+  min-width: 0;
+}
+
+.side-work-dataviz__title-link {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.side-work-dataviz__title-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+@media (max-width: 540px) {
+  .side-work-dataviz__title-row {
+    grid-template-columns: 1fr;
+  }
+
+  .side-work-dataviz__title-link {
+    justify-self: end;
+  }
+}
+
+.side-work-dataviz__frame {
+  margin-top: clamp(0.75rem, 2vw, 1rem);
+  width: 100%;
+  min-width: 0;
+  height: min(72vh, 52rem);
+  min-height: 22rem;
+  border-radius: 0.4rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  box-sizing: border-box;
+}
+
+.side-work-dataviz__frame iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .side-work-section--other {
