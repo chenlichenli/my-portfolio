@@ -1,0 +1,465 @@
+/* Side work: Motion Graphics GIFs + other tagged placeholders */
+
+.side-work {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: clamp(3rem, 8vw, 5rem) 1.5rem 4rem;
+}
+
+@media (min-width: 768px) {
+  .side-work {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+.side-work-header {
+  margin-bottom: clamp(1.75rem, 4vw, 2.25rem);
+  max-width: 42rem;
+}
+
+.side-work-title {
+  margin: 0 0 0.65rem;
+  font-family: var(--font-ui);
+  font-size: clamp(2rem, 4.5vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-heading);
+}
+
+.side-work-lede {
+  margin: 0;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.side-work-lede strong {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.side-work-section {
+  margin-bottom: clamp(2.5rem, 5vw, 3.25rem);
+}
+
+.side-work-section--other {
+  margin-bottom: 0;
+}
+
+.side-work-section-title {
+  margin: 0 0 1rem;
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Bento grid: each card shrinks to the GIF’s aspect + size (capped by column width) */
+.side-work-motion-bento {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  align-items: start;
+}
+
+@media (min-width: 640px) {
+  .side-work-motion-bento {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.85rem;
+    justify-items: center;
+  }
+}
+
+@media (min-width: 900px) {
+  .side-work-motion-bento {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Full-width composite: Alice Wonderland */
+.side-work-motion-tile--alice {
+  width: 100%;
+  max-width: 100%;
+  grid-column: 1 / -1;
+  justify-self: stretch;
+}
+
+/* IPL + singles: full width like Alice (no centered narrow cluster); two equal columns ≥640px */
+.side-work-motion-ipl-row {
+  grid-column: 1 / -1;
+  justify-self: stretch;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+@media (min-width: 640px) {
+  .side-work-motion-ipl-row {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
+  .side-work-motion-ipl-row > .side-work-motion-tile.side-work-motion-tile--ipl,
+  .side-work-motion-ipl-row__singles {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+.side-work-motion-ipl-row__singles {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (min-width: 640px) {
+  .side-work-motion-ipl-row__singles {
+    gap: 0.85rem;
+  }
+}
+
+.side-work-motion-tile-media--alice {
+  padding: 0.5rem 0.5rem 0;
+  box-sizing: border-box;
+}
+
+.side-work-motion-tile-media--ipl {
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+.side-work-motion-tile-alice-grid {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 0.5rem;
+  width: 100%;
+  background: #ffffff;
+}
+
+.side-work-motion-tile-alice-col {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.side-work-motion-tile-ipl-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  width: 100%;
+  background: #000000;
+}
+
+/* Aspect-ratio frame + object-fit: cover trims letterboxing and fixes row height */
+.side-work-motion-gif-frame {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.side-work-motion-gif-frame--composite {
+  border-radius: 0.35rem;
+}
+
+.side-work-motion-gif-frame img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.side-work-motion-tile {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  max-width: 100%;
+  min-width: 0;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: clamp(0.65rem, 1.1vw, 0.85rem);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+/* IPL card fills its column (same total row width as Alice above) */
+.side-work-motion-tile.side-work-motion-tile--ipl {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.side-work-motion-ipl-row__singles .side-work-motion-tile {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+@media (hover: hover) {
+  .side-work-motion-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 28px 56px -16px rgba(26, 24, 22, 0.14);
+  }
+}
+
+.side-work-motion-tile-media {
+  line-height: 0;
+  background: color-mix(in srgb, var(--text-heading) 5%, var(--bg));
+}
+
+/* Must follow `.side-work-motion-tile-media` (same specificity) so white wins */
+.side-work-motion-tile-media.side-work-motion-tile-media--alice,
+.side-work-motion-tile-media.side-work-motion-tile-media--ipl {
+  background: #ffffff;
+}
+
+/* Intrinsic size; scale down if wider than the grid cell */
+.side-work-motion-tile-media img {
+  display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+}
+
+.side-work-motion-tile-media .side-work-motion-gif-frame img {
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+}
+
+.side-work-motion-tile-caption {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.35rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.85rem 1rem 1rem;
+}
+
+.side-work-motion-tile-title {
+  font-family: var(--font-ui);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  color: var(--text-heading);
+}
+
+.side-work-motion-tile--vimeo-trigger {
+  cursor: pointer;
+}
+
+.side-work-motion-tile--vimeo-trigger:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.side-work-bento__tag {
+  display: inline-block;
+  width: fit-content;
+  padding: 0.22rem 0.55rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border-radius: 0.25rem;
+}
+
+.side-work-bento__tag--motion {
+  color: #c45f00;
+  background: rgba(246, 156, 4, 0.14);
+}
+
+.side-work-bento__tag--dataviz {
+  color: #3d52c9;
+  background: var(--accent-soft);
+}
+
+.side-work-bento__tag--vibe {
+  color: #5a534a;
+  background: color-mix(in srgb, var(--text-muted) 18%, transparent);
+}
+
+.side-work-other-grid {
+  display: grid;
+  gap: 0.85rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .side-work-other-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.side-work-other-card {
+  margin: 0;
+}
+
+.side-work-bento__cell {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  padding: clamp(1.1rem, 2.5vw, 1.45rem);
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: clamp(0.65rem, 1.1vw, 0.85rem);
+  box-shadow: var(--shadow);
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+@media (hover: hover) {
+  .side-work-bento__cell:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 28px 56px -16px rgba(26, 24, 22, 0.14);
+  }
+}
+
+.side-work-bento__cell-title {
+  margin: 0 0 0.4rem;
+  font-family: var(--font-ui);
+  font-size: clamp(1.05rem, 1.35vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-heading);
+}
+
+.side-work-bento__cell-desc {
+  margin: 0;
+  flex: 1;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--text-muted);
+}
+
+/* Alice Wonderland → Vimeo popup */
+.side-work-vimeo-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(0.75rem, 3vw, 1.5rem);
+  box-sizing: border-box;
+}
+
+.side-work-vimeo-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(10, 10, 10, 0.72);
+  cursor: pointer;
+}
+
+.side-work-vimeo-modal__panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 56rem);
+  max-height: min(90vh, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: clamp(0.65rem, 1.1vw, 0.85rem);
+  box-shadow: 0 32px 64px -20px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+  padding: 0.65rem 0.75rem 0.75rem;
+  box-sizing: border-box;
+}
+
+.side-work-vimeo-modal__toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 0.75rem;
+}
+
+.side-work-vimeo-modal__title {
+  margin: 0;
+  flex: 1;
+  min-width: 0;
+  font-family: var(--font-ui);
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--text-heading);
+}
+
+.side-work-vimeo-modal__open-tab {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.side-work-vimeo-modal__open-tab:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.side-work-vimeo-modal__close {
+  flex-shrink: 0;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--bg);
+  color: var(--text-heading);
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.side-work-vimeo-modal__close:hover {
+  background: color-mix(in srgb, var(--text-heading) 6%, var(--bg));
+}
+
+.side-work-vimeo-modal__embed {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #000;
+  border-radius: 0.35rem;
+  overflow: hidden;
+}
+
+.side-work-vimeo-modal__embed iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}

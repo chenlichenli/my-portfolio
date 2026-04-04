@@ -1,3 +1,4 @@
 export { About } from './About'
 export { Home } from './Home'
 export { PlaceholderPage } from './PlaceholderPage'
+export { SideWork } from './SideWork'

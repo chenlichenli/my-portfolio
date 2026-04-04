@@ -1,19 +1,11 @@
 import { Route, Routes } from 'react-router-dom'
-import { About, Home, PlaceholderPage } from './pages'
+import { About, Home, PlaceholderPage, SideWork } from './pages'
 
 export function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route
-        path="/side-work"
-        element={
-          <PlaceholderPage
-            title="Side Work"
-            description="This page is ready for your side projects and experiments."
-          />
-        }
-      />
+      <Route path="/side-work" element={<SideWork />} />
       <Route path="/about" element={<About />} />
       <Route
         path="/tempus-one"
