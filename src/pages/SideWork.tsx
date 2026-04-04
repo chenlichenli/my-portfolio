@@ -2,7 +2,7 @@ import { useEffect, useState, type CSSProperties, type KeyboardEvent as ReactKey
 import { createPortal } from 'react-dom'
 import './SideWork.css'
 
-type SideWorkVimeoKey = 'alice' | 'ipl'
+type SideWorkVimeoKey = 'alice' | 'ipl' | 'giveMeFish'
 
 const SIDE_WORK_VIMEO: Record<
   SideWorkVimeoKey,
@@ -19,6 +19,12 @@ const SIDE_WORK_VIMEO: Record<
     embed: 'https://player.vimeo.com/video/266034746?dnt=1',
     dialogTitle: 'I am Programming Language',
     iframeTitle: 'I am Programming Language on Vimeo',
+  },
+  giveMeFish: {
+    page: 'https://vimeo.com/260331165',
+    embed: 'https://player.vimeo.com/video/260331165?dnt=1',
+    dialogTitle: 'Give Me Fish',
+    iframeTitle: 'Give Me Fish on Vimeo',
   },
 }
 
@@ -159,7 +165,6 @@ export function SideWork() {
     <>
     <article className="side-work">
       <header className="side-work-header">
-        <h1 className="side-work-title">Side Work</h1>
         <p className="side-work-lede">
           Motion graphics below (GIFs from the Motion Graphics library), plus placeholders for{' '}
           <strong>Data viz</strong> and <strong>Vibe Code</strong>.
@@ -253,6 +258,37 @@ export function SideWork() {
             <div className="side-work-motion-ipl-row__singles">
               {MOTION_GRAPHICS_GIFS.map((file, index) => {
                 const title = titleFromGifFilename(file)
+                const isGiveMeFish = file === 'GiveMeFish_Li.gif'
+                if (isGiveMeFish) {
+                  return (
+                    <figure
+                      key={file}
+                      className="side-work-motion-tile side-work-motion-tile--vimeo-trigger"
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`${title} — open full video`}
+                      aria-haspopup="dialog"
+                      onClick={() => setVimeoModal('giveMeFish')}
+                      onKeyDown={(e) => onVimeoCardKeyDown(e, 'giveMeFish')}
+                    >
+                      <div className="side-work-motion-tile-media">
+                        <MotionGifFrame
+                          file={file}
+                          alt={title}
+                          variant="single"
+                          loading={index < 2 ? 'eager' : 'lazy'}
+                          decoding="async"
+                        />
+                      </div>
+                      <figcaption className="side-work-motion-tile-caption">
+                        <span className="side-work-bento__tag side-work-bento__tag--motion">
+                          Motion graphics
+                        </span>
+                        <span className="side-work-motion-tile-title">{title}</span>
+                      </figcaption>
+                    </figure>
+                  )
+                }
                 return (
                   <figure key={file} className="side-work-motion-tile">
                     <div className="side-work-motion-tile-media">
