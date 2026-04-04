@@ -1,7 +1,13 @@
 import { HeroGlassScene } from '../components/HeroGlassLanding'
 import { StackedPhotoGallery } from '../components/StackedPhotoGallery'
-import { useAustinWeather } from '../hooks/useAustinWeather'
 import './About.css'
+
+/** About glass blobs — landing hero keeps default blue / orange / temp circle. */
+const ABOUT_BLOB = {
+  circle: '#F2DE35',
+  square: '#5271FF',
+  triangle: '#DF4702',
+} as const
 
 /** Photos from /public: me.jpg, Vinny.JPG, Nala.JPG */
 const ABOUT_PHOTOS = [
@@ -11,14 +17,15 @@ const ABOUT_PHOTOS = [
 ] as const
 
 export function About() {
-  const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
-
   return (
     <div className="about-route">
       <HeroGlassScene
-        tempF={tempF}
-        weatherCode={weatherCode}
-        weatherStatus={weatherStatus}
+        tempF={null}
+        weatherCode={null}
+        weatherStatus="ready"
+        circleGradientHex={ABOUT_BLOB.circle}
+        triangleFill={ABOUT_BLOB.triangle}
+        squareFill={ABOUT_BLOB.square}
         breakout={false}
         sectionMinClass="flex min-h-0 flex-1 flex-col"
         contentClassName="relative z-[2] mx-auto flex min-h-0 w-full max-w-[1120px] flex-1 flex-col justify-center overflow-y-auto overflow-x-hidden px-6 py-10 md:px-10 md:py-12"

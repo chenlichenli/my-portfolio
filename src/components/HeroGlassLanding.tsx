@@ -10,7 +10,7 @@ import {
 import type { ReactNode } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { AustinWeatherStatus } from '../hooks/useAustinWeather'
-import { blobGradientForTempF } from '../hooks/useAustinWeather'
+import { blobGradientForHex, blobGradientForTempF } from '../hooks/useAustinWeather'
 import { HeroLocationWeather } from './HeroLocationWeather'
 import { TypingEyebrow } from './TypingEyebrow'
 
@@ -159,6 +159,11 @@ export type HeroGlassSceneProps = HeroGlassLandingProps & {
    * `false`: stay within parent width — avoids `100vw` scrollbar overflow on About inside flex `main`.
    */
   breakout?: boolean
+  /** When set, main circle blob uses this color (same gradient falloff); ignores temperature. */
+  circleGradientHex?: string
+  /** Override triangle / square fills (About page); landing omits these. */
+  triangleFill?: string
+  squareFill?: string
 }
 
 /**
@@ -174,12 +179,17 @@ export function HeroGlassScene({
   contentClassName,
   showLocationWeather = true,
   breakout = true,
+  circleGradientHex,
+  triangleFill,
+  squareFill,
 }: HeroGlassSceneProps) {
   const reduceMotion = useReducedMotion()
-  const blobGradient = useMemo(
-    () => blobGradientForTempF(weatherStatus === 'ready' ? tempF : null),
-    [weatherStatus, tempF],
-  )
+  const triangleBlobFill = triangleFill ?? HERO_TRIANGLE_FILL
+  const squareBlobFill = squareFill ?? HERO_SQUARE_FILL
+  const blobGradient = useMemo(() => {
+    if (circleGradientHex) return blobGradientForHex(circleGradientHex)
+    return blobGradientForTempF(weatherStatus === 'ready' ? tempF : null)
+  }, [circleGradientHex, weatherStatus, tempF])
 
   const sectionRef = useRef<HTMLElement>(null)
   const [bubbleSize, setBubbleSize] = useState(400)
@@ -373,7 +383,7 @@ export function HeroGlassScene({
                 shape="triangle"
                 width={triW}
                 height={triH}
-                gradient={HERO_TRIANGLE_FILL}
+                gradient={triangleBlobFill}
                 offsetX={blobOffsets.tri.x}
                 offsetY={blobOffsets.tri.y}
               />
@@ -381,7 +391,7 @@ export function HeroGlassScene({
                 shape="square"
                 width={squareSize}
                 height={squareSize}
-                gradient={HERO_SQUARE_FILL}
+                gradient={squareBlobFill}
                 offsetX={blobOffsets.square.x}
                 offsetY={blobOffsets.square.y}
               />
@@ -408,7 +418,7 @@ export function HeroGlassScene({
               stiffness={SPRING_DEFLECT.stiffness}
               damping={SPRING_DEFLECT.damping}
               mass={SPRING_DEFLECT.mass}
-              gradient={HERO_TRIANGLE_FILL}
+              gradient={triangleBlobFill}
               jelly
             />
             <MotionHeroBlob
@@ -422,7 +432,7 @@ export function HeroGlassScene({
               stiffness={SPRING_DEFLECT.stiffness}
               damping={SPRING_DEFLECT.damping}
               mass={SPRING_DEFLECT.mass}
-              gradient={HERO_SQUARE_FILL}
+              gradient={squareBlobFill}
               jelly
             />
             <MotionHeroBlob
