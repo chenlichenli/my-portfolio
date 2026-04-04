@@ -2,6 +2,7 @@
 
 .side-work {
   --side-work-tag-to-title: clamp(0.5rem, 1.75vw, 0.75rem);
+  --side-work-card-padding: clamp(1.1rem, 2.5vw, 1.45rem);
 
   box-sizing: border-box;
   width: 100%;
@@ -18,25 +19,17 @@
   }
 }
 
-.side-work-header {
-  margin-bottom: clamp(1.75rem, 4vw, 2.25rem);
-  max-width: 42rem;
+.side-work-unified {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
 }
 
-.side-work-lede {
-  margin: 0;
-  font-size: 1.0625rem;
-  line-height: 1.6;
-  color: var(--text-muted);
-}
-
-.side-work-lede strong {
-  font-weight: 600;
-  color: var(--text);
-}
-
-.side-work-section {
-  margin-bottom: clamp(2.5rem, 5vw, 3.25rem);
+@media (min-width: 640px) {
+  .side-work-unified {
+    gap: 0.85rem;
+  }
 }
 
 .side-work-dataviz-card {
@@ -99,20 +92,6 @@
   width: 100%;
   height: 100%;
   border: 0;
-}
-
-.side-work-section--other {
-  margin-bottom: 0;
-}
-
-.side-work-section-title {
-  margin: 0 0 1rem;
-  font-family: var(--font-ui);
-  font-size: 0.8rem;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--text-muted);
 }
 
 /* Bento grid: each card shrinks to the GIF’s aspect + size (capped by column width) */
@@ -187,13 +166,9 @@
   }
 }
 
-.side-work-motion-tile-media--alice {
-  padding: 0.5rem 0.5rem 0;
-  box-sizing: border-box;
-}
-
+.side-work-motion-tile-media--alice,
 .side-work-motion-tile-media--ipl {
-  padding: 0.5rem;
+  padding: 0;
   box-sizing: border-box;
 }
 
@@ -203,7 +178,7 @@
   align-items: flex-start;
   gap: 0.5rem;
   width: 100%;
-  background: #ffffff;
+  background: transparent;
 }
 
 .side-work-motion-tile-alice-col {
@@ -222,15 +197,19 @@
   background: #000000;
 }
 
+/* Grid `min-width: auto` on items can block shrink and break rounded clipping (IPL stack). */
+.side-work-motion-tile-ipl-grid > .side-work-motion-gif-frame {
+  min-width: 0;
+  width: 100%;
+  isolation: isolate;
+}
+
 /* Aspect-ratio frame + object-fit: cover trims letterboxing and fixes row height */
 .side-work-motion-gif-frame {
   width: 100%;
   max-width: 100%;
   overflow: hidden;
   line-height: 0;
-}
-
-.side-work-motion-gif-frame--composite {
   border-radius: 0.35rem;
 }
 
@@ -240,20 +219,30 @@
   height: 100%;
   object-fit: cover;
   object-position: center;
+  /* Ensures GIFs clip to radius when the wrapper alone doesn’t (e.g. grid + replaced content). */
+  border-radius: 0.35rem;
 }
 
+/* Match Design `.project-card` glass surface (Home.css) */
 .side-work-motion-tile {
   margin: 0;
   display: flex;
   flex-direction: column;
+  gap: var(--side-work-tag-to-title);
   width: fit-content;
   max-width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid var(--border);
-  border-radius: clamp(0.65rem, 1.1vw, 0.85rem);
-  box-shadow: var(--shadow);
+  padding: var(--side-work-card-padding);
+  background: rgba(244, 241, 238, 0.42);
+  background: color-mix(in srgb, var(--bg) 52%, rgba(255, 255, 255, 0.35));
+  border: none;
+  border-radius: clamp(0.65rem, 1.1vw, 0.8rem);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 0 transparent;
   overflow: hidden;
   transition:
     transform 0.22s ease,
@@ -276,13 +265,17 @@
 @media (hover: hover) {
   .side-work-motion-tile:hover {
     transform: translateY(-2px);
-    box-shadow: 0 28px 56px -16px rgba(26, 24, 22, 0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 18px 44px -14px rgba(26, 24, 22, 0.11);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
   .side-work-motion-tile {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(233, 233, 233, 0.72);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 
@@ -291,8 +284,11 @@
   background: color-mix(in srgb, var(--text-heading) 5%, var(--bg));
 }
 
-/* Must follow `.side-work-motion-tile-media` (same specificity) so white wins */
-.side-work-motion-tile-media.side-work-motion-tile-media--alice,
+/* Alice: gaps between GIFs show the same glass as the card (tile bg shows through). IPL: solid field. */
+.side-work-motion-tile-media.side-work-motion-tile-media--alice {
+  background: transparent;
+}
+
 .side-work-motion-tile-media.side-work-motion-tile-media--ipl {
   background: #ffffff;
 }
@@ -321,7 +317,7 @@
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  padding: 0.85rem 1rem 1rem;
+  padding: 0;
 }
 
 .side-work-motion-tile-title {
@@ -388,12 +384,17 @@
   display: flex;
   flex-direction: column;
   min-height: 0;
-  padding: clamp(1.1rem, 2.5vw, 1.45rem);
+  padding: var(--side-work-card-padding);
   box-sizing: border-box;
-  background: rgba(255, 255, 255, 0.7);
-  border: 1px solid var(--border);
-  border-radius: clamp(0.65rem, 1.1vw, 0.85rem);
-  box-shadow: var(--shadow);
+  background: rgba(244, 241, 238, 0.42);
+  background: color-mix(in srgb, var(--bg) 52%, rgba(255, 255, 255, 0.35));
+  border: none;
+  border-radius: clamp(0.65rem, 1.1vw, 0.8rem);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.45),
+    0 0 0 transparent;
   transition:
     transform 0.22s ease,
     box-shadow 0.22s ease;
@@ -402,13 +403,17 @@
 @media (hover: hover) {
   .side-work-bento__cell:hover {
     transform: translateY(-2px);
-    box-shadow: 0 28px 56px -16px rgba(26, 24, 22, 0.14);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.5),
+      0 18px 44px -14px rgba(26, 24, 22, 0.11);
   }
 }
 
 @media (prefers-reduced-transparency: reduce) {
   .side-work-bento__cell {
-    background: rgba(255, 255, 255, 0.92);
+    background: rgba(233, 233, 233, 0.72);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 }
 

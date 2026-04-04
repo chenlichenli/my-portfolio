@@ -106,18 +106,13 @@ function motionGifFrameAspectStyle(filename: string): CSSProperties {
 function MotionGifFrame(props: {
   file: string
   alt: string
-  variant: 'composite' | 'single'
   loading?: 'eager' | 'lazy'
   decoding?: 'async' | 'auto' | 'sync'
 }) {
-  const { file, alt, variant, loading, decoding } = props
+  const { file, alt, loading, decoding } = props
   return (
     <div
-      className={
-        variant === 'composite'
-          ? 'side-work-motion-gif-frame side-work-motion-gif-frame--composite'
-          : 'side-work-motion-gif-frame'
-      }
+      className="side-work-motion-gif-frame"
       style={motionGifFrameAspectStyle(file)}
     >
       <img src={motionGifSrc(file)} alt={alt} loading={loading} decoding={decoding} />
@@ -166,19 +161,8 @@ export function SideWork() {
 
   return (
     <>
-    <article className="side-work">
-      <header className="side-work-header">
-        <p className="side-work-lede">
-          Motion graphics below (GIFs from the Motion Graphics library), an embedded{' '}
-          <strong>data visualization</strong> you can use in-page, and a placeholder for{' '}
-          <strong>Vibe Code</strong>.
-        </p>
-      </header>
-
-      <section className="side-work-section" aria-labelledby="side-work-motion-heading">
-        <h2 id="side-work-motion-heading" className="side-work-section-title">
-          Motion graphics
-        </h2>
+    <article className="side-work" aria-label="Side work">
+      <div className="side-work-unified">
         <div className="side-work-motion-bento">
           <figure
             className="side-work-motion-tile side-work-motion-tile--alice side-work-motion-tile--vimeo-trigger"
@@ -206,7 +190,6 @@ export function SideWork() {
                           key={file}
                           file={file}
                           alt={`${clipTitle}, part of Alice Wonderland`}
-                          variant="composite"
                           loading={i < 2 ? 'eager' : 'lazy'}
                           decoding="async"
                         />
@@ -245,7 +228,6 @@ export function SideWork() {
                         key={file}
                         file={file}
                         alt={`${clipTitle}, part of I am Programming Language`}
-                        variant="composite"
                         loading={i < 1 ? 'eager' : 'lazy'}
                         decoding="async"
                       />
@@ -279,7 +261,6 @@ export function SideWork() {
                         <MotionGifFrame
                           file={file}
                           alt={title}
-                          variant="single"
                           loading={index < 2 ? 'eager' : 'lazy'}
                           decoding="async"
                         />
@@ -299,7 +280,6 @@ export function SideWork() {
                       <MotionGifFrame
                         file={file}
                         alt={title}
-                        variant="single"
                         loading={index < 2 ? 'eager' : 'lazy'}
                         decoding="async"
                       />
@@ -316,12 +296,7 @@ export function SideWork() {
             </div>
           </div>
         </div>
-      </section>
 
-      <section className="side-work-section" aria-labelledby="side-work-dataviz-heading">
-        <h2 id="side-work-dataviz-heading" className="side-work-section-title">
-          Data visualization
-        </h2>
         <div className="side-work-dataviz-card side-work-bento__cell">
           <span className="side-work-bento__tag side-work-bento__tag--dataviz">Data viz</span>
           <div className="side-work-dataviz__title-row">
@@ -346,12 +321,7 @@ export function SideWork() {
             />
           </div>
         </div>
-      </section>
 
-      <section className="side-work-section side-work-section--other" aria-labelledby="side-work-other-heading">
-        <h2 id="side-work-other-heading" className="side-work-section-title">
-          More
-        </h2>
         <div className="side-work-other-grid">
           {OTHER_PIECES.map((piece) => (
             <div key={piece.id} className="side-work-bento__cell side-work-other-card">
@@ -363,7 +333,7 @@ export function SideWork() {
             </div>
           ))}
         </div>
-      </section>
+      </div>
     </article>
 
     {vimeoOpen &&
