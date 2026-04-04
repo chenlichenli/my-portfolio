@@ -109,18 +109,16 @@
   gap: 1.5rem;
   width: 100%;
   min-width: 0;
-}
-
-/* Intro must stay above the experience scroller (explicit stack + source order). */
-.about-page-split-copy .about-page-intro {
-  flex: 0 0 auto;
-  order: 0;
+  padding-top: clamp(2rem, 6vw, 3.5rem);
 }
 
 .about-page-split-copy .about-experience {
   flex: 0 1 auto;
   min-height: 0;
-  order: 1;
+}
+
+.about-page-split-copy .about-page-intro {
+  flex: 0 0 auto;
 }
 
 @media (min-width: 900px) {
@@ -162,6 +160,6 @@
 
   .about-page-split-copy {
     flex: 0 1 min(26rem, 38vw);
-    padding-top: 0.15rem;
+    padding-top: clamp(3rem, 7vw, 4.75rem);
   }
 }

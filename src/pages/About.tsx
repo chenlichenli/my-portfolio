@@ -48,12 +48,12 @@ export function About() {
                 </div>
 
                 <div className="about-page-split-copy">
+                  <AboutExperience />
                   <p className="about-page-intro text-[var(--text)] leading-relaxed">
                     Hi there, this is Li. Besides work, I enjoy traveling ✈️, hunting for cozy coffee shops ☕️,
                     practice my tennis swing 🎾, diving into video games 👾, and playing with my two cats 🐈 🔸Vinny
                     and ▪️Nala.
                   </p>
-                  <AboutExperience />
                 </div>
               </div>
             </div>
