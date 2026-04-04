@@ -1,3 +1,4 @@
+import { AboutExperience } from '../components/AboutExperience'
 import { HeroGlassScene } from '../components/HeroGlassLanding'
 import { StackedPhotoGallery } from '../components/StackedPhotoGallery'
 import './About.css'
@@ -34,31 +35,26 @@ export function About() {
         <article className="about-page">
           <div className="about-page-shell">
             <div className="about-page-split">
-              <div className="about-page-split-media">
-                <section aria-label="Photos">
-                  <StackedPhotoGallery items={ABOUT_PHOTOS} initialOrder={[1, 2, 0]} />
-                </section>
-              </div>
-
-              <div className="about-page-split-copy space-y-6 text-[var(--text)] leading-relaxed">
-                <div className="space-y-3">
-                  <h1 className="w-full min-w-0 max-w-full text-balance font-sans text-3xl font-normal leading-[1.12] tracking-tight text-[var(--text-heading)] sm:text-4xl md:text-5xl lg:text-[clamp(2rem,4.2vw,3.25rem)]">
-                    nice to meet you!
-                  </h1>
-                  <p>Hi there, this is Li.</p>
+              <div className="about-page-split-inner">
+                <div className="about-page-split-media">
+                  <div className="about-page-media-stack">
+                    <h1 className="about-page-photo-heading">
+                      nice to meet you!
+                    </h1>
+                    <section aria-label="Photos">
+                      <StackedPhotoGallery items={ABOUT_PHOTOS} initialOrder={[1, 2, 0]} />
+                    </section>
+                  </div>
                 </div>
 
-                <p className="text-[var(--text-muted)]">
-                  Currently working at Tempus AI, with previous experience at Real Chemistry and LeanTaaS. I
-                  hold an MFA in Design and Technology from Parsons School of Design. My educational and
-                  professional journey has taken me from China, where I was born and raised, to Germany and
-                  New York City. Now I reside in Charlotte, NC.
-                </p>
-
-                <p className="text-[var(--text-muted)]">
-                  I enjoy traveling ✈️, hunting for cozy coffee shops ☕️, practice my tennis swing 🎾,
-                  diving into video games 👾, and playing with my two cats 🐈 🔸Vinny and ▪️Nala.
-                </p>
+                <div className="about-page-split-copy">
+                  <p className="about-page-intro text-[var(--text)] leading-relaxed">
+                    Hi there, this is Li. Besides work, I enjoy traveling ✈️, hunting for cozy coffee shops ☕️,
+                    practice my tennis swing 🎾, diving into video games 👾, and playing with my two cats 🐈 🔸Vinny
+                    and ▪️Nala.
+                  </p>
+                  <AboutExperience />
+                </div>
               </div>
             </div>
           </div>
