@@ -42,7 +42,7 @@ export function About() {
 
               <div className="about-page-split-copy space-y-6 text-[var(--text)] leading-relaxed">
                 <div className="space-y-3">
-                  <h1 className="text-balance font-sans text-4xl font-normal leading-[1.1] tracking-tight text-[var(--text-heading)] sm:whitespace-nowrap md:text-5xl lg:text-6xl">
+                  <h1 className="w-full min-w-0 max-w-full text-balance font-sans text-3xl font-normal leading-[1.12] tracking-tight text-[var(--text-heading)] sm:text-4xl md:text-5xl lg:text-[clamp(2rem,4.2vw,3.25rem)]">
                     nice to meet you!
                   </h1>
                   <p>Hi there, this is Li.</p>
