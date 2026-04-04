@@ -10,7 +10,75 @@ export type AboutExperienceItem = {
   org: string
   /** Official org site — opens in a new tab. */
   website: string
+  /** Optional logo image URL; if omitted, a logo is inferred from the website domain. */
+  logoUrl?: string
+  /** When false, no logo or monogram is shown (organization link only). */
+  showLogo?: boolean
   blurb?: string
+}
+
+function hostnameFromWebsite(website: string): string {
+  try {
+    return new URL(website).hostname.replace(/^www\./i, '')
+  } catch {
+    return ''
+  }
+}
+
+function logoImageSources(website: string, logoUrl?: string): string[] {
+  const host = hostnameFromWebsite(website)
+  const list: string[] = []
+  if (logoUrl) list.push(logoUrl)
+  if (host) {
+    list.push(`https://logo.clearbit.com/${host}`)
+    list.push(
+      `https://www.google.com/s2/favicons?domain=${encodeURIComponent(host)}&sz=128`,
+    )
+  }
+  return [...new Set(list)]
+}
+
+function monogramFromOrg(org: string): string {
+  const t = org.trim()
+  if (!t) return '?'
+  const ascii = t.replace(/[^A-Za-z0-9]/g, '')
+  if (ascii.length > 0) return ascii[0]!.toUpperCase()
+  const ch = [...t][0]
+  return ch ?? '?'
+}
+
+function ExperienceOrgLogo({
+  website,
+  org,
+  logoUrl,
+}: {
+  website: string
+  org: string
+  logoUrl?: string
+}) {
+  const sources = useMemo(() => logoImageSources(website, logoUrl), [website, logoUrl])
+  const [sourceIndex, setSourceIndex] = useState(0)
+  const monogram = monogramFromOrg(org)
+
+  if (sourceIndex >= sources.length) {
+    return (
+      <span className="about-experience__logo-fallback" aria-hidden="true">
+        {monogram}
+      </span>
+    )
+  }
+
+  return (
+    <img
+      className="about-experience__logo"
+      src={sources[sourceIndex]}
+      alt=""
+      loading="lazy"
+      decoding="async"
+      referrerPolicy="no-referrer"
+      onError={() => setSourceIndex((n) => n + 1)}
+    />
+  )
 }
 
 const ITEMS: AboutExperienceItem[] = [
@@ -59,6 +127,7 @@ const ITEMS: AboutExperienceItem[] = [
     title: 'Visual Communication (exchange)',
     org: 'Hochschule für Gestaltung Offenbach',
     website: 'https://www.hfg-offenbach.de',
+    showLogo: false,
   },
   {
     id: 'nanjing-arts',
@@ -66,6 +135,7 @@ const ITEMS: AboutExperienceItem[] = [
     title: 'MA in Graphic Design',
     org: 'Nanjing University of the Arts',
     website: 'https://www.nua.edu.cn',
+    showLogo: false,
   },
   {
     id: 'jiangnan',
@@ -73,6 +143,7 @@ const ITEMS: AboutExperienceItem[] = [
     title: 'BA, Fine art',
     org: 'Jiangnan University',
     website: 'https://www.jiangnan.edu.cn',
+    showLogo: false,
   },
 ]
 
@@ -143,16 +214,32 @@ function ExperienceSlide({
     <>
       <p className="about-experience__dates">{item.dates}</p>
       <h3 className="about-experience__title">{item.title}</h3>
-      <p className="about-experience__org">
-        <a
-          href={item.website}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="about-experience__org-link"
-        >
-          {item.org}
-        </a>
-      </p>
+      {item.showLogo === false ? (
+        <p className="about-experience__org about-experience__org--solo">
+          <a
+            href={item.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="about-experience__org-link"
+          >
+            {item.org}
+          </a>
+        </p>
+      ) : (
+        <div className="about-experience__org-row">
+          <ExperienceOrgLogo website={item.website} org={item.org} logoUrl={item.logoUrl} />
+          <p className="about-experience__org">
+            <a
+              href={item.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="about-experience__org-link"
+            >
+              {item.org}
+            </a>
+          </p>
+        </div>
+      )}
       {item.blurb ? <p className="about-experience__blurb">{item.blurb}</p> : null}
     </>
   )

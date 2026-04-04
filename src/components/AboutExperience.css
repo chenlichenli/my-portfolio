@@ -6,7 +6,7 @@
 
 .about-experience__viewport {
   box-sizing: border-box;
-  height: min(17.5rem, 56vh);
+  height: min(11.75rem, 34vh);
   max-height: 100%;
   overflow-x: hidden;
   overflow-y: auto;
@@ -150,11 +150,51 @@
   color: var(--text-heading);
 }
 
-.about-experience__org {
+.about-experience__org-row {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
   margin: 0 0 0.4rem;
+  min-width: 0;
+}
+
+.about-experience__logo {
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  object-fit: contain;
+  border-radius: 0.2rem;
+  background: transparent;
+  border: none;
+}
+
+.about-experience__logo-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  flex-shrink: 0;
+  border-radius: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--text-heading);
+  background: transparent;
+  border: none;
+}
+
+.about-experience__org {
+  margin: 0;
+  min-width: 0;
   font-size: 1rem;
   font-weight: 500;
   color: var(--text);
+}
+
+.about-experience__org--solo {
+  margin: 0 0 0.4rem;
 }
 
 .about-experience__org-link {
