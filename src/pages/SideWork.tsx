@@ -1,5 +1,6 @@
-import { useEffect, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
+import { useRevealOnScroll } from '../hooks/useRevealOnScroll'
 import './SideWork.css'
 
 type SideWorkVimeoKey = 'alice' | 'ipl' | 'giveMeFish'
@@ -136,6 +137,8 @@ const OTHER_PIECES: {
 
 export function SideWork() {
   const [vimeoModal, setVimeoModal] = useState<SideWorkVimeoKey | null>(null)
+  const sideWorkRevealRootRef = useRef<HTMLDivElement>(null)
+  useRevealOnScroll(sideWorkRevealRootRef, '.side-work-reveal-card')
 
   useEffect(() => {
     if (vimeoModal === null) return
@@ -162,10 +165,10 @@ export function SideWork() {
   return (
     <>
     <article className="side-work" aria-label="Side work">
-      <div className="side-work-unified">
+      <div className="side-work-unified" ref={sideWorkRevealRootRef}>
         <div className="side-work-motion-bento">
           <figure
-            className="side-work-motion-tile side-work-motion-tile--alice side-work-motion-tile--vimeo-trigger"
+            className="side-work-motion-tile side-work-motion-tile--alice side-work-motion-tile--vimeo-trigger side-work-reveal-card"
             role="button"
             tabIndex={0}
             aria-label="Alice Wonderland — open full video"
@@ -207,7 +210,7 @@ export function SideWork() {
 
           <div className="side-work-motion-ipl-row">
             <figure
-              className="side-work-motion-tile side-work-motion-tile--ipl side-work-motion-tile--vimeo-trigger"
+              className="side-work-motion-tile side-work-motion-tile--ipl side-work-motion-tile--vimeo-trigger side-work-reveal-card"
               role="button"
               tabIndex={0}
               aria-label="I am Programming Language — open full video"
@@ -249,7 +252,7 @@ export function SideWork() {
                   return (
                     <figure
                       key={file}
-                      className="side-work-motion-tile side-work-motion-tile--vimeo-trigger"
+                      className="side-work-motion-tile side-work-motion-tile--vimeo-trigger side-work-reveal-card"
                       role="button"
                       tabIndex={0}
                       aria-label={`${title} — open full video`}
@@ -275,7 +278,7 @@ export function SideWork() {
                   )
                 }
                 return (
-                  <figure key={file} className="side-work-motion-tile">
+                  <figure key={file} className="side-work-motion-tile side-work-reveal-card">
                     <div className="side-work-motion-tile-media">
                       <MotionGifFrame
                         file={file}
@@ -324,7 +327,7 @@ export function SideWork() {
 
         <div className="side-work-other-grid">
           {OTHER_PIECES.map((piece) => (
-            <div key={piece.id} className="side-work-bento__cell side-work-other-card">
+            <div key={piece.id} className="side-work-bento__cell side-work-other-card side-work-reveal-card">
               <span className={`side-work-bento__tag side-work-bento__tag--${TAG_SLUG[piece.tag]}`}>
                 {piece.tag}
               </span>

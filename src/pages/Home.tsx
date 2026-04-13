@@ -1,6 +1,7 @@
-import { useEffect, useLayoutEffect, useMemo, useRef, type RefObject } from 'react'
+import { useLayoutEffect, useMemo, useRef, type RefObject } from 'react'
 import { HeroGlassLanding } from '../components/HeroGlassLanding'
 import { blobColorForTempF, useAustinWeather } from '../hooks/useAustinWeather'
+import { useRevealOnScroll } from '../hooks/useRevealOnScroll'
 import { Link } from 'react-router-dom'
 import './Home.css'
 
@@ -87,64 +88,6 @@ function cardsForObserver(root: HTMLElement) {
   return [...root.querySelectorAll<HTMLElement>('.project-card')]
 }
 
-function useRevealProjectCardsOnScroll(containerRef: RefObject<HTMLElement | null>) {
-  useEffect(() => {
-    const root = containerRef.current
-    if (!root) return
-
-    const cards = [...root.querySelectorAll<HTMLElement>('.project-card')]
-    if (!cards.length) return
-
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      cards.forEach((c) => c.setAttribute('data-revealed', ''))
-      return
-    }
-
-    const prevRects = new WeakMap<HTMLElement, DOMRectReadOnly>()
-
-    function snapHiddenDirThenReveal(el: HTMLElement, dir: 'up' | 'down') {
-      el.classList.add('project-card--instant')
-      el.setAttribute('data-dir', dir)
-      void el.offsetHeight
-      el.classList.remove('project-card--instant')
-      el.setAttribute('data-revealed', '')
-    }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          const el = entry.target as HTMLElement
-          const rect = entry.boundingClientRect
-          const prev = prevRects.get(el)
-          const vh = window.innerHeight
-
-          if (entry.isIntersecting) {
-            const fromAbove = prev != null && prev.bottom <= 0
-            if (fromAbove) {
-              snapHiddenDirThenReveal(el, 'up')
-            } else {
-              snapHiddenDirThenReveal(el, 'down')
-            }
-          } else {
-            if (rect.bottom < 0) {
-              el.setAttribute('data-dir', 'down')
-            } else if (rect.top > vh) {
-              el.setAttribute('data-dir', 'up')
-            }
-            el.removeAttribute('data-revealed')
-          }
-
-          prevRects.set(el, rect)
-        })
-      },
-      { threshold: 0, rootMargin: '0px 0px -6% 0px' },
-    )
-
-    cards.forEach((card) => io.observe(card))
-    return () => io.disconnect()
-  }, [])
-}
-
 export function Home() {
   const projectsRef = useRef<HTMLDivElement>(null)
   const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
@@ -153,7 +96,7 @@ export function Home() {
     [weatherStatus, tempF],
   )
   useEqualProjectCardSizes(projectsRef)
-  useRevealProjectCardsOnScroll(projectsRef)
+  useRevealOnScroll(projectsRef, '.project-card')
 
   return (
     <div className="home">

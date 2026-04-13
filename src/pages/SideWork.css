@@ -269,6 +269,10 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
       0 18px 44px -14px rgba(26, 24, 22, 0.11);
   }
+
+  .side-work-motion-tile.side-work-reveal-card[data-revealed]:hover {
+    transform: translateY(-2px) scale(1);
+  }
 }
 
 @media (prefers-reduced-transparency: reduce) {
@@ -407,6 +411,10 @@
       inset 0 1px 0 rgba(255, 255, 255, 0.5),
       0 18px 44px -14px rgba(26, 24, 22, 0.11);
   }
+
+  .side-work-bento__cell.side-work-reveal-card[data-revealed]:hover {
+    transform: translateY(-2px) scale(1);
+  }
 }
 
 @media (prefers-reduced-transparency: reduce) {
@@ -414,6 +422,45 @@
     background: rgba(233, 233, 233, 0.72);
     -webkit-backdrop-filter: none;
     backdrop-filter: none;
+  }
+}
+
+/* Scroll reveal — same motion as Home `.project-card` (useRevealOnScroll) */
+.side-work-motion-tile.side-work-reveal-card,
+.side-work-bento__cell.side-work-reveal-card {
+  transition:
+    opacity 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    transform 0.95s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.22s ease;
+}
+
+.side-work-reveal-card:not([data-revealed]) {
+  opacity: 0;
+  transform: translateY(clamp(2.25rem, 5vw, 3.25rem)) scale(0.97);
+  pointer-events: none;
+}
+
+.side-work-reveal-card:not([data-revealed])[data-dir='up'] {
+  transform: translateY(calc(-1 * clamp(2.25rem, 5vw, 3.25rem))) scale(0.97);
+}
+
+.side-work-reveal-card[data-revealed] {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.reveal-scroll-instant {
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .side-work-motion-tile.side-work-reveal-card,
+  .side-work-bento__cell.side-work-reveal-card {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
   }
 }
 

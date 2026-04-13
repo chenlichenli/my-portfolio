@@ -148,6 +148,7 @@
 .project-card:not([data-revealed]) {
   opacity: 0;
   transform: translateY(clamp(2.25rem, 5vw, 3.25rem)) scale(0.97);
+  pointer-events: none;
 }
 
 .project-card:not([data-revealed])[data-dir='up'] {
@@ -157,9 +158,10 @@
 .project-card[data-revealed] {
   opacity: 1;
   transform: translateY(0) scale(1);
+  pointer-events: auto;
 }
 
-.project-card--instant {
+.reveal-scroll-instant {
   transition: none !important;
 }
 
@@ -167,6 +169,7 @@
   .project-card {
     opacity: 1;
     transform: none;
+    pointer-events: auto;
     transition: box-shadow 0.25s ease;
   }
 }
