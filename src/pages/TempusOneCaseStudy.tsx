@@ -36,10 +36,10 @@ const TIMELINE_MILESTONES: TimelineMilestone[] = [
   { title: 'Product Rebrand' },
 ]
 
-/** Core track + trailing column so the line continues past the last milestone (project ongoing). */
+/** Fits viewport: fr-based columns; gaps keep a tiny min so the stroke stays visible. */
 function timelineGridTemplateColumns(milestoneCount: number) {
-  const core = `minmax(5.5rem, 1fr) ${Array.from({ length: milestoneCount - 1 }, () => 'minmax(1.35rem, 2fr) minmax(5.5rem, 1fr)').join(' ')}`
-  return `${core} minmax(4rem, 14fr)`
+  const body = `minmax(0, 1fr) ${Array.from({ length: milestoneCount - 1 }, () => 'minmax(2px, 0.26fr) minmax(0, 1fr)').join(' ')}`
+  return `${body} minmax(1.25rem, 0.5fr)`
 }
 
 export function TempusOneCaseStudy() {
@@ -107,16 +107,9 @@ export function TempusOneCaseStudy() {
         <div className="case-tempus-timeline-scroll">
           <div className="case-tempus-timeline-stack">
             <div className="case-tempus-tg-rail" style={{ gridTemplateColumns: timelineColumns }}>
+              <div className="case-tempus-tg-rail-line" aria-hidden="true" />
               {TIMELINE_MILESTONES.map((_, i) => (
-                <div
-                  key={`m-${i}`}
-                  className={
-                    i === TIMELINE_MILESTONES.length - 1
-                      ? 'case-tempus-tg-markerCell is-last'
-                      : 'case-tempus-tg-markerCell'
-                  }
-                  style={{ gridColumn: i * 2 + 1 }}
-                >
+                <div key={`m-${i}`} className="case-tempus-tg-markerCell" style={{ gridColumn: i * 2 + 1 }}>
                   <span className="case-tempus-milestone-marker" />
                 </div>
               ))}
@@ -126,7 +119,7 @@ export function TempusOneCaseStudy() {
                 ) : null,
               )}
               <div
-                className="case-tempus-tg-tail"
+                className="case-tempus-tg-tail-spacer"
                 style={{ gridColumn: TIMELINE_MILESTONES.length * 2 }}
                 aria-hidden="true"
               />
