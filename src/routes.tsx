@@ -1,5 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
-import { About, Home, PlaceholderPage, SideWork } from './pages'
+import { About, Home, PlaceholderPage, SideWork, TempusOneCaseStudy } from './pages'
 
 export function AppRoutes() {
   return (
@@ -7,15 +7,7 @@ export function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/side-work" element={<SideWork />} />
       <Route path="/about" element={<About />} />
-      <Route
-        path="/tempus-one"
-        element={
-          <PlaceholderPage
-            title="Tempus One"
-            description="Case study content can replace this placeholder."
-          />
-        }
-      />
+      <Route path="/tempus-one" element={<TempusOneCaseStudy />} />
       <Route
         path="/hub-online-ordering"
         element={
