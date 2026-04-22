@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 import './TempusOneCaseStudy.css'
 
@@ -34,6 +35,43 @@ const TIMELINE_MILESTONES: TimelineMilestone[] = [
   { title: 'Literature Search Launch' },
   { title: 'Company IPO', date: '06.2024' },
   { title: 'Product Rebrand' },
+]
+
+const IMPACT_METRICS: { id: string; content: ReactNode }[] = [
+  {
+    id: 'impact-unique-users',
+    content: (
+      <>
+        The unique user base has grown by <strong className="case-tempus-impact-num">685.7%</strong>
+      </>
+    ),
+  },
+  {
+    id: 'impact-mau',
+    content: (
+      <>
+        Monthly active users increased by <strong className="case-tempus-impact-num">48.8%</strong>
+      </>
+    ),
+  },
+  {
+    id: 'impact-retention',
+    content: (
+      <>
+        Retention rate increased from <strong className="case-tempus-impact-num">19.4%</strong> to{' '}
+        <strong className="case-tempus-impact-num">34.7%</strong>
+      </>
+    ),
+  },
+  {
+    id: 'impact-hub-mau-one',
+    content: (
+      <>
+        Increased Hub&apos;s MAU using One from <strong className="case-tempus-impact-num">2.3%</strong> to{' '}
+        <strong className="case-tempus-impact-num">5.49%</strong>
+      </>
+    ),
+  },
 ]
 
 /** Fits viewport: fr-based columns; gaps keep a tiny min so the stroke stays visible. */
@@ -134,6 +172,17 @@ export function TempusOneCaseStudy() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section className="case-tempus-impact" aria-labelledby="case-tempus-impact-heading">
+        <h2 id="case-tempus-impact-heading" className="case-tempus-intro-heading">
+          Impact
+        </h2>
+        <ul className="case-tempus-impact-list">
+          {IMPACT_METRICS.map(({ id, content }) => (
+            <li key={id}>{content}</li>
+          ))}
+        </ul>
       </section>
     </article>
   )

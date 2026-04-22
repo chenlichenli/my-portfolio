@@ -234,6 +234,42 @@
   -webkit-overflow-scrolling: touch;
 }
 
+/* Impact — same rhythm as product problem; readable measure */
+.case-tempus-impact {
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
+  padding-top: clamp(2rem, 4.5vw, 3rem);
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 38rem;
+  min-width: 0;
+}
+
+.case-tempus-impact-list {
+  margin: 0.35rem 0 0;
+  padding: 0 0 0 1.15rem;
+  list-style: disc;
+  list-style-position: outside;
+}
+
+.case-tempus-impact-list li {
+  margin: 0 0 clamp(0.45rem, 1.5vw, 0.65rem);
+  font-family: var(--font-ui);
+  font-size: clamp(0.98rem, 1.35vw, 1.06rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.case-tempus-impact-list li:last-child {
+  margin-bottom: 0;
+}
+
+.case-tempus-impact-num {
+  font-weight: 700;
+  color: #4972ff;
+}
+
 /* Rail = dots + lines only; labels live in a separate row so copy never shares the rail row */
 .case-tempus-timeline-stack {
   display: flex;
