@@ -37,6 +37,29 @@ const TIMELINE_MILESTONES: TimelineMilestone[] = [
   { title: 'Product Rebrand' },
 ]
 
+const CUSTOMER_ASSISTANT_DETAIL =
+  'Expand Product capabilities to fulfill user need: Utilizing Gen AI to optimize current customer support related answer'
+
+const CUSTOMER_ASSISTANT_SUCCESS: { id: string; content: ReactNode }[] = [
+  {
+    id: 'ca-inquiry-share',
+    content: (
+      <>
+        <strong className="case-tempus-impact-num">36%</strong> of user inquiry are answered by Customer Assistant Agent
+      </>
+    ),
+  },
+  {
+    id: 'ca-success-rate',
+    content: (
+      <>
+        <strong className="case-tempus-impact-num">85.84%</strong> success rate -{' '}
+        <strong className="case-tempus-impact-num">+13.29%</strong> Agent success rate improvement
+      </>
+    ),
+  },
+]
+
 const IMPACT_METRICS: { id: string; content: ReactNode }[] = [
   {
     id: 'impact-unique-users',
@@ -172,6 +195,22 @@ export function TempusOneCaseStudy() {
             </div>
           </div>
         </div>
+      </section>
+
+      <section
+        className="case-tempus-customer-assistant"
+        aria-labelledby="case-tempus-customer-assistant-heading"
+      >
+        <h2 id="case-tempus-customer-assistant-heading" className="case-tempus-intro-heading">
+          Customer Assistant Launch
+        </h2>
+        <p className="case-tempus-intro-text case-tempus-customer-assistant-detail">{CUSTOMER_ASSISTANT_DETAIL}</p>
+        <h3 className="case-tempus-customer-assistant-success-heading">Success since launch</h3>
+        <ul className="case-tempus-impact-list case-tempus-customer-assistant-success-list">
+          {CUSTOMER_ASSISTANT_SUCCESS.map(({ id, content }) => (
+            <li key={id}>{content}</li>
+          ))}
+        </ul>
       </section>
 
       <section className="case-tempus-impact" aria-labelledby="case-tempus-impact-heading">
