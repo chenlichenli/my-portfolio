@@ -52,7 +52,7 @@ export function TypingEyebrow() {
 
   return (
     <div
-      className="min-h-[1.75rem] text-left text-[0.9375rem] font-medium leading-snug tracking-[-0.01em] text-[#5c5650] md:text-[1.0625rem]"
+      className="min-h-[2rem] text-left text-[1.0625rem] font-medium leading-snug tracking-[-0.01em] text-[#5c5650] md:min-h-[2.125rem] md:text-[1.1875rem]"
       aria-live={reduceMotion ? 'off' : 'polite'}
       aria-label="Rotating focus areas: AI savvy, Human centered, Enterprise, Data driven"
     >

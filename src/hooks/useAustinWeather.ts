@@ -80,3 +80,14 @@ export function blobGradientForTempF(tempF: number | null): string {
   const c = (a: number) => `hsl(${h} ${s}% ${l}% / ${a})`
   return `radial-gradient(circle at center, ${c(1)} 0%, ${c(1)} 48%, ${c(1)} 62%, ${c(0.72)} 74%, ${c(0.28)} 86%, ${c(0.06)} 94%, ${c(0)} 100%)`
 }
+
+/** Same radial falloff as `blobGradientForTempF`, for a fixed hex (About page circle). */
+export function blobGradientForHex(hex: string): string {
+  const m = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex.trim())
+  if (!m) return blobGradientForTempF(null)
+  const r = parseInt(m[1]!, 16)
+  const g = parseInt(m[2]!, 16)
+  const b = parseInt(m[3]!, 16)
+  const c = (a: number) => `rgba(${r}, ${g}, ${b}, ${a})`
+  return `radial-gradient(circle at center, ${c(1)} 0%, ${c(1)} 48%, ${c(1)} 62%, ${c(0.72)} 74%, ${c(0.28)} 86%, ${c(0.06)} 94%, ${c(0)} 100%)`
+}
