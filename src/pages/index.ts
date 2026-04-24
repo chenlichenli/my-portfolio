@@ -1,6 +1,7 @@
 export { About } from './About'
 export { Home } from './Home'
 export { HubOnlineOrderingCaseStudy } from './HubOnlineOrderingCaseStudy'
+export { IQueueForClinicsCaseStudy } from './IQueueForClinicsCaseStudy'
 export { PlaceholderPage } from './PlaceholderPage'
 export { SideWork } from './SideWork'
 export { TempusOneCaseStudy } from './TempusOneCaseStudy'

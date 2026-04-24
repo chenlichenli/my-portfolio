@@ -3,6 +3,7 @@ import {
   About,
   Home,
   HubOnlineOrderingCaseStudy,
+  IQueueForClinicsCaseStudy,
   PlaceholderPage,
   SideWork,
   TempusOneCaseStudy,
@@ -16,15 +17,7 @@ export function AppRoutes() {
       <Route path="/about" element={<About />} />
       <Route path="/tempus-one" element={<TempusOneCaseStudy />} />
       <Route path="/hub-online-ordering" element={<HubOnlineOrderingCaseStudy />} />
-      <Route
-        path="/iqueue-for-clinics"
-        element={
-          <PlaceholderPage
-            title="iQueue for Clinics"
-            description="Case study content can replace this placeholder."
-          />
-        }
-      />
+      <Route path="/iqueue-for-clinics" element={<IQueueForClinicsCaseStudy />} />
       <Route
         path="*"
         element={
