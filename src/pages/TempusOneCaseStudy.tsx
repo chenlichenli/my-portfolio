@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react'
-import { Link } from 'react-router-dom'
 import './TempusOneCaseStudy.css'
 
 const TAGS = ['AI Experience', 'Growth Design', '0-1'] as const
@@ -37,28 +36,12 @@ const TIMELINE_MILESTONES: TimelineMilestone[] = [
   { title: 'Product Rebrand' },
 ]
 
-const CUSTOMER_ASSISTANT_DETAIL =
-  'Expand Product capabilities to fulfill user need: Utilizing Gen AI to optimize current customer support related answer'
+/** Opens in Figma; also used for embed `url` param. */
+/* scale-down fits the full frame in the embed; min-zoom often crops inside small iframes */
+const CUSTOMER_ASSISTANT_FIGMA_PROTO =
+  'https://www.figma.com/proto/4URRvDMVfbF91qpw68lFjH/CAA-Demo?content-scaling=fixed&kind=proto&node-id=1-775&page-id=0%3A1&scaling=scale-down&starting-point-node-id=1%3A775'
 
-const CUSTOMER_ASSISTANT_SUCCESS: { id: string; content: ReactNode }[] = [
-  {
-    id: 'ca-inquiry-share',
-    content: (
-      <>
-        <strong className="case-tempus-impact-num">36%</strong> of user inquiry are answered by Customer Assistant Agent
-      </>
-    ),
-  },
-  {
-    id: 'ca-success-rate',
-    content: (
-      <>
-        <strong className="case-tempus-impact-num">85.84%</strong> success rate -{' '}
-        <strong className="case-tempus-impact-num">+13.29%</strong> Agent success rate improvement
-      </>
-    ),
-  },
-]
+const CUSTOMER_ASSISTANT_FIGMA_EMBED_SRC = `https://www.figma.com/embed?embed_host=share&url=${encodeURIComponent(CUSTOMER_ASSISTANT_FIGMA_PROTO)}`
 
 const IMPACT_METRICS: { id: string; content: ReactNode }[] = [
   {
@@ -117,9 +100,6 @@ export function TempusOneCaseStudy() {
           ))}
         </ul>
         <p className="case-tempus-subline">{SUBLINE}</p>
-        <Link className="case-tempus-back" to="/">
-          ← Design work
-        </Link>
       </header>
 
       <section className="case-tempus-intro" aria-labelledby="case-tempus-intro-heading">
@@ -204,13 +184,27 @@ export function TempusOneCaseStudy() {
         <h2 id="case-tempus-customer-assistant-heading" className="case-tempus-intro-heading">
           Customer Assistant Launch
         </h2>
-        <p className="case-tempus-intro-text case-tempus-customer-assistant-detail">{CUSTOMER_ASSISTANT_DETAIL}</p>
-        <h3 className="case-tempus-customer-assistant-success-heading">Success since launch</h3>
-        <ul className="case-tempus-impact-list case-tempus-customer-assistant-success-list">
-          {CUSTOMER_ASSISTANT_SUCCESS.map(({ id, content }) => (
-            <li key={id}>{content}</li>
-          ))}
-        </ul>
+        <div className="case-tempus-customer-assistant-grid">
+          <div className="case-tempus-customer-assistant-copy">
+            <p className="case-tempus-customer-assistant-success-heading">Success since launch</p>
+            <p className="case-tempus-intro-text case-tempus-customer-assistant-stat">
+              <strong className="case-tempus-impact-num">36%</strong> of user inquiry are answered by Customer Assistant Agent
+            </p>
+            <p className="case-tempus-intro-text case-tempus-customer-assistant-stat">
+              <strong className="case-tempus-impact-num">85.84%</strong> success rate -{' '}
+              <strong className="case-tempus-impact-num">+13.29%</strong> Agent success rate improvement
+            </p>
+          </div>
+          <div className="case-tempus-customer-assistant-embed">
+            <div className="case-tempus-customer-assistant-embed-sizer">
+              <iframe
+                title="Figma prototype: CAA Demo"
+                src={CUSTOMER_ASSISTANT_FIGMA_EMBED_SRC}
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
       </section>
 
       <section className="case-tempus-impact" aria-labelledby="case-tempus-impact-heading">
