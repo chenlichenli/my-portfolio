@@ -66,16 +66,16 @@ const ITERATION_IMAGES = [
 
 const DESIGN_DETAIL_SLIDES = [
   {
-    id: 'room-allocation',
-    title: 'Room allocation',
-    file: 'iqueue 0.png',
-    imageAlt: 'Room allocation view in iQueue for Clinics',
-  },
-  {
     id: 'data-health',
     title: 'Data Health',
     file: 'iqueue 1.png',
     imageAlt: 'Data Health in iQueue for Clinics',
+  },
+  {
+    id: 'room-allocation',
+    title: 'Room allocation',
+    file: 'iqueue 0.png',
+    imageAlt: 'Room allocation view in iQueue for Clinics',
   },
   {
     id: 'provider-template-review',
@@ -83,6 +83,12 @@ const DESIGN_DETAIL_SLIDES = [
     file: 'iqueue 2.png',
     imageAlt: 'Provider Template Review in iQueue for Clinics',
   },
+] as const
+
+const KEY_TAKEAWAYS = [
+  'What User require not always means what they need',
+  'Involving engineering team from the outset can save time in an agile environment',
+  "Try to find resources when there aren't enough, be proactive as the only designer on the team",
 ] as const
 
 export function IQueueForClinicsCaseStudy() {
@@ -120,13 +126,17 @@ export function IQueueForClinicsCaseStudy() {
                 ))}
               </ul>
             </div>
+            <div className="case-tempus-meta-block case-tempus-meta-block--timeline">
+              <h3 className="case-tempus-meta-heading">Timeline</h3>
+              <p className="case-tempus-meta-timeline">Dec 2019 - March 2020</p>
+            </div>
           </aside>
         </div>
       </section>
 
       <section className="case-iqueue-design" aria-labelledby="case-iqueue-design-heading">
         <h2 id="case-iqueue-design-heading" className="case-tempus-intro-heading">
-          Design Details
+          ✍🏻 Design Details
         </h2>
         <div className="case-iqueue-design-layout">
           <div className="case-iqueue-design-titles" role="tablist" aria-label="Design detail views">
@@ -181,6 +191,17 @@ export function IQueueForClinicsCaseStudy() {
                 />
               </figure>
             </li>
+          ))}
+        </ul>
+      </section>
+
+      <section className="case-iqueue-takeaways" aria-labelledby="case-iqueue-takeaways-heading">
+        <h2 id="case-iqueue-takeaways-heading" className="case-tempus-intro-heading">
+          📒 Key Takeaways
+        </h2>
+        <ul className="case-tempus-impact-list">
+          {KEY_TAKEAWAYS.map((line) => (
+            <li key={line}>{line}</li>
           ))}
         </ul>
       </section>

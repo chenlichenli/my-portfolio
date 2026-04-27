@@ -73,13 +73,17 @@ export function HubOnlineOrderingCaseStudy() {
                 ))}
               </ul>
             </div>
+            <div className="case-tempus-meta-block case-tempus-meta-block--timeline">
+              <h3 className="case-tempus-meta-heading">Timeline</h3>
+              <p className="case-tempus-meta-timeline">Sept 2022 - April 2023</p>
+            </div>
           </aside>
         </div>
       </section>
 
       <section className="case-tempus-impact" aria-labelledby="case-hub-ordering-impact-heading">
         <h2 id="case-hub-ordering-impact-heading" className="case-tempus-intro-heading">
-          Impact
+          🎉 Impact
         </h2>
         <ul className="case-tempus-impact-list">
           {IMPACT_METRICS.map(({ id, content }) => (
