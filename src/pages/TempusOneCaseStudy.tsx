@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
 import { useAustinWeather } from '../hooks/useAustinWeather'
 import './TempusOneCaseStudy.css'
@@ -218,6 +219,8 @@ export function TempusOneCaseStudy() {
           ))}
         </ul>
       </section>
+
+      <CaseStudyMoreProjects excludeSlug="tempus-one" />
     </article>
   )
 }

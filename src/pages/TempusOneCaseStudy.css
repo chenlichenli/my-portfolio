@@ -313,6 +313,77 @@
   color: #4972ff;
 }
 
+/* Cross-links to other case studies — rhythm matches impact / problem */
+.case-more-projects {
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
+  padding-top: clamp(2rem, 4.5vw, 3rem);
+  border-top: 1px solid var(--border);
+  width: 100%;
+  min-width: 0;
+}
+
+.case-more-projects-list {
+  margin: clamp(0.75rem, 2vw, 1rem) 0 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(0.85rem, 2vw, 1.15rem);
+}
+
+@media (min-width: 560px) {
+  .case-more-projects-list {
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: clamp(1.75rem, 5vw, 3rem);
+    row-gap: 1rem;
+  }
+}
+
+.case-more-projects-link {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.15rem 0;
+  border-radius: 0.25rem;
+}
+
+.case-more-projects-link:hover {
+  text-decoration: none;
+}
+
+.case-more-projects-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.case-more-projects-company {
+  font-family: var(--font-ui);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.case-more-projects-title {
+  font-family: var(--font-ui);
+  font-size: clamp(1rem, 1.4vw, 1.12rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--text-heading) 28%, transparent);
+}
+
+.case-more-projects-link:hover .case-more-projects-title {
+  text-decoration-color: var(--accent);
+}
+
 /* Rail = dots + lines only; labels live in a separate row so copy never shares the rail row */
 .case-tempus-timeline-stack {
   display: flex;

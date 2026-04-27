@@ -1,4 +1,5 @@
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
+import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
 import { useAustinWeather } from '../hooks/useAustinWeather'
 import './TempusOneCaseStudy.css'
@@ -169,6 +170,8 @@ export function IQueueForClinicsCaseStudy() {
           ))}
         </ul>
       </section>
+
+      <CaseStudyMoreProjects excludeSlug="iqueue-for-clinics" />
     </article>
   )
 }
