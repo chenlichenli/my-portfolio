@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
 import './TempusOneCaseStudy.css'
 import './IQueueForClinicsCaseStudy.css'
 
@@ -92,9 +92,6 @@ const KEY_TAKEAWAYS = [
 ] as const
 
 export function IQueueForClinicsCaseStudy() {
-  const [activeDetailIndex, setActiveDetailIndex] = useState(0)
-  const activeSlide = DESIGN_DETAIL_SLIDES[activeDetailIndex]
-
   return (
     <article className="case-tempus" aria-label="iQueue for Clinics case study">
       <header className="case-tempus-hero">
@@ -134,46 +131,12 @@ export function IQueueForClinicsCaseStudy() {
         </div>
       </section>
 
-      <section className="case-iqueue-design" aria-labelledby="case-iqueue-design-heading">
-        <h2 id="case-iqueue-design-heading" className="case-tempus-intro-heading">
-          ✍🏻 Design Details
-        </h2>
-        <div className="case-iqueue-design-layout">
-          <div className="case-iqueue-design-titles" role="tablist" aria-label="Design detail views">
-            {DESIGN_DETAIL_SLIDES.map((slide, index) => (
-              <button
-                key={slide.id}
-                type="button"
-                role="tab"
-                id={`case-iqueue-tab-${slide.id}`}
-                aria-selected={activeDetailIndex === index}
-                aria-controls="case-iqueue-design-panel"
-                className={
-                  activeDetailIndex === index
-                    ? 'case-iqueue-design-tab case-iqueue-design-tab--active'
-                    : 'case-iqueue-design-tab'
-                }
-                onClick={() => setActiveDetailIndex(index)}
-              >
-                {slide.title}
-              </button>
-            ))}
-          </div>
-          <div
-            id="case-iqueue-design-panel"
-            role="tabpanel"
-            aria-labelledby={`case-iqueue-tab-${activeSlide.id}`}
-            className="case-iqueue-design-panel"
-          >
-            <img
-              key={activeSlide.id}
-              src={designImageSrc(activeSlide.file)}
-              alt={activeSlide.imageAlt}
-              decoding="async"
-            />
-          </div>
-        </div>
-      </section>
+      <CaseStudyDesignDetails
+        slides={DESIGN_DETAIL_SLIDES}
+        getSrc={designImageSrc}
+        idPrefix="iqueue"
+        headingId="case-iqueue-design-heading"
+      />
 
       <section className="case-iqueue-iterations" aria-labelledby="case-iqueue-iterations-heading">
         <h2 id="case-iqueue-iterations-heading" className="case-tempus-intro-heading">
