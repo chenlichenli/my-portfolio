@@ -1,4 +1,6 @@
 import type { ReactNode } from 'react'
+import { HeroGlassProject } from '../components/HeroGlassLanding'
+import { useAustinWeather } from '../hooks/useAustinWeather'
 import './TempusOneCaseStudy.css'
 
 const TAGS = ['AI Experience', 'Growth Design', '0-1'] as const
@@ -87,20 +89,18 @@ function timelineGridTemplateColumns(milestoneCount: number) {
 }
 
 export function TempusOneCaseStudy() {
+  const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
   const timelineColumns = timelineGridTemplateColumns(TIMELINE_MILESTONES.length)
   return (
-    <article className="case-tempus" aria-label="Tempus One case study">
-      <header className="case-tempus-hero">
-        <h1 className="case-tempus-title">Tempus One</h1>
-        <ul className="case-tempus-tags" aria-label="Project tags">
-          {TAGS.map((tag) => (
-            <li key={tag} className="case-tempus-tag">
-              {tag}
-            </li>
-          ))}
-        </ul>
-        <p className="case-tempus-subline">{SUBLINE}</p>
-      </header>
+    <article className="case-tempus case-with-glass-hero" aria-label="Tempus One case study">
+      <HeroGlassProject
+        tempF={tempF}
+        weatherCode={weatherCode}
+        weatherStatus={weatherStatus}
+        title="Tempus One"
+        tags={TAGS}
+        subtitle={SUBLINE}
+      />
 
       <section className="case-tempus-intro" aria-labelledby="case-tempus-intro-heading">
         <div className="case-tempus-intro-grid">

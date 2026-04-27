@@ -19,6 +19,7 @@
   --shadow: 0 24px 48px -12px rgba(26, 24, 22, 0.12);
 
   /* Keep in sync with `.site-header-inner` vertical padding + logo row */
+  --site-header-pad-y: 1.1rem;
   --site-header-height: 4.125rem;
 
   --font-display: var(--font-sans);
