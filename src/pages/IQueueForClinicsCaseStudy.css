@@ -23,6 +23,38 @@
   }
 }
 
+/* Scroll-spy layout: all figures stacked; sticky nav; active label tracks scroll */
+.case-iqueue-design-layout--spy .case-iqueue-design-titles {
+  position: sticky;
+  top: clamp(4.25rem, 11vh, 5.75rem);
+  align-self: start;
+  max-height: calc(100dvh - 6.5rem);
+  overflow-y: auto;
+  padding-bottom: 0.25rem;
+}
+
+.case-iqueue-design-stack {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1rem, 2.5vw, 1.35rem);
+  min-width: 0;
+}
+
+.case-iqueue-design-figure {
+  margin: 0;
+  border-radius: 0.45rem;
+  border: 1px solid var(--border);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--border) 22%, var(--bg));
+  scroll-margin-top: clamp(4.5rem, 12vh, 6.5rem);
+}
+
+.case-iqueue-design-figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .case-iqueue-design-titles {
   display: flex;
   flex-direction: column;
@@ -41,6 +73,8 @@
   padding: 0.55rem 0.65rem 0.55rem 0;
   border: none;
   border-radius: 0.35rem;
+  border-left: 3px solid transparent;
+  margin-left: 0;
   background: transparent;
   font: inherit;
   font-size: clamp(0.95rem, 1.25vw, 1.05rem);
@@ -50,7 +84,12 @@
   text-align: left;
   color: var(--text-muted);
   cursor: pointer;
-  transition: color 0.15s ease, background 0.15s ease;
+  transition:
+    color 0.28s ease,
+    background 0.28s ease,
+    border-color 0.28s ease,
+    padding-left 0.24s ease,
+    margin-left 0.24s ease;
 }
 
 .case-iqueue-design-tab:hover {
@@ -66,7 +105,7 @@
 .case-iqueue-design-tab--active {
   color: var(--text-heading);
   font-weight: 600;
-  border-left: 3px solid var(--accent);
+  border-left-color: var(--accent);
   padding-left: 0.5rem;
   margin-left: -3px;
 }
@@ -121,4 +160,14 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Key Takeaways — same rhythm as Impact on other case studies */
+.case-iqueue-takeaways {
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
+  padding-top: clamp(2rem, 4.5vw, 3rem);
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: 38rem;
+  min-width: 0;
 }

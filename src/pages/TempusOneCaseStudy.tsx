@@ -209,7 +209,7 @@ export function TempusOneCaseStudy() {
 
       <section className="case-tempus-impact" aria-labelledby="case-tempus-impact-heading">
         <h2 id="case-tempus-impact-heading" className="case-tempus-intro-heading">
-          Impact
+          🎉 Impact
         </h2>
         <ul className="case-tempus-impact-list">
           {IMPACT_METRICS.map(({ id, content }) => (
