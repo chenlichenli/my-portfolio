@@ -152,6 +152,8 @@ export type HeroGlassSceneProps = HeroGlassLandingProps & {
   sectionMinClass: string
   /** Inner column: z-index, max-width, padding, flex (landing centers copy vertically). */
   contentClassName: string
+  /** Extra classes on the root `<section>` (e.g. case-study hero marker). */
+  sectionClassName?: string
   /** Austin location + local time chip (Design hero only). */
   showLocationWeather?: boolean
   /**
@@ -177,6 +179,7 @@ export function HeroGlassScene({
   children,
   sectionMinClass,
   contentClassName,
+  sectionClassName = '',
   showLocationWeather = true,
   breakout = true,
   circleGradientHex,
@@ -373,7 +376,7 @@ export function HeroGlassScene({
       ref={sectionRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25`}
+      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25 ${sectionClassName}`.trim()}
     >
       <div className="absolute inset-0">
         {reduceMotion ? (
@@ -482,6 +485,14 @@ export function HeroGlassScene({
   )
 }
 
+/** Landing inner column: matches Design home hero copy stack. */
+const HERO_LANDING_CONTENT_CLASS = `relative z-[2] mx-auto flex w-full max-w-[1120px] ${HERO_MIN_H} flex-col items-start justify-center px-6 py-20 md:px-10 -translate-y-14 md:-translate-y-24`
+
+/** Case-study title band: 70% of viewport height */
+const HERO_PROJECT_MIN_H = 'min-h-[70svh]'
+const HERO_PROJECT_SECTION_MIN = HERO_PROJECT_MIN_H
+const HERO_PROJECT_CONTENT_CLASS = `relative z-[2] mx-auto flex w-full max-w-[1120px] ${HERO_PROJECT_MIN_H} flex-col items-start justify-center px-6 py-14 md:px-10 md:py-16 -translate-y-4 md:-translate-y-6`
+
 export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlassLandingProps) {
   return (
     <HeroGlassScene
@@ -489,7 +500,7 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
       weatherCode={weatherCode}
       weatherStatus={weatherStatus}
       sectionMinClass={HERO_MIN_H}
-      contentClassName={`relative z-[2] mx-auto flex w-full max-w-[1120px] ${HERO_MIN_H} flex-col items-start justify-center px-6 py-20 md:px-10 -translate-y-14 md:-translate-y-24`}
+      contentClassName={HERO_LANDING_CONTENT_CLASS}
     >
       <div className="mb-8 sm:mb-10">
         <TypingEyebrow />
@@ -500,6 +511,53 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
       <p className="mt-6 max-w-md text-left text-[1.0625rem] font-normal leading-[1.65] text-[#5c5650] md:max-w-xl md:text-[1.1875rem]">
         A product designer focused on building intuitive tools for complex systems — from generative AI
         to healthcare platforms.
+      </p>
+    </HeroGlassScene>
+  )
+}
+
+export type HeroGlassProjectProps = HeroGlassLandingProps & {
+  title: string
+  tags: readonly string[]
+  subtitle: string
+}
+
+/**
+ * Same glass scene, layout, and typography as the Design landing hero; copy is project title,
+ * tags (top slot), and subtitle.
+ */
+export function HeroGlassProject({
+  tempF,
+  weatherCode,
+  weatherStatus,
+  title,
+  tags,
+  subtitle,
+}: HeroGlassProjectProps) {
+  return (
+    <HeroGlassScene
+      tempF={tempF}
+      weatherCode={weatherCode}
+      weatherStatus={weatherStatus}
+      sectionMinClass={HERO_PROJECT_SECTION_MIN}
+      contentClassName={HERO_PROJECT_CONTENT_CLASS}
+      sectionClassName="case-glass-project-hero"
+      showLocationWeather={false}
+    >
+      <div className="mb-8 sm:mb-10">
+        <ul className="case-glass-project-tags" aria-label="Project tags">
+          {tags.map((tag) => (
+            <li key={tag} className="case-glass-project-tag">
+              {tag}
+            </li>
+          ))}
+        </ul>
+      </div>
+      <h1 className="max-w-[24ch] text-left text-[clamp(2.1rem,5.9vw,3.85rem)] font-medium leading-[1.06] tracking-[-0.03em] text-[#1a1816]">
+        {title}
+      </h1>
+      <p className="mt-6 max-w-md text-left text-[1.0625rem] font-normal leading-[1.65] text-[#5c5650] md:max-w-xl md:text-[1.1875rem]">
+        {subtitle}
       </p>
     </HeroGlassScene>
   )

@@ -1,4 +1,4 @@
-/* Tempus One — opening title screen */
+/* Case study articles (Tempus One, Hub Online Ordering, iQueue) — layout + sections */
 
 .case-tempus {
   box-sizing: border-box;
@@ -13,28 +13,20 @@
   padding: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 2rem) clamp(3rem, 8vw, 5rem);
 }
 
-.case-tempus-hero {
-  flex: none;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-  gap: clamp(1rem, 2.5vw, 1.5rem);
-  min-height: min(48dvh, 26rem);
-  max-width: min(40rem, 100%);
+/* Landing-style glass hero: strip article horizontal padding; restore on following sections */
+.case-with-glass-hero {
+  padding-top: 0;
+  padding-left: 0;
+  padding-right: 0;
+  padding-bottom: clamp(3rem, 8vw, 5rem);
 }
 
-.case-tempus-title {
-  margin: 0;
-  font-family: var(--font-display);
-  font-size: clamp(2.35rem, 6.5vw, 3.75rem);
-  font-weight: 600;
-  line-height: 1.05;
-  letter-spacing: -0.04em;
-  color: var(--text-heading);
+.case-with-glass-hero > *:not(.case-glass-project-hero) {
+  padding-left: clamp(1.5rem, 4vw, 2rem);
+  padding-right: clamp(1.5rem, 4vw, 2rem);
 }
 
-.case-tempus-tags {
+.case-glass-project-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem 0.5rem;
@@ -43,7 +35,7 @@
   list-style: none;
 }
 
-.case-tempus-tag {
+.case-glass-project-tag {
   font-family: var(--font-ui);
   font-size: 0.75rem;
   font-weight: 600;
@@ -56,15 +48,9 @@
   border-radius: 0.3rem;
 }
 
-.case-tempus-subline {
-  margin: clamp(0.35rem, 1.5vw, 0.75rem) 0 0;
-  font-family: var(--font-ui);
-  font-size: clamp(1.05rem, 2.1vw, 1.25rem);
-  font-weight: 400;
-  line-height: 1.5;
-  letter-spacing: -0.015em;
-  color: var(--text-muted);
-  max-width: 36rem;
+/* Flush with hero; intro padding-top matches other major sections below */
+.case-with-glass-hero .case-glass-project-hero + .case-tempus-intro {
+  margin-top: 0;
 }
 
 /* Intro + team / timeline — two columns on wide viewports */

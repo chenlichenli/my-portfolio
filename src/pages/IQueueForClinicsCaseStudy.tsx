@@ -1,4 +1,6 @@
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
+import { HeroGlassProject } from '../components/HeroGlassLanding'
+import { useAustinWeather } from '../hooks/useAustinWeather'
 import './TempusOneCaseStudy.css'
 import './IQueueForClinicsCaseStudy.css'
 
@@ -92,19 +94,17 @@ const KEY_TAKEAWAYS = [
 ] as const
 
 export function IQueueForClinicsCaseStudy() {
+  const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
   return (
-    <article className="case-tempus" aria-label="iQueue for Clinics case study">
-      <header className="case-tempus-hero">
-        <h1 className="case-tempus-title">iQueue for Clinics</h1>
-        <ul className="case-tempus-tags" aria-label="Project tags">
-          {TAGS.map((tag) => (
-            <li key={tag} className="case-tempus-tag">
-              {tag}
-            </li>
-          ))}
-        </ul>
-        <p className="case-tempus-subline">{SUBLINE}</p>
-      </header>
+    <article className="case-tempus case-with-glass-hero" aria-label="iQueue for Clinics case study">
+      <HeroGlassProject
+        tempF={tempF}
+        weatherCode={weatherCode}
+        weatherStatus={weatherStatus}
+        title="iQueue for Clinics"
+        tags={TAGS}
+        subtitle={SUBLINE}
+      />
 
       <section className="case-tempus-intro" aria-labelledby="case-iqueue-intro-heading">
         <div className="case-tempus-intro-grid">
