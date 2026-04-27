@@ -166,6 +166,10 @@ export type HeroGlassSceneProps = HeroGlassLandingProps & {
   /** Override triangle / square fills (About page); landing omits these. */
   triangleFill?: string
   squareFill?: string
+  /** Base fill behind blobs (Tailwind `bg-*`). Default matches landing. */
+  sectionBgClassName?: string
+  /** Frost layer tint above blobs (Tailwind `bg-*`). Default matches landing. */
+  frostTintClassName?: string
 }
 
 /**
@@ -185,6 +189,8 @@ export function HeroGlassScene({
   circleGradientHex,
   triangleFill,
   squareFill,
+  sectionBgClassName = 'bg-[#f4f1ee]',
+  frostTintClassName = 'bg-[#f4f1ee]/[0.06]',
 }: HeroGlassSceneProps) {
   const reduceMotion = useReducedMotion()
   const triangleBlobFill = triangleFill ?? HERO_TRIANGLE_FILL
@@ -376,7 +382,7 @@ export function HeroGlassScene({
       ref={sectionRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden bg-[#f4f1ee] selection:bg-[#5271FF]/25 ${sectionClassName}`.trim()}
+      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden ${sectionBgClassName} selection:bg-[#5271FF]/25 ${sectionClassName}`.trim()}
     >
       <div className="absolute inset-0">
         {reduceMotion ? (
@@ -457,7 +463,7 @@ export function HeroGlassScene({
       </div>
 
       <div
-        className="pointer-events-none absolute inset-0 z-[1] bg-[#f4f1ee]/[0.06] backdrop-blur-[50px] [-webkit-backdrop-filter:blur(50px)]"
+        className={`pointer-events-none absolute inset-0 z-[1] ${frostTintClassName} backdrop-blur-[50px] [-webkit-backdrop-filter:blur(50px)]`}
         aria-hidden
       />
 
@@ -520,6 +526,9 @@ export type HeroGlassProjectProps = HeroGlassLandingProps & {
   title: string
   tags: readonly string[]
   subtitle: string
+  /** Optional hero surface (e.g. Tempus One yellow tint). */
+  sectionBgClassName?: string
+  frostTintClassName?: string
 }
 
 /**
@@ -533,6 +542,8 @@ export function HeroGlassProject({
   title,
   tags,
   subtitle,
+  sectionBgClassName,
+  frostTintClassName,
 }: HeroGlassProjectProps) {
   return (
     <HeroGlassScene
@@ -543,6 +554,8 @@ export function HeroGlassProject({
       contentClassName={HERO_PROJECT_CONTENT_CLASS}
       sectionClassName="case-glass-project-hero"
       showLocationWeather={false}
+      sectionBgClassName={sectionBgClassName}
+      frostTintClassName={frostTintClassName}
     >
       <div className="mb-8 sm:mb-10">
         <ul className="case-glass-project-tags" aria-label="Project tags">

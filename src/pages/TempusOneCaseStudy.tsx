@@ -100,6 +100,7 @@ export function TempusOneCaseStudy() {
         title="Tempus One"
         tags={TAGS}
         subtitle={SUBLINE}
+        sectionBgClassName="bg-[#98B8A9]/25"
       />
 
       <section className="case-tempus-intro" aria-labelledby="case-tempus-intro-heading">

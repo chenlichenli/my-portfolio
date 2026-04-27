@@ -104,6 +104,7 @@ export function IQueueForClinicsCaseStudy() {
         title="iQueue for Clinics"
         tags={TAGS}
         subtitle={SUBLINE}
+        sectionBgClassName="bg-[#001F59]/20"
       />
 
       <section className="case-tempus-intro" aria-labelledby="case-iqueue-intro-heading">

@@ -83,6 +83,7 @@ export function HubOnlineOrderingCaseStudy() {
         title="Hub Online Ordering"
         tags={TAGS}
         subtitle={SUBLINE}
+        sectionBgClassName="bg-[#9D5A15]/30"
       />
 
       <section className="case-tempus-intro" aria-labelledby="case-hub-ordering-intro-heading">
