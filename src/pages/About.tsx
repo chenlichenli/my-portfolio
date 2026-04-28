@@ -45,12 +45,12 @@ export function About() {
         showLocationWeather={false}
       >
         <article className="about-page">
+          <h1 className="sr-only">{t('nav.about')}</h1>
           <div className="about-page-shell">
             <div className="about-page-split">
               <div className="about-page-split-inner">
                 <div className="about-page-split-media">
                   <div className="about-page-media-stack">
-                    <h1 className="about-page-photo-heading">{t('about.meetHeading')}</h1>
                     <section aria-label={t('about.photosAria')}>
                       <StackedPhotoGallery items={photos} initialOrder={[1, 2, 0]} />
                     </section>
@@ -59,8 +59,9 @@ export function About() {
 
                 <div className="about-page-split-copy">
                   <AboutExperience />
-                  <p className="about-page-intro text-[var(--text)] leading-relaxed">
-                    {t('about.intro')}
+                  <p className="about-page-lede text-[var(--text)] leading-relaxed">
+                    <span className="about-page-lede__meet">{t('about.meetHeading')}</span>
+                    <span className="about-page-intro">{t('about.intro')}</span>
                   </p>
                 </div>
               </div>

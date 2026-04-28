@@ -116,6 +116,7 @@ export const enMessages = {
       'Hi there, this is Li. Besides work, I enjoy traveling ✈️, hunting for cozy coffee shops ☕️, playing tennis 🎾, diving into video games 👾, and playing with my two cats 🐈 🔸Vinny and ▪️Nala.',
     experienceAria:
       'Work and education timeline. Scroll vertically to see earlier roles and education.',
+    scrollHint: 'Keep scrolling for more.',
     exp: {
       tempus: {
         dates: '2022 — current',
@@ -415,6 +416,7 @@ export const zhMessages = {
     intro:
       '你好，我是 Li。工作之余我喜欢旅行 ✈️、寻找温馨的咖啡馆 ☕️、打网球 🎾、玩电子游戏 👾，还有陪两只猫 🐈 🔸Vinny 和 ▪️Nala 玩。',
     experienceAria: '工作与教育经历时间线。上下滚动可查看更早的职位与学业。',
+    scrollHint: '继续滚动查看更多。',
     exp: {
       tempus: {
         dates: '2022 — 至今',

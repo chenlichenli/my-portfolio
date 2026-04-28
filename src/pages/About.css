@@ -40,6 +40,7 @@
 }
 
 .about-page-split-inner {
+  --about-column-margin-top: -1.25rem;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -49,7 +50,7 @@
 
 .about-page-split-media {
   flex-shrink: 0;
-  margin-top: -1.25rem;
+  margin-top: var(--about-column-margin-top);
 }
 
 .about-page-media-stack {
@@ -60,34 +61,36 @@
   margin-right: auto;
 }
 
-/* Reserves space so the absolute heading and stacked cards don’t overlap. */
 .about-page-media-stack > section {
-  padding-top: clamp(2.75rem, 9vw, 4rem);
+  padding-top: 0;
 }
 
-.about-page-photo-heading {
-  position: absolute;
-  z-index: 25;
-  top: clamp(0.35rem, 2.5vw, 1rem);
-  left: 0;
-  right: 0;
-  margin: 0;
+/* Greeting + intro as one `<p>`; sizes match former heading + intro */
+.about-page-lede {
   width: 100%;
-  max-width: 100%;
-  text-align: center;
-  text-wrap: balance;
+  min-width: 0;
+  margin: 0;
+}
+
+.about-page-lede__meet {
+  display: inline-block;
+  width: 100%;
+  margin-bottom: clamp(0.85rem, 2.5vw, 1.35rem);
   font-family: var(--font-ui, ui-sans-serif, system-ui, sans-serif);
-  font-size: clamp(1.65rem, 5.2vw, 2.75rem);
+  font-size: clamp(1.45rem, 4.6vw, 2.45rem);
   font-weight: 400;
   line-height: 1.12;
   letter-spacing: -0.02em;
   color: var(--text-heading);
-  pointer-events: none;
+}
+
+.about-page-lede .about-page-intro {
+  display: block;
 }
 
 @media (min-width: 900px) {
-  .about-page-photo-heading {
-    font-size: clamp(1.85rem, 2.8vw, 3rem);
+  .about-page-lede__meet {
+    font-size: clamp(1.65rem, 2.45vw, 2.65rem);
   }
 }
 
@@ -110,6 +113,7 @@
   width: 100%;
   min-width: 0;
   padding-top: clamp(2rem, 6vw, 3.5rem);
+  margin-top: calc(var(--about-column-margin-top) - 30px);
 }
 
 .about-page-split-copy .about-experience {
@@ -117,7 +121,7 @@
   min-height: 0;
 }
 
-.about-page-split-copy .about-page-intro {
+.about-page-split-copy .about-page-lede {
   flex: 0 0 auto;
 }
 
@@ -138,7 +142,6 @@
 
   .about-page-split-media {
     flex: 0 0 clamp(27rem, 42vw, 32rem);
-    margin-top: -1.25rem;
   }
 
   .about-page-split-media .about-page-media-stack {

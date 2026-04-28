@@ -284,6 +284,8 @@ export function AboutExperience() {
     return () => ro.disconnect()
   }, [])
 
+  const scrollHintId = 'about-experience-scroll-hint'
+
   return (
     <section className="about-experience">
       <div
@@ -292,6 +294,7 @@ export function AboutExperience() {
         tabIndex={0}
         role="region"
         aria-label={t('about.experienceAria')}
+        aria-describedby={scrollHintId}
       >
         <ul className="about-experience__list">
           {items.map((item, index) => (
@@ -307,6 +310,9 @@ export function AboutExperience() {
           ))}
         </ul>
       </div>
+      <p id={scrollHintId} className="about-experience__hint">
+        {t('about.scrollHint')}
+      </p>
     </section>
   )
 }
