@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
+import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
 import { useAustinWeather } from '../hooks/useAustinWeather'
 import './TempusOneCaseStudy.css'
@@ -128,6 +129,8 @@ export function HubOnlineOrderingCaseStudy() {
           ))}
         </ul>
       </section>
+
+      <CaseStudyMoreProjects excludeSlug="hub-online-ordering" />
     </article>
   )
 }

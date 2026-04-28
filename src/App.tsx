@@ -1,11 +1,12 @@
 import { BrowserRouter } from 'react-router-dom'
 import './App.css'
-import { SiteLayout } from './components/layout'
+import { ScrollToTop, SiteLayout } from './components/layout'
 import { AppRoutes } from './routes'
 
 export default function App() {
   return (
     <BrowserRouter>
+      <ScrollToTop />
       <SiteLayout>
         <AppRoutes />
       </SiteLayout>

@@ -29,13 +29,7 @@ const SIDE_WORK_VIMEO: Record<
   },
 }
 
-export type SideWorkTag = 'Motion graphics' | 'Data viz' | 'Vibe Code'
-
-const TAG_SLUG: Record<SideWorkTag, string> = {
-  'Motion graphics': 'motion',
-  'Data viz': 'dataviz',
-  'Vibe Code': 'vibe',
-}
+export type SideWorkTag = 'Motion graphics' | 'Data viz'
 
 /** Single-GIF tiles (excludes composite groups below). */
 const MOTION_GRAPHICS_GIFS = ['GiveMeFish_Li.gif', 'TomatoUFO.gif'] as const
@@ -120,20 +114,6 @@ function MotionGifFrame(props: {
     </div>
   )
 }
-
-const OTHER_PIECES: {
-  id: string
-  tag: Exclude<SideWorkTag, 'Motion graphics'>
-  title: string
-  description: string
-}[] = [
-  {
-    id: 'vc',
-    tag: 'Vibe Code',
-    title: 'Prompt playground',
-    description: 'Tiny UI for chaining LLM steps with visible tokens.',
-  },
-]
 
 export function SideWork() {
   const [vimeoModal, setVimeoModal] = useState<SideWorkVimeoKey | null>(null)
@@ -323,18 +303,6 @@ export function SideWork() {
               allow="fullscreen"
             />
           </div>
-        </div>
-
-        <div className="side-work-other-grid">
-          {OTHER_PIECES.map((piece) => (
-            <div key={piece.id} className="side-work-bento__cell side-work-other-card side-work-reveal-card">
-              <span className={`side-work-bento__tag side-work-bento__tag--${TAG_SLUG[piece.tag]}`}>
-                {piece.tag}
-              </span>
-              <h3 className="side-work-bento__cell-title">{piece.title}</h3>
-              <p className="side-work-bento__cell-desc">{piece.description}</p>
-            </div>
-          ))}
         </div>
       </div>
     </article>
