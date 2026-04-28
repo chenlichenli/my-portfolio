@@ -1,5 +1,4 @@
-/** Replace with your GitHub profile URL */
-const GITHUB_URL = 'https://github.com'
+const GITHUB_URL = 'https://github.com/chenlichenli'
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/li-chen-8060b3155/'
 const RESUME_URL =
