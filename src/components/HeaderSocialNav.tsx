@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/LanguageContext'
+
 const GITHUB_URL = 'https://github.com/chenlichenli'
 
 const LINKEDIN_URL = 'https://www.linkedin.com/in/li-chen-8060b3155/'
@@ -42,8 +44,9 @@ function IconResume({ className }: { className?: string }) {
 }
 
 export function HeaderSocialNav() {
+  const { t } = useLanguage()
   return (
-    <nav className="site-header-social" aria-label="External links">
+    <nav className="site-header-social" aria-label={t('nav.externalLinks')}>
       <ul className="site-nav-icons">
         <li>
           <a
@@ -51,7 +54,7 @@ export function HeaderSocialNav() {
             className="site-nav-icon-link"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="LinkedIn profile"
+            aria-label={t('social.linkedin')}
           >
             <IconLinkedIn className="site-nav-icon-svg" />
           </a>
@@ -62,7 +65,7 @@ export function HeaderSocialNav() {
             className="site-nav-icon-link"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="GitHub profile"
+            aria-label={t('social.github')}
           >
             <IconGithub className="site-nav-icon-svg" />
           </a>
@@ -73,7 +76,7 @@ export function HeaderSocialNav() {
             className="site-nav-icon-link"
             target="_blank"
             rel="noopener noreferrer"
-            aria-label="Download resume (PDF)"
+            aria-label={t('social.resumePdf')}
           >
             <IconResume className="site-nav-icon-svg" />
           </a>

@@ -1,6 +1,8 @@
+import { useMemo } from 'react'
 import { AboutExperience } from '../components/AboutExperience'
 import { HeroGlassScene } from '../components/HeroGlassLanding'
 import { StackedPhotoGallery } from '../components/StackedPhotoGallery'
+import { useLanguage } from '../i18n/LanguageContext'
 import './About.css'
 
 /** About glass blobs — landing hero keeps default blue / orange / temp circle. */
@@ -11,13 +13,23 @@ const ABOUT_BLOB = {
 } as const
 
 /** Photos from /public: me.jpg, Vinny.JPG, Nala.JPG */
-const ABOUT_PHOTOS = [
-  { src: '/me.jpg', name: 'me', alt: 'Li Chen' },
-  { src: '/Vinny.JPG', name: 'vinny', alt: 'Vinny the cat' },
-  { src: '/Nala.JPG', name: 'nala', alt: 'Nala the cat' },
+const ABOUT_PHOTO_FILES = [
+  { src: '/me.jpg', name: 'me' as const },
+  { src: '/Vinny.JPG', name: 'vinny' as const },
+  { src: '/Nala.JPG', name: 'nala' as const },
 ] as const
 
 export function About() {
+  const { t, messages } = useLanguage()
+  const photos = useMemo(
+    () =>
+      ABOUT_PHOTO_FILES.map((p) => ({
+        ...p,
+        alt: messages.about.photoAlt[p.name],
+      })),
+    [messages.about.photoAlt],
+  )
+
   return (
     <div className="about-route">
       <HeroGlassScene
@@ -38,11 +50,9 @@ export function About() {
               <div className="about-page-split-inner">
                 <div className="about-page-split-media">
                   <div className="about-page-media-stack">
-                    <h1 className="about-page-photo-heading">
-                      nice to meet you!
-                    </h1>
-                    <section aria-label="Photos">
-                      <StackedPhotoGallery items={ABOUT_PHOTOS} initialOrder={[1, 2, 0]} />
+                    <h1 className="about-page-photo-heading">{t('about.meetHeading')}</h1>
+                    <section aria-label={t('about.photosAria')}>
+                      <StackedPhotoGallery items={photos} initialOrder={[1, 2, 0]} />
                     </section>
                   </div>
                 </div>
@@ -50,9 +60,7 @@ export function About() {
                 <div className="about-page-split-copy">
                   <AboutExperience />
                   <p className="about-page-intro text-[var(--text)] leading-relaxed">
-                    Hi there, this is Li. Besides work, I enjoy traveling ✈️, hunting for cozy coffee shops ☕️,
-                    practice my tennis swing 🎾, diving into video games 👾, and playing with my two cats 🐈 🔸Vinny
-                    and ▪️Nala.
+                    {t('about.intro')}
                   </p>
                 </div>
               </div>

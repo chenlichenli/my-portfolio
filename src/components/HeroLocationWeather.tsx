@@ -1,16 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { AustinWeatherStatus } from '../hooks/useAustinWeather'
+import { useLanguage } from '../i18n/LanguageContext'
 
 const AUSTIN_TZ = 'America/Chicago'
-
-const austinTimeFormatter = new Intl.DateTimeFormat('en-US', {
-  timeZone: AUSTIN_TZ,
-  hour: 'numeric',
-  minute: '2-digit',
-  second: '2-digit',
-  hour12: true,
-  timeZoneName: 'short',
-})
 
 /** WMO Weather interpretation codes (Open-Meteo). */
 function weatherCodeToEmoji(code: number): string {
@@ -31,18 +23,18 @@ function weatherCodeToEmoji(code: number): string {
   return '🌡️'
 }
 
-function describeWeather(code: number): string {
-  if (code === 0) return 'clear skies'
-  if (code === 1) return 'mainly clear'
-  if (code === 2) return 'partly cloudy'
-  if (code === 3) return 'overcast'
-  if (code === 45 || code === 48) return 'fog'
-  if (code >= 51 && code <= 67) return 'rain'
-  if (code >= 71 && code <= 77) return 'snow'
-  if (code >= 80 && code <= 82) return 'showers'
-  if (code >= 85 && code <= 86) return 'snow showers'
-  if (code >= 95 && code <= 99) return 'thunderstorm'
-  return 'weather'
+function describeWeather(code: number, t: (path: string) => string): string {
+  if (code === 0) return t('weather.clear')
+  if (code === 1) return t('weather.mainlyClear')
+  if (code === 2) return t('weather.partlyCloudy')
+  if (code === 3) return t('weather.overcast')
+  if (code === 45 || code === 48) return t('weather.fog')
+  if (code >= 51 && code <= 67) return t('weather.rain')
+  if (code >= 71 && code <= 77) return t('weather.snow')
+  if (code >= 80 && code <= 82) return t('weather.showers')
+  if (code >= 85 && code <= 86) return t('weather.snowShowers')
+  if (code >= 95 && code <= 99) return t('weather.thunderstorm')
+  return t('weather.generic')
 }
 
 export type HeroLocationWeatherProps = {
@@ -58,7 +50,22 @@ export function HeroLocationWeather({
   weatherCode,
   status,
 }: HeroLocationWeatherProps) {
+  const { locale, t } = useLanguage()
   const [now, setNow] = useState(() => new Date())
+
+  const timeLocale = locale === 'zh' ? 'zh-CN' : 'en-US'
+  const austinTimeFormatter = useMemo(
+    () =>
+      new Intl.DateTimeFormat(timeLocale, {
+        timeZone: AUSTIN_TZ,
+        hour: 'numeric',
+        minute: '2-digit',
+        second: '2-digit',
+        hour12: locale !== 'zh',
+        timeZoneName: 'short',
+      }),
+    [timeLocale, locale],
+  )
 
   useEffect(() => {
     const id = window.setInterval(() => setNow(new Date()), 1000)
@@ -70,22 +77,25 @@ export function HeroLocationWeather({
 
   const timeLine = austinTimeFormatter.format(now)
 
+  const weatherDesc =
+    status === 'ready' && weatherCode != null ? describeWeather(weatherCode, t) : ''
+
   const weatherAria =
     status === 'ready' && tempF != null && weatherCode != null
-      ? `Current weather in Austin, Texas: ${tempF} degrees Fahrenheit, ${describeWeather(weatherCode)}`
+      ? t('weather.ariaWeather', { temp: tempF, desc: weatherDesc })
       : undefined
 
-  const clockAria = `Local time in Austin, Texas: ${timeLine}`
+  const clockAria = t('weather.ariaClock', { time: timeLine })
 
   return (
     <p
       className={`text-[0.9375rem] font-normal leading-relaxed text-[#5c5650] tabular-nums md:text-[1rem] ${className}`}
     >
-      <span>Austin, TX</span>
+      <span>{t('weather.austin')}</span>
       {status === 'loading' && (
         <span aria-busy="true">
           {' '}
-          · …
+          · {t('weather.loading')}
         </span>
       )}
       {status === 'ready' && tempF != null && (
@@ -94,9 +104,7 @@ export function HeroLocationWeather({
           · {tempF}°F {emoji}
         </span>
       )}
-      {status === 'error' && (
-        <span className="sr-only">Weather could not be loaded.</span>
-      )}
+      {status === 'error' && <span className="sr-only">{t('weather.error')}</span>}
       <span aria-hidden="true"> · </span>
       <time dateTime={now.toISOString()} aria-label={clockAria}>
         {timeLine}

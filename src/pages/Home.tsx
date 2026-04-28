@@ -1,39 +1,16 @@
 import { useLayoutEffect, useMemo, useRef, type RefObject } from 'react'
 import { HeroGlassLanding } from '../components/HeroGlassLanding'
 import { blobColorForTempF, useAustinWeather } from '../hooks/useAustinWeather'
+import { useLanguage } from '../i18n/LanguageContext'
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll'
 import { Link } from 'react-router-dom'
 import './Home.css'
 
 /** Filenames in /public — must match `hero image_<name>.png` on disk */
-const PROJECTS = [
-  {
-    slug: 'tempus-one',
-    company: 'Tempus AI',
-    title: 'Tempus One',
-    heroFile: 'hero image_Tempus One.png',
-    tags: ['AI Experience', 'Growth Design', '0-1'],
-    description:
-      'How can we leverage AI to help physicians access patient data while grow product usage?',
-  },
-  {
-    slug: 'hub-online-ordering',
-    company: 'Tempus AI',
-    title: 'Hub Online Ordering',
-    heroFile: 'hero image_Online Ordering.png',
-    tags: ['Enterprise UX', 'Scalability', 'Healthcare'],
-    description:
-      'How can we utilize the design system to streamline test portfolio expansion for oncologists’ needs?',
-  },
-  {
-    slug: 'iqueue-for-clinics',
-    company: 'LeanTaaS',
-    title: 'iQueue for Clinics',
-    heroFile: 'hero image_iQueue for Clinics.png',
-    tags: ['Machine Learning UX', 'Healthcare Ops', 'Data-driven'],
-    description:
-      'How can we leverage predictive analytics to optimize hospital schedule and resource allocation?',
-  },
+const PROJECT_CARDS = [
+  { slug: 'tempus-one' as const, heroFile: 'hero image_Tempus One.png' },
+  { slug: 'hub-online-ordering' as const, heroFile: 'hero image_Online Ordering.png' },
+  { slug: 'iqueue-for-clinics' as const, heroFile: 'hero image_iQueue for Clinics.png' },
 ] as const
 
 function useEqualProjectCardSizes(containerRef: RefObject<HTMLElement | null>) {
@@ -89,6 +66,7 @@ function cardsForObserver(root: HTMLElement) {
 }
 
 export function Home() {
+  const { t, messages } = useLanguage()
   const projectsRef = useRef<HTMLDivElement>(null)
   const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
   const worksArrowColor = useMemo(
@@ -111,7 +89,7 @@ export function Home() {
       <section className="home-works" aria-labelledby="works-heading">
         <div className="home-works-header">
           <h2 id="works-heading" className="home-section-label home-section-label--inline">
-            Selected Works
+            {t('home.selectedWorks')}
             <span
               className="home-works-arrow"
               style={{ color: worksArrowColor }}
@@ -121,7 +99,7 @@ export function Home() {
             </span>
           </h2>
           <p className="home-stat">
-            <span className="home-stat-label">Years of Experience</span>
+            <span className="home-stat-label">{t('home.yearsExperience')}</span>
             <span className="home-stat-colon" aria-hidden="true">
               :
             </span>
@@ -130,19 +108,22 @@ export function Home() {
         </div>
 
         <div className="home-projects" ref={projectsRef}>
-          {PROJECTS.map((p) => (
+          {PROJECT_CARDS.map((p) => {
+            const copy = messages.projects[p.slug]
+            const tags = [copy.tag0, copy.tag1, copy.tag2] as const
+            return (
             <Link key={p.slug} className="project-card" to={`/${p.slug}`}>
               <div className="project-card-body">
-                <span className="project-card-company">{p.company}</span>
-                <h3 className="project-card-title">{p.title}</h3>
+                <span className="project-card-company">{copy.company}</span>
+                <h3 className="project-card-title">{copy.title}</h3>
                 <div className="project-card-tags">
-                  {p.tags.map((tag) => (
+                  {tags.map((tag) => (
                     <span key={tag} className="project-card-tag">
                       {tag}
                     </span>
                   ))}
                 </div>
-                <p className="project-card-desc">{p.description}</p>
+                <p className="project-card-desc">{copy.description}</p>
               </div>
               <div className="project-card-hero">
                 <div className="project-card-hero-square">
@@ -157,7 +138,8 @@ export function Home() {
                 </div>
               </div>
             </Link>
-          ))}
+            )
+          })}
         </div>
       </section>
     </div>

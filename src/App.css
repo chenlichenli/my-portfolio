@@ -42,9 +42,89 @@
   min-width: 0;
 }
 
-.site-header-social {
+.site-header-end {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
   flex-shrink: 0;
   margin-left: auto;
+}
+
+/* Language: EN/中 — same hit box as `.site-nav-icon-link` for vertical alignment */
+.site-lang-nav {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.site-lang-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* Match `.site-nav-icon-link`: 1.125rem icon row + 0.35rem padding each side */
+  padding: 0.35rem;
+  margin: -0.35rem;
+  border-radius: 6px;
+  color: #333;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.site-lang-icon-wrap:hover {
+  background: color-mix(in srgb, var(--accent) 8%, transparent);
+}
+
+.site-lang-icon-split {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.06em;
+  min-height: 1.125rem;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+
+.site-lang-icon-sep {
+  color: var(--text-muted, #5c5650);
+  font-weight: 400;
+  opacity: 0.55;
+  user-select: none;
+}
+
+.site-lang-icon-btn {
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: inherit;
+  color: var(--text-muted, #5c5650);
+  cursor: pointer;
+  border-radius: 4px;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.site-lang-icon-btn:hover {
+  color: var(--text-heading, #1a1816);
+}
+
+.site-lang-icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.site-lang-icon-btn--active {
+  color: var(--text-heading, #1a1816);
+}
+
+.site-header-social {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
 }
 
 .site-nav-icons {
@@ -300,9 +380,14 @@
     align-items: flex-start;
   }
 
+  .site-header-end {
+    align-self: flex-end;
+    width: 100%;
+    justify-content: flex-end;
+  }
+
   .site-header-social {
     margin-left: 0;
-    align-self: flex-end;
   }
 
   .site-footer-inner {

@@ -1,7 +1,11 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { MotionValue } from 'framer-motion'
 import { motion, useScroll, useSpring, useTransform } from 'framer-motion'
+import { useLanguage } from '../i18n/LanguageContext'
+import type { Messages } from '../i18n/messages'
 import './AboutExperience.css'
+
+type ExpKey = keyof Messages['about']['exp']
 
 export type AboutExperienceItem = {
   id: string
@@ -81,67 +85,45 @@ function ExperienceOrgLogo({
   )
 }
 
-const ITEMS: AboutExperienceItem[] = [
-  {
-    id: 'tempus',
-    dates: '2022 — current',
-    title: 'Sr. Product Designer',
-    org: 'Tempus AI',
-    website: 'https://www.tempus.com',
-    blurb: 'AI and healthcare product experiences.',
-  },
+const ROW_DEFS: {
+  id: string
+  expKey: ExpKey
+  website: string
+  logoUrl?: string
+  showLogo?: boolean
+}[] = [
+  { id: 'tempus', expKey: 'tempus', website: 'https://www.tempus.com' },
   {
     id: 'real-chemistry',
-    dates: '2020 — 2022',
-    title: 'Designer',
-    org: 'Real Chemistry',
+    expKey: 'realChemistry',
     website: 'https://www.realchemistry.com',
-    blurb: 'Enterprise healthcare and marketing platforms.',
   },
-  {
-    id: 'leantaas',
-    dates: '2019 — 2020',
-    title: 'Product Designer',
-    org: 'LeanTaaS',
-    website: 'https://www.leantaas.com',
-    blurb: 'Hospital operations and predictive analytics UX.',
-  },
+  { id: 'leantaas', expKey: 'leantaas', website: 'https://www.leantaas.com' },
   {
     id: 'precision-strategy',
-    dates: '2019',
-    title: 'Design intern',
-    org: 'Precision Strategy',
+    expKey: 'precisionStrategy',
     website: 'https://www.precisionstrategies.com',
   },
   {
     id: 'parsons',
-    dates: '2017 — 2019',
-    title: 'MFA, Design & Technology',
-    org: 'Parsons School of Design',
+    expKey: 'parsons',
     website: 'https://www.newschool.edu/parsons/',
-    blurb: 'New York City.',
   },
   {
     id: 'hfg-offenbach',
-    dates: '2015',
-    title: 'Visual Communication (exchange)',
-    org: 'Hochschule für Gestaltung Offenbach',
+    expKey: 'hfg',
     website: 'https://www.hfg-offenbach.de',
     showLogo: false,
   },
   {
     id: 'nanjing-arts',
-    dates: '2013 — 2016',
-    title: 'MA in Graphic Design',
-    org: 'Nanjing University of the Arts',
+    expKey: 'nanjing',
     website: 'https://www.nua.edu.cn',
     showLogo: false,
   },
   {
     id: 'jiangnan',
-    dates: '2009 — 2013',
-    title: 'BA, Fine art',
-    org: 'Jiangnan University',
+    expKey: 'jiangnan',
     website: 'https://www.jiangnan.edu.cn',
     showLogo: false,
   },
@@ -268,6 +250,25 @@ function ExperienceSlide({
 }
 
 export function AboutExperience() {
+  const { messages, t } = useLanguage()
+  const items: AboutExperienceItem[] = useMemo(
+    () =>
+      ROW_DEFS.map((row) => {
+        const e = messages.about.exp[row.expKey]
+        return {
+          id: row.id,
+          dates: e.dates,
+          title: e.title,
+          org: e.org,
+          website: row.website,
+          logoUrl: row.logoUrl,
+          showLogo: row.showLogo,
+          blurb: e.blurb || undefined,
+        }
+      }),
+    [messages.about.exp],
+  )
+
   const viewportRef = useRef<HTMLDivElement>(null)
   const [slideHeight, setSlideHeight] = useState(240)
   const reducedMotion = usePrefersReducedMotion()
@@ -290,15 +291,15 @@ export function AboutExperience() {
         className="about-experience__viewport"
         tabIndex={0}
         role="region"
-        aria-label="Work and education timeline. Scroll vertically to see earlier roles and education."
+        aria-label={t('about.experienceAria')}
       >
         <ul className="about-experience__list">
-          {ITEMS.map((item, index) => (
+          {items.map((item, index) => (
             <ExperienceSlide
               key={item.id}
               item={item}
               index={index}
-              total={ITEMS.length}
+              total={items.length}
               slideHeight={slideHeight}
               scrollY={scrollY}
               reducedMotion={reducedMotion}

@@ -1,31 +1,23 @@
 import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
 import { createPortal } from 'react-dom'
+import { useLanguage } from '../i18n/LanguageContext'
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll'
 import './SideWork.css'
 
 type SideWorkVimeoKey = 'alice' | 'ipl' | 'giveMeFish'
 
-const SIDE_WORK_VIMEO: Record<
-  SideWorkVimeoKey,
-  { page: string; embed: string; dialogTitle: string; iframeTitle: string }
-> = {
+const SIDE_WORK_VIMEO: Record<SideWorkVimeoKey, { page: string; embed: string }> = {
   alice: {
     page: 'https://vimeo.com/270918447?fl=pl&fe=ti',
     embed: 'https://player.vimeo.com/video/270918447?dnt=1',
-    dialogTitle: 'Alice Wonderland',
-    iframeTitle: 'Alice Wonderland on Vimeo',
   },
   ipl: {
     page: 'https://vimeo.com/266034746',
     embed: 'https://player.vimeo.com/video/266034746?dnt=1',
-    dialogTitle: 'I am Programming Language',
-    iframeTitle: 'I am Programming Language on Vimeo',
   },
   giveMeFish: {
     page: 'https://vimeo.com/260331165',
     embed: 'https://player.vimeo.com/video/260331165?dnt=1',
-    dialogTitle: 'Give Me Fish',
-    iframeTitle: 'Give Me Fish on Vimeo',
   },
 }
 
@@ -51,13 +43,7 @@ const ALICE_WONDERLAND_GIFS = [
 const MOTION_GRAPHICS_BASE = '/Motion Graphics'
 
 /** Embedded interactive piece (GitHub Pages). */
-const DATA_VIZ_PROGRAMMING_LANG = {
-  url: 'https://chenlichenli.github.io/DVIA_F18_Social/',
-  title: 'The Development of Programming Language',
-  description:
-    'Interactive data visualization: explore how programming languages spread across nationality, native language, gender, and decade.',
-  iframeTitle: 'The Development of Programming Language — interactive visualization',
-} as const
+const DATA_VIZ_URL = 'https://chenlichenli.github.io/DVIA_F18_Social/'
 
 /** Display titles that shouldn’t be derived from the filename alone. */
 const MOTION_GIF_TITLE_OVERRIDES: Record<string, string> = {
@@ -116,9 +102,13 @@ function MotionGifFrame(props: {
 }
 
 export function SideWork() {
+  const { t } = useLanguage()
   const [vimeoModal, setVimeoModal] = useState<SideWorkVimeoKey | null>(null)
   const sideWorkRevealRootRef = useRef<HTMLDivElement>(null)
   useRevealOnScroll(sideWorkRevealRootRef, '.side-work-reveal-card')
+
+  const vimeoWorkTitle = (key: SideWorkVimeoKey) =>
+    key === 'alice' ? t('sideWork.alice') : key === 'ipl' ? t('sideWork.ipl') : t('sideWork.giveMeFish')
 
   useEffect(() => {
     if (vimeoModal === null) return
@@ -141,23 +131,31 @@ export function SideWork() {
   }
 
   const vimeoOpen = vimeoModal !== null ? SIDE_WORK_VIMEO[vimeoModal] : null
+  const vimeoModalTitle = vimeoModal ? vimeoWorkTitle(vimeoModal) : ''
+
+  const tileTitle = (filename: string) =>
+    filename === 'TomatoUFO.gif' ? t('sideWork.tomatoUfo') : titleFromGifFilename(filename)
 
   return (
     <>
-    <article className="side-work" aria-label="Side work">
+    <article className="side-work" aria-label={t('sideWork.pageAria')}>
       <div className="side-work-unified" ref={sideWorkRevealRootRef}>
         <div className="side-work-motion-bento">
           <figure
             className="side-work-motion-tile side-work-motion-tile--alice side-work-motion-tile--vimeo-trigger side-work-reveal-card"
             role="button"
             tabIndex={0}
-            aria-label="Alice Wonderland — open full video"
+            aria-label={t('sideWork.openFullVideo', { work: t('sideWork.alice') })}
             aria-haspopup="dialog"
             onClick={() => setVimeoModal('alice')}
             onKeyDown={(e) => onVimeoCardKeyDown(e, 'alice')}
           >
             <div className="side-work-motion-tile-media side-work-motion-tile-media--alice">
-              <div className="side-work-motion-tile-alice-grid" role="group" aria-label="Alice Wonderland clips">
+              <div
+                className="side-work-motion-tile-alice-grid"
+                role="group"
+                aria-label={t('sideWork.aliceClipsGroup')}
+              >
                 {(
                   [
                     [0, 2],
@@ -172,7 +170,7 @@ export function SideWork() {
                         <MotionGifFrame
                           key={file}
                           file={file}
-                          alt={`${clipTitle}, part of Alice Wonderland`}
+                          alt={`${clipTitle}${t('sideWork.alicePart')}`}
                           loading={i < 2 ? 'eager' : 'lazy'}
                           decoding="async"
                         />
@@ -183,8 +181,8 @@ export function SideWork() {
               </div>
             </div>
             <figcaption className="side-work-motion-tile-caption">
-              <span className="side-work-bento__tag side-work-bento__tag--motion">Motion graphics</span>
-              <span className="side-work-motion-tile-title">Alice Wonderland</span>
+              <span className="side-work-bento__tag side-work-bento__tag--motion">{t('sideWork.motionTag')}</span>
+              <span className="side-work-motion-tile-title">{t('sideWork.alice')}</span>
             </figcaption>
           </figure>
 
@@ -193,7 +191,7 @@ export function SideWork() {
               className="side-work-motion-tile side-work-motion-tile--ipl side-work-motion-tile--vimeo-trigger side-work-reveal-card"
               role="button"
               tabIndex={0}
-              aria-label="I am Programming Language — open full video"
+              aria-label={t('sideWork.openFullVideo', { work: t('sideWork.ipl') })}
               aria-haspopup="dialog"
               onClick={() => setVimeoModal('ipl')}
               onKeyDown={(e) => onVimeoCardKeyDown(e, 'ipl')}
@@ -202,7 +200,7 @@ export function SideWork() {
                 <div
                   className="side-work-motion-tile-ipl-grid"
                   role="group"
-                  aria-label="I am Programming Language clips"
+                  aria-label={t('sideWork.iplClipsGroup')}
                 >
                   {I_AM_PROGRAMMING_LANGUAGE_GIFS.map((file, i) => {
                     const clipTitle = titleFromGifFilename(file)
@@ -210,7 +208,7 @@ export function SideWork() {
                       <MotionGifFrame
                         key={file}
                         file={file}
-                        alt={`${clipTitle}, part of I am Programming Language`}
+                        alt={`${clipTitle}${t('sideWork.iplPart')}`}
                         loading={i < 1 ? 'eager' : 'lazy'}
                         decoding="async"
                       />
@@ -219,14 +217,14 @@ export function SideWork() {
                 </div>
               </div>
               <figcaption className="side-work-motion-tile-caption">
-                <span className="side-work-bento__tag side-work-bento__tag--motion">Motion graphics</span>
-                <span className="side-work-motion-tile-title">I am Programming Language</span>
+                <span className="side-work-bento__tag side-work-bento__tag--motion">{t('sideWork.motionTag')}</span>
+                <span className="side-work-motion-tile-title">{t('sideWork.ipl')}</span>
               </figcaption>
             </figure>
 
             <div className="side-work-motion-ipl-row__singles">
               {MOTION_GRAPHICS_GIFS.map((file, index) => {
-                const title = titleFromGifFilename(file)
+                const title = tileTitle(file)
                 const isGiveMeFish = file === 'GiveMeFish_Li.gif'
                 if (isGiveMeFish) {
                   return (
@@ -235,7 +233,7 @@ export function SideWork() {
                       className="side-work-motion-tile side-work-motion-tile--vimeo-trigger side-work-reveal-card"
                       role="button"
                       tabIndex={0}
-                      aria-label={`${title} — open full video`}
+                      aria-label={t('sideWork.openFullVideo', { work: title })}
                       aria-haspopup="dialog"
                       onClick={() => setVimeoModal('giveMeFish')}
                       onKeyDown={(e) => onVimeoCardKeyDown(e, 'giveMeFish')}
@@ -250,7 +248,7 @@ export function SideWork() {
                       </div>
                       <figcaption className="side-work-motion-tile-caption">
                         <span className="side-work-bento__tag side-work-bento__tag--motion">
-                          Motion graphics
+                          {t('sideWork.motionTag')}
                         </span>
                         <span className="side-work-motion-tile-title">{title}</span>
                       </figcaption>
@@ -269,7 +267,7 @@ export function SideWork() {
                     </div>
                     <figcaption className="side-work-motion-tile-caption">
                       <span className={`side-work-bento__tag side-work-bento__tag--motion`}>
-                        Motion graphics
+                        {t('sideWork.motionTag')}
                       </span>
                       <span className="side-work-motion-tile-title">{title}</span>
                     </figcaption>
@@ -281,23 +279,23 @@ export function SideWork() {
         </div>
 
         <div className="side-work-dataviz-card side-work-bento__cell">
-          <span className="side-work-bento__tag side-work-bento__tag--dataviz">Data viz</span>
+          <span className="side-work-bento__tag side-work-bento__tag--dataviz">{t('sideWork.dataVizTag')}</span>
           <div className="side-work-dataviz__title-row">
-            <h3 className="side-work-bento__cell-title">{DATA_VIZ_PROGRAMMING_LANG.title}</h3>
+            <h3 className="side-work-bento__cell-title">{t('sideWork.dataVizTitle')}</h3>
             <a
               className="side-work-dataviz__title-link"
-              href={DATA_VIZ_PROGRAMMING_LANG.url}
+              href={DATA_VIZ_URL}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open in new tab
+              {t('sideWork.dataVizOpenTab')}
             </a>
           </div>
-          <p className="side-work-bento__cell-desc">{DATA_VIZ_PROGRAMMING_LANG.description}</p>
+          <p className="side-work-bento__cell-desc">{t('sideWork.dataVizDesc')}</p>
           <div className="side-work-dataviz__frame">
             <iframe
-              src={DATA_VIZ_PROGRAMMING_LANG.url}
-              title={DATA_VIZ_PROGRAMMING_LANG.iframeTitle}
+              src={DATA_VIZ_URL}
+              title={t('sideWork.dataVizIframe')}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               allow="fullscreen"
@@ -318,13 +316,13 @@ export function SideWork() {
           <button
             type="button"
             className="side-work-vimeo-modal__backdrop"
-            aria-label="Close video"
+            aria-label={t('sideWork.vimeoCloseBackdrop')}
             onClick={() => setVimeoModal(null)}
           />
           <div className="side-work-vimeo-modal__panel">
             <div className="side-work-vimeo-modal__toolbar">
               <h2 id="side-work-vimeo-modal-heading" className="side-work-vimeo-modal__title">
-                {vimeoOpen.dialogTitle}
+                {vimeoModalTitle}
               </h2>
               <a
                 className="side-work-vimeo-modal__open-tab"
@@ -332,12 +330,12 @@ export function SideWork() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                Open on Vimeo
+                {t('sideWork.vimeoOpenVimeo')}
               </a>
               <button
                 type="button"
                 className="side-work-vimeo-modal__close"
-                aria-label="Close"
+                aria-label={t('sideWork.vimeoClose')}
                 onClick={() => setVimeoModal(null)}
               >
                 ×
@@ -347,7 +345,7 @@ export function SideWork() {
               <iframe
                 key={vimeoOpen.embed}
                 src={vimeoOpen.embed}
-                title={vimeoOpen.iframeTitle}
+                title={t('sideWork.onVimeoIframe', { title: vimeoModalTitle })}
                 allow="autoplay; fullscreen; picture-in-picture"
                 allowFullScreen
               />

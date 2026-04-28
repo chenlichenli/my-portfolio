@@ -1,12 +1,9 @@
 import { Link } from 'react-router-dom'
+import { useLanguage } from '../i18n/LanguageContext'
 
-const PROJECTS = [
-  { slug: 'tempus-one', title: 'Tempus One', company: 'Tempus AI' },
-  { slug: 'hub-online-ordering', title: 'Hub Online Ordering', company: 'Tempus AI' },
-  { slug: 'iqueue-for-clinics', title: 'iQueue for Clinics', company: 'LeanTaaS' },
-] as const
+const PROJECT_SLUGS = ['tempus-one', 'hub-online-ordering', 'iqueue-for-clinics'] as const
 
-export type CaseStudyProjectSlug = (typeof PROJECTS)[number]['slug']
+export type CaseStudyProjectSlug = (typeof PROJECT_SLUGS)[number]
 
 type CaseStudyMoreProjectsProps = {
   /** Current case study — the other two are linked. */
@@ -14,21 +11,25 @@ type CaseStudyMoreProjectsProps = {
 }
 
 export function CaseStudyMoreProjects({ excludeSlug }: CaseStudyMoreProjectsProps) {
-  const others = PROJECTS.filter((p) => p.slug !== excludeSlug)
+  const { t, messages } = useLanguage()
+  const others = PROJECT_SLUGS.filter((slug) => slug !== excludeSlug)
   return (
     <nav className="case-more-projects" aria-labelledby="case-more-projects-heading">
       <h2 id="case-more-projects-heading" className="case-tempus-intro-heading">
-        More projects
+        {t('caseStudy.moreProjects')}
       </h2>
       <ul className="case-more-projects-list">
-        {others.map((p) => (
-          <li key={p.slug}>
-            <Link to={`/${p.slug}`} className="case-more-projects-link">
-              <span className="case-more-projects-company">{p.company}</span>
-              <span className="case-more-projects-title">{p.title}</span>
-            </Link>
-          </li>
-        ))}
+        {others.map((slug) => {
+          const p = messages.projects[slug]
+          return (
+            <li key={slug}>
+              <Link to={`/${slug}`} className="case-more-projects-link">
+                <span className="case-more-projects-company">{p.company}</span>
+                <span className="case-more-projects-title">{p.title}</span>
+              </Link>
+            </li>
+          )
+        })}
       </ul>
     </nav>
   )

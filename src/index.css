@@ -37,6 +37,27 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+/**
+ * Noto Sans SC — Simplified-Chinese cut of Noto Sans CJK (Google Fonts).
+ * Switches with `document.documentElement.lang` (`zh-Hans` from `LanguageProvider`).
+ */
+html[lang='zh-Hans'] {
+  --font-sans:
+    'Noto Sans SC', ui-sans-serif, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-ui:
+    'Noto Sans SC', ui-sans-serif, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  --font-display:
+    'Noto Sans SC', ui-sans-serif, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  /* Keep monospace for stats / code-style UI */
+  --font-mono:
+    'DM Mono', ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+}
+
+html[lang='zh-Hans'],
+html[lang='zh-Hans'] body {
+  font-family: var(--font-ui);
+}
+
 *,
 *::before,
 *::after {

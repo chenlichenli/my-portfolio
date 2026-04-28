@@ -1,4 +1,5 @@
 import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { useLanguage } from '../i18n/LanguageContext'
 
 export type CaseStudyDesignSlide = {
   id: string
@@ -26,6 +27,7 @@ export function CaseStudyDesignDetails({
   idPrefix,
   headingId,
 }: CaseStudyDesignDetailsProps) {
+  const { t } = useLanguage()
   const [activeIndex, setActiveIndex] = useState(0)
   const figureRefs = useRef<(HTMLElement | null)[]>([])
 
@@ -90,10 +92,10 @@ export function CaseStudyDesignDetails({
   return (
     <section className="case-iqueue-design" aria-labelledby={headingId}>
       <h2 id={headingId} className="case-tempus-intro-heading">
-        ✍🏻 Design Details
+        {t('caseStudy.designDetails')}
       </h2>
       <div className="case-iqueue-design-layout case-iqueue-design-layout--spy">
-        <nav className="case-iqueue-design-titles" aria-label="Design detail sections">
+        <nav className="case-iqueue-design-titles" aria-label={t('caseStudy.designDetailsNav')}>
           {slides.map((slide, index) => (
             <button
               key={slide.id}

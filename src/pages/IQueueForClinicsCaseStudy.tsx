@@ -1,25 +1,11 @@
+import { useMemo } from 'react'
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
 import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
 import { useAustinWeather } from '../hooks/useAustinWeather'
+import { useLanguage } from '../i18n/LanguageContext'
 import './TempusOneCaseStudy.css'
 import './IQueueForClinicsCaseStudy.css'
-
-const TAGS = ['Machine Learning UX', 'Healthcare', 'Data-driven'] as const
-
-const SUBLINE =
-  'How can we leverage predict analytic to optimize hospital schedule and resource allocation?'
-
-const INTRO =
-  'iQueue for Clinics is a web-based analytics tool helping healthcare professionals to reduce patient wait time and maximize resource allocation. Room Allocation is one portion of the Clinic Admin Panel that helps administrators optimize utilization of exam and procedure rooms.'
-
-const TEAM = [
-  '1 Product Designer',
-  '1 Product Manager',
-  '1 Data Scientist',
-  '2 Product Implementation Managers',
-  '14 Engineers',
-] as const
 
 const DESIGN_IMAGE_DIR = 'iQueue for Clinics'
 
@@ -39,44 +25,38 @@ function designImageSrc(file: string) {
   return iqueueAssetPath(DESIGN_IMAGE_DIR, file)
 }
 
-const DESIGN_DETAIL_SLIDES = [
-  {
-    id: 'data-health',
-    title: 'Data Health',
-    file: 'iqueue 1.png',
-    imageAlt: 'Data Health in iQueue for Clinics',
-  },
-  {
-    id: 'room-allocation',
-    title: 'Room allocation',
-    file: 'iqueue 0.png',
-    imageAlt: 'Room allocation view in iQueue for Clinics',
-  },
-  {
-    id: 'provider-template-review',
-    title: 'Provider Template Review',
-    file: 'iqueue 2.png',
-    imageAlt: 'Provider Template Review in iQueue for Clinics',
-  },
-] as const
-
-const KEY_TAKEAWAYS = [
-  'What User require not always means what they need',
-  'Involving engineering team from the outset can save time in an agile environment',
-  "Try to find resources when there aren't enough, be proactive as the only designer on the team",
+const IQUEUE_SLIDES = [
+  { id: 'data-health', file: 'iqueue 1.png', slideKey: 'dataHealth' as const },
+  { id: 'room-allocation', file: 'iqueue 0.png', slideKey: 'room' as const },
+  { id: 'provider-template-review', file: 'iqueue 2.png', slideKey: 'provider' as const },
 ] as const
 
 export function IQueueForClinicsCaseStudy() {
+  const { t, messages } = useLanguage()
+  const m = messages.iqueue
   const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
+
+  const slides = useMemo(
+    () =>
+      IQUEUE_SLIDES.map((row) => {
+        const s = m.slides[row.slideKey]
+        return { id: row.id, title: s.title, file: row.file, imageAlt: s.alt }
+      }),
+    [m.slides],
+  )
+
+  const teamLines = [m.team0, m.team1, m.team2, m.team3, m.team4]
+  const takeaways = [m.takeaway0, m.takeaway1, m.takeaway2]
+
   return (
-    <article className="case-tempus case-with-glass-hero" aria-label="iQueue for Clinics case study">
+    <article className="case-tempus case-with-glass-hero" aria-label={m.articleAria}>
       <HeroGlassProject
         tempF={tempF}
         weatherCode={weatherCode}
         weatherStatus={weatherStatus}
-        title="iQueue for Clinics"
-        tags={TAGS}
-        subtitle={SUBLINE}
+        title={messages.projects['iqueue-for-clinics'].title}
+        tags={m.tags}
+        subtitle={m.subline}
         sectionBgClassName="bg-[#001F59]/20"
       />
 
@@ -84,29 +64,29 @@ export function IQueueForClinicsCaseStudy() {
         <div className="case-tempus-intro-grid">
           <div className="case-tempus-intro-copy">
             <h2 id="case-iqueue-intro-heading" className="case-tempus-intro-heading">
-              Intro
+              {t('caseStudy.intro')}
             </h2>
-            <p className="case-tempus-intro-text">{INTRO}</p>
+            <p className="case-tempus-intro-text">{m.intro}</p>
           </div>
-          <aside className="case-tempus-meta" aria-label="Project details">
+          <aside className="case-tempus-meta" aria-label={t('caseStudy.projectDetails')}>
             <div className="case-tempus-meta-block">
-              <h3 className="case-tempus-meta-heading">Team</h3>
+              <h3 className="case-tempus-meta-heading">{t('caseStudy.team')}</h3>
               <ul className="case-tempus-meta-list">
-                {TEAM.map((line) => (
+                {teamLines.map((line) => (
                   <li key={line}>{line}</li>
                 ))}
               </ul>
             </div>
             <div className="case-tempus-meta-block case-tempus-meta-block--timeline">
-              <h3 className="case-tempus-meta-heading">Timeline</h3>
-              <p className="case-tempus-meta-timeline">Dec 2019 - March 2020</p>
+              <h3 className="case-tempus-meta-heading">{t('caseStudy.timeline')}</h3>
+              <p className="case-tempus-meta-timeline">{m.timelineRange}</p>
             </div>
           </aside>
         </div>
       </section>
 
       <CaseStudyDesignDetails
-        slides={DESIGN_DETAIL_SLIDES}
+        slides={slides}
         getSrc={designImageSrc}
         idPrefix="iqueue"
         headingId="case-iqueue-design-heading"
@@ -114,11 +94,11 @@ export function IQueueForClinicsCaseStudy() {
 
       <section className="case-iqueue-takeaways" aria-labelledby="case-iqueue-takeaways-heading">
         <h2 id="case-iqueue-takeaways-heading" className="case-tempus-intro-heading">
-          📒 Key Takeaways
+          {m.takeawaysHeading}
         </h2>
         <ul className="case-tempus-impact-list">
-          {KEY_TAKEAWAYS.map((line) => (
-            <li key={line}>{line}</li>
+          {takeaways.map((line, i) => (
+            <li key={i}>{line}</li>
           ))}
         </ul>
       </section>
