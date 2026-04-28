@@ -23,49 +23,21 @@ const TEAM = [
 
 const DESIGN_IMAGE_DIR = 'iQueue for Clinics'
 
-/** Folder on disk is `Iterations` (matches repo); keeps URLs valid on case-sensitive hosts. */
-const ITERATIONS_SUBDIR = 'Iterations'
-
 /**
- * Public assets under `iQueue for Clinics/`. Uses `encodeURI` per segment so spaces
- * become %20 but literal `+` in filenames (e.g. exports) stay as `+`. `encodeURIComponent`
- * turns `+` into `%2B`, which often fails static file lookup (broken images).
+ * Public assets under `iQueue for Clinics/`. Each path segment is `encodeURIComponent`’d
+ * so spaces become `%20` and literal `+` in filenames become `%2B`. Leaving `+` raw
+ * (`encodeURI`) breaks many production hosts/CDNs that decode `+` as a space in paths.
  */
 function iqueueAssetPath(...segments: string[]) {
-  return `/${segments.map((s) => encodeURI(s)).join('/')}`
+  const path = segments.map((s) => encodeURIComponent(s)).join('/')
+  const base = import.meta.env.BASE_URL
+  if (!base || base === '/') return `/${path}`
+  return `${base.replace(/\/$/, '')}/${path}`
 }
 
 function designImageSrc(file: string) {
   return iqueueAssetPath(DESIGN_IMAGE_DIR, file)
 }
-
-const ITERATION_IMAGES = [
-  {
-    id: 'iter-12',
-    file: 'iQueue+for+Clinics+Case+Study.012.png',
-    alt: 'iQueue for Clinics iteration — exploration 1',
-  },
-  {
-    id: 'iter-13',
-    file: 'iQueue+for+Clinics+Case+Study.013.png',
-    alt: 'iQueue for Clinics iteration — exploration 2',
-  },
-  {
-    id: 'iter-14',
-    file: 'iQueue+for+Clinics+Case+Study.014.png',
-    alt: 'iQueue for Clinics iteration — exploration 3',
-  },
-  {
-    id: 'iter-15',
-    file: 'iQueue+for+Clinics+Case+Study.015.jpg',
-    alt: 'iQueue for Clinics iteration — exploration 4',
-  },
-  {
-    id: 'iter-16',
-    file: 'iQueue+for+Clinics+Case+Study.016.png',
-    alt: 'iQueue for Clinics iteration — exploration 5',
-  },
-] as const
 
 const DESIGN_DETAIL_SLIDES = [
   {
@@ -139,26 +111,6 @@ export function IQueueForClinicsCaseStudy() {
         idPrefix="iqueue"
         headingId="case-iqueue-design-heading"
       />
-
-      <section className="case-iqueue-iterations" aria-labelledby="case-iqueue-iterations-heading">
-        <h2 id="case-iqueue-iterations-heading" className="case-tempus-intro-heading">
-          Iteration
-        </h2>
-        <ul className="case-iqueue-iterations-list">
-          {ITERATION_IMAGES.map((item) => (
-            <li key={item.id} className="case-iqueue-iterations-item">
-              <figure className="case-iqueue-iterations-figure">
-                <img
-                  src={iqueueAssetPath(DESIGN_IMAGE_DIR, ITERATIONS_SUBDIR, item.file)}
-                  alt={item.alt}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </figure>
-            </li>
-          ))}
-        </ul>
-      </section>
 
       <section className="case-iqueue-takeaways" aria-labelledby="case-iqueue-takeaways-heading">
         <h2 id="case-iqueue-takeaways-heading" className="case-tempus-intro-heading">

@@ -124,44 +124,6 @@
   height: auto;
 }
 
-/* Iteration — stacked screens from iQueue for Clinics/Iterations */
-.case-iqueue-iterations {
-  margin-top: clamp(2.25rem, 5vw, 3.5rem);
-  padding-top: clamp(2rem, 4.5vw, 3rem);
-  border-top: 1px solid var(--border);
-  width: 100%;
-  max-width: none;
-  min-width: 0;
-}
-
-.case-iqueue-iterations-list {
-  margin: 0.35rem 0 0;
-  padding: 0;
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1rem, 2.5vw, 1.35rem);
-}
-
-.case-iqueue-iterations-item {
-  margin: 0;
-  min-width: 0;
-}
-
-.case-iqueue-iterations-figure {
-  margin: 0;
-  border-radius: 0.45rem;
-  border: 1px solid var(--border);
-  overflow: hidden;
-  background: color-mix(in srgb, var(--border) 22%, var(--bg));
-}
-
-.case-iqueue-iterations-figure img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 /* Key Takeaways — same rhythm as Impact on other case studies */
 .case-iqueue-takeaways {
   margin-top: clamp(2.25rem, 5vw, 3.5rem);
