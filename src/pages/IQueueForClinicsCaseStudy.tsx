@@ -1,4 +1,5 @@
 import { useMemo } from 'react'
+import { CaseStudyConnectCta } from '../components/CaseStudyConnectCta'
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
 import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
@@ -102,6 +103,8 @@ export function IQueueForClinicsCaseStudy() {
           ))}
         </ul>
       </section>
+
+      <CaseStudyConnectCta />
 
       <CaseStudyMoreProjects excludeSlug="iqueue-for-clinics" />
     </article>

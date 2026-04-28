@@ -103,6 +103,8 @@ export const enMessages = {
     timeline: 'Timeline',
     projectDetails: 'Project details',
     impact: '🎉 Impact',
+    connectCta: 'Curious about the "how"? Let\'s connect! 😊',
+    connectCtaAria: 'Get in touch',
   },
   about: {
     photoAlt: {
@@ -179,6 +181,7 @@ export const enMessages = {
     vimeoCloseBackdrop: 'Close video',
     vimeoClose: 'Close',
     vimeoOpenVimeo: 'Open on Vimeo',
+    watchVideo: 'Watch video',
     dataVizTitle: 'The Development of Programming Language',
     dataVizDesc:
       'Interactive data visualization: explore how programming languages spread across nationality, native language, gender, and decade.',
@@ -404,6 +407,8 @@ export const zhMessages = {
     timeline: '时间线',
     projectDetails: '项目信息',
     impact: '🎉 成果',
+    connectCta: '好奇「怎么做」？欢迎联系我！😊',
+    connectCtaAria: '联系作者',
   },
   about: {
     photoAlt: {
@@ -479,6 +484,7 @@ export const zhMessages = {
     vimeoCloseBackdrop: '关闭视频',
     vimeoClose: '关闭',
     vimeoOpenVimeo: '在 Vimeo 打开',
+    watchVideo: '观看视频',
     dataVizTitle: '编程语言的发展',
     dataVizDesc:
       '交互式数据可视化：探索编程语言如何随国籍、母语、性别与年代传播。',

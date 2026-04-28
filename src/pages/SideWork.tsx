@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type CSSProperties, type KeyboardEvent as ReactKeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 import { useRevealOnScroll } from '../hooks/useRevealOnScroll'
@@ -124,12 +124,6 @@ export function SideWork() {
     }
   }, [vimeoModal])
 
-  function onVimeoCardKeyDown(e: ReactKeyboardEvent<HTMLElement>, key: SideWorkVimeoKey) {
-    if (e.key !== 'Enter' && e.key !== ' ') return
-    e.preventDefault()
-    setVimeoModal(key)
-  }
-
   const vimeoOpen = vimeoModal !== null ? SIDE_WORK_VIMEO[vimeoModal] : null
   const vimeoModalTitle = vimeoModal ? vimeoWorkTitle(vimeoModal) : ''
 
@@ -141,15 +135,7 @@ export function SideWork() {
     <article className="side-work" aria-label={t('sideWork.pageAria')}>
       <div className="side-work-unified" ref={sideWorkRevealRootRef}>
         <div className="side-work-motion-bento">
-          <figure
-            className="side-work-motion-tile side-work-motion-tile--alice side-work-motion-tile--vimeo-trigger side-work-reveal-card"
-            role="button"
-            tabIndex={0}
-            aria-label={t('sideWork.openFullVideo', { work: t('sideWork.alice') })}
-            aria-haspopup="dialog"
-            onClick={() => setVimeoModal('alice')}
-            onKeyDown={(e) => onVimeoCardKeyDown(e, 'alice')}
-          >
+          <figure className="side-work-motion-tile side-work-motion-tile--alice side-work-reveal-card">
             <div className="side-work-motion-tile-media side-work-motion-tile-media--alice">
               <div
                 className="side-work-motion-tile-alice-grid"
@@ -182,20 +168,23 @@ export function SideWork() {
             </div>
             <figcaption className="side-work-motion-tile-caption">
               <span className="side-work-bento__tag side-work-bento__tag--motion">{t('sideWork.motionTag')}</span>
-              <span className="side-work-motion-tile-title">{t('sideWork.alice')}</span>
+              <div className="side-work-dataviz__title-row side-work-motion__title-row">
+                <span className="side-work-motion-tile-title">{t('sideWork.alice')}</span>
+                <button
+                  type="button"
+                  className="side-work-dataviz__title-link"
+                  aria-haspopup="dialog"
+                  aria-label={t('sideWork.openFullVideo', { work: t('sideWork.alice') })}
+                  onClick={() => setVimeoModal('alice')}
+                >
+                  {t('sideWork.watchVideo')}
+                </button>
+              </div>
             </figcaption>
           </figure>
 
           <div className="side-work-motion-ipl-row">
-            <figure
-              className="side-work-motion-tile side-work-motion-tile--ipl side-work-motion-tile--vimeo-trigger side-work-reveal-card"
-              role="button"
-              tabIndex={0}
-              aria-label={t('sideWork.openFullVideo', { work: t('sideWork.ipl') })}
-              aria-haspopup="dialog"
-              onClick={() => setVimeoModal('ipl')}
-              onKeyDown={(e) => onVimeoCardKeyDown(e, 'ipl')}
-            >
+            <figure className="side-work-motion-tile side-work-motion-tile--ipl side-work-reveal-card">
               <div className="side-work-motion-tile-media side-work-motion-tile-media--ipl">
                 <div
                   className="side-work-motion-tile-ipl-grid"
@@ -218,7 +207,18 @@ export function SideWork() {
               </div>
               <figcaption className="side-work-motion-tile-caption">
                 <span className="side-work-bento__tag side-work-bento__tag--motion">{t('sideWork.motionTag')}</span>
-                <span className="side-work-motion-tile-title">{t('sideWork.ipl')}</span>
+                <div className="side-work-dataviz__title-row side-work-motion__title-row">
+                  <span className="side-work-motion-tile-title">{t('sideWork.ipl')}</span>
+                  <button
+                    type="button"
+                    className="side-work-dataviz__title-link"
+                    aria-haspopup="dialog"
+                    aria-label={t('sideWork.openFullVideo', { work: t('sideWork.ipl') })}
+                    onClick={() => setVimeoModal('ipl')}
+                  >
+                    {t('sideWork.watchVideo')}
+                  </button>
+                </div>
               </figcaption>
             </figure>
 
@@ -228,16 +228,7 @@ export function SideWork() {
                 const isGiveMeFish = file === 'GiveMeFish_Li.gif'
                 if (isGiveMeFish) {
                   return (
-                    <figure
-                      key={file}
-                      className="side-work-motion-tile side-work-motion-tile--vimeo-trigger side-work-reveal-card"
-                      role="button"
-                      tabIndex={0}
-                      aria-label={t('sideWork.openFullVideo', { work: title })}
-                      aria-haspopup="dialog"
-                      onClick={() => setVimeoModal('giveMeFish')}
-                      onKeyDown={(e) => onVimeoCardKeyDown(e, 'giveMeFish')}
-                    >
+                    <figure key={file} className="side-work-motion-tile side-work-reveal-card">
                       <div className="side-work-motion-tile-media">
                         <MotionGifFrame
                           file={file}
@@ -250,7 +241,18 @@ export function SideWork() {
                         <span className="side-work-bento__tag side-work-bento__tag--motion">
                           {t('sideWork.motionTag')}
                         </span>
-                        <span className="side-work-motion-tile-title">{title}</span>
+                        <div className="side-work-dataviz__title-row side-work-motion__title-row">
+                          <span className="side-work-motion-tile-title">{title}</span>
+                          <button
+                            type="button"
+                            className="side-work-dataviz__title-link"
+                            aria-haspopup="dialog"
+                            aria-label={t('sideWork.openFullVideo', { work: title })}
+                            onClick={() => setVimeoModal('giveMeFish')}
+                          >
+                            {t('sideWork.watchVideo')}
+                          </button>
+                        </div>
                       </figcaption>
                     </figure>
                   )
