@@ -18,15 +18,7 @@ export function AppRoutes() {
       <Route path="/tempus-one" element={<TempusOneCaseStudy />} />
       <Route path="/hub-online-ordering" element={<HubOnlineOrderingCaseStudy />} />
       <Route path="/iqueue-for-clinics" element={<IQueueForClinicsCaseStudy />} />
-      <Route
-        path="*"
-        element={
-          <PlaceholderPage
-            title="Page not found"
-            description="That URL does not exist on this site."
-          />
-        }
-      />
+      <Route path="*" element={<PlaceholderPage />} />
     </Routes>
   )
 }

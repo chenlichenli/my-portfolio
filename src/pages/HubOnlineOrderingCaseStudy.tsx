@@ -1,20 +1,12 @@
 import type { ReactNode } from 'react'
+import { useMemo } from 'react'
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
 import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
 import { useAustinWeather } from '../hooks/useAustinWeather'
+import { useLanguage } from '../i18n/LanguageContext'
 import './TempusOneCaseStudy.css'
 import './IQueueForClinicsCaseStudy.css'
-
-const TAGS = ['Enterprise UX', 'Scalability', 'Healthcare'] as const
-
-const SUBLINE =
-  'Redesigned and scaled online ordering experience, increasing order volume from 23K to 40K.'
-
-const INTRO =
-  'Oncology NGS testing is central to Tempus, but the ordering experience was complex and frustrating due to varying test requirements. As the business grew, adding new tests made the order form harder to maintain, challenging the goal of increasing order volume. I helped redesign a scalable order form and integrate the new xG Test.'
-
-const TEAM = ['2 Product Designers', '1 Product Manager', '6 Engineers'] as const
 
 const HUB_ORDERING_DESIGN_DIR = 'Online Ordering'
 
@@ -22,68 +14,83 @@ function hubOrderingDesignSrc(file: string) {
   return `/${encodeURI(`${HUB_ORDERING_DESIGN_DIR}/${file}`)}`
 }
 
-const HUB_DESIGN_DETAIL_SLIDES = [
-  {
-    id: 'test-selection',
-    title: 'Test selection',
-    file: 'Test Selection.png',
-    imageAlt: 'Test selection step in Hub online ordering',
-  },
-  {
-    id: 'existing-patient-autofill',
-    title: 'Existing patient auto fill',
-    file: 'Existing Patient Auto Fill.png',
-    imageAlt: 'Existing patient auto fill in Hub online ordering',
-  },
-  {
-    id: 'confirmation-page',
-    title: 'Confirmation page',
-    file: 'Confirmation Page.png',
-    imageAlt: 'Order confirmation page in Hub online ordering',
-  },
+const HUB_SLIDE_FILES = [
+  { id: 'test-selection', file: 'Test Selection.png', slideKey: 'testSelection' as const },
+  { id: 'existing-patient-autofill', file: 'Existing Patient Auto Fill.png', slideKey: 'autofill' as const },
+  { id: 'confirmation-page', file: 'Confirmation Page.png', slideKey: 'confirm' as const },
 ] as const
 
-const IMPACT_METRICS: { id: string; content: ReactNode }[] = [
-  {
-    id: 'hub-ordering-impact-failure',
-    content: (
-      <>
-        <strong className="case-tempus-impact-num">&lt;1%</strong> failure rate on order submission
-      </>
-    ),
-  },
-  {
-    id: 'hub-ordering-impact-submission-time',
-    content: (
-      <>
-        Reduce submission time from <strong className="case-tempus-impact-num">40%</strong> (
-        <strong className="case-tempus-impact-num">~9 seconds</strong> to{' '}
-        <strong className="case-tempus-impact-num">&lt;3 seconds</strong>) post national rollout
-      </>
-    ),
-  },
-  {
-    id: 'hub-ordering-impact-volume',
-    content: (
-      <>
-        Increase online order form volume from <strong className="case-tempus-impact-num">27k</strong> to{' '}
-        <strong className="case-tempus-impact-num">40k</strong> YTD in 2023
-      </>
-    ),
-  },
-]
-
 export function HubOnlineOrderingCaseStudy() {
+  const { locale, t, messages } = useLanguage()
+  const m = messages.hub
   const { tempF, weatherCode, status: weatherStatus } = useAustinWeather()
+
+  const slides = useMemo(
+    () =>
+      HUB_SLIDE_FILES.map((row) => {
+        const s = m.slides[row.slideKey]
+        return { id: row.id, title: s.title, file: row.file, imageAlt: s.alt }
+      }),
+    [m.slides],
+  )
+
+  const teamLines = [m.team0, m.team1, m.team2]
+
+  const impactMetrics: { id: string; content: ReactNode }[] = useMemo(
+    () => [
+      {
+        id: 'hub-ordering-impact-failure',
+        content: (
+          <>
+            <strong className="case-tempus-impact-num">&lt;1%</strong>
+            {locale === 'zh' ? '' : ' '}
+            {m.impact.fail}
+          </>
+        ),
+      },
+      {
+        id: 'hub-ordering-impact-submission-time',
+        content: (
+          <>
+            {m.impact.timeBefore}{' '}
+            <strong className="case-tempus-impact-num">{m.impact.timePct}</strong> {m.impact.timeMid}
+            <strong className="case-tempus-impact-num">{m.impact.timeFrom}</strong> {m.impact.timeTo}{' '}
+            <strong className="case-tempus-impact-num">{m.impact.timeFast}</strong>
+            {m.impact.timeAfter}
+          </>
+        ),
+      },
+      {
+        id: 'hub-ordering-impact-volume',
+        content:
+          locale === 'zh' ? (
+            <>
+              {m.impact.volBefore}
+              <strong className="case-tempus-impact-num">{m.impact.volFrom}</strong>
+              <strong className="case-tempus-impact-num">{m.impact.volTo}</strong>
+              {m.impact.volAfter}
+            </>
+          ) : (
+            <>
+              {m.impact.volBefore}{' '}
+              <strong className="case-tempus-impact-num">{m.impact.volFrom}</strong> to{' '}
+              <strong className="case-tempus-impact-num">{m.impact.volTo}</strong> {m.impact.volAfter}
+            </>
+          ),
+      },
+    ],
+    [locale, m.impact],
+  )
+
   return (
-    <article className="case-tempus case-with-glass-hero" aria-label="Hub Online Ordering case study">
+    <article className="case-tempus case-with-glass-hero" aria-label={m.articleAria}>
       <HeroGlassProject
         tempF={tempF}
         weatherCode={weatherCode}
         weatherStatus={weatherStatus}
-        title="Hub Online Ordering"
-        tags={TAGS}
-        subtitle={SUBLINE}
+        title={messages.projects['hub-online-ordering'].title}
+        tags={m.tags}
+        subtitle={m.subline}
         sectionBgClassName="bg-[#9D5A15]/30"
       />
 
@@ -91,29 +98,29 @@ export function HubOnlineOrderingCaseStudy() {
         <div className="case-tempus-intro-grid">
           <div className="case-tempus-intro-copy">
             <h2 id="case-hub-ordering-intro-heading" className="case-tempus-intro-heading">
-              Intro
+              {t('caseStudy.intro')}
             </h2>
-            <p className="case-tempus-intro-text">{INTRO}</p>
+            <p className="case-tempus-intro-text">{m.intro}</p>
           </div>
-          <aside className="case-tempus-meta" aria-label="Project details">
+          <aside className="case-tempus-meta" aria-label={t('caseStudy.projectDetails')}>
             <div className="case-tempus-meta-block">
-              <h3 className="case-tempus-meta-heading">Team</h3>
+              <h3 className="case-tempus-meta-heading">{t('caseStudy.team')}</h3>
               <ul className="case-tempus-meta-list">
-                {TEAM.map((line) => (
+                {teamLines.map((line) => (
                   <li key={line}>{line}</li>
                 ))}
               </ul>
             </div>
             <div className="case-tempus-meta-block case-tempus-meta-block--timeline">
-              <h3 className="case-tempus-meta-heading">Timeline</h3>
-              <p className="case-tempus-meta-timeline">Sept 2022 - April 2023</p>
+              <h3 className="case-tempus-meta-heading">{t('caseStudy.timeline')}</h3>
+              <p className="case-tempus-meta-timeline">{m.timelineRange}</p>
             </div>
           </aside>
         </div>
       </section>
 
       <CaseStudyDesignDetails
-        slides={HUB_DESIGN_DETAIL_SLIDES}
+        slides={slides}
         getSrc={hubOrderingDesignSrc}
         idPrefix="hub-ordering"
         headingId="case-hub-ordering-design-heading"
@@ -121,10 +128,10 @@ export function HubOnlineOrderingCaseStudy() {
 
       <section className="case-tempus-impact" aria-labelledby="case-hub-ordering-impact-heading">
         <h2 id="case-hub-ordering-impact-heading" className="case-tempus-intro-heading">
-          🎉 Impact
+          {t('caseStudy.impact')}
         </h2>
         <ul className="case-tempus-impact-list">
-          {IMPACT_METRICS.map(({ id, content }) => (
+          {impactMetrics.map(({ id, content }) => (
             <li key={id}>{content}</li>
           ))}
         </ul>

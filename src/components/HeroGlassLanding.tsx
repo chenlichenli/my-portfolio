@@ -11,6 +11,7 @@ import type { ReactNode } from 'react'
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import type { AustinWeatherStatus } from '../hooks/useAustinWeather'
 import { blobGradientForHex, blobGradientForTempF } from '../hooks/useAustinWeather'
+import { useLanguage } from '../i18n/LanguageContext'
 import { HeroLocationWeather } from './HeroLocationWeather'
 import { TypingEyebrow } from './TypingEyebrow'
 
@@ -500,6 +501,8 @@ const HERO_PROJECT_SECTION_MIN = HERO_PROJECT_MIN_H
 const HERO_PROJECT_CONTENT_CLASS = `relative z-[2] mx-auto flex w-full max-w-[1120px] ${HERO_PROJECT_MIN_H} flex-col items-start justify-center px-6 py-14 md:px-10 md:py-16 -translate-y-4 md:-translate-y-6`
 
 export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlassLandingProps) {
+  const { messages } = useLanguage()
+  const { hi, bio, eyebrowPhrases, eyebrowAria } = messages.hero
   return (
     <HeroGlassScene
       tempF={tempF}
@@ -509,14 +512,13 @@ export function HeroGlassLanding({ tempF, weatherCode, weatherStatus }: HeroGlas
       contentClassName={HERO_LANDING_CONTENT_CLASS}
     >
       <div className="mb-8 sm:mb-10">
-        <TypingEyebrow />
+        <TypingEyebrow phrases={eyebrowPhrases} ariaLabel={eyebrowAria} />
       </div>
       <h1 className="max-w-[24ch] text-left text-[clamp(2.1rem,5.9vw,3.85rem)] font-medium leading-[1.06] tracking-[-0.03em] text-[#1a1816]">
-        Hi, I&apos;m Li! 👋
+        {hi}
       </h1>
       <p className="mt-6 max-w-md text-left text-[1.0625rem] font-normal leading-[1.65] text-[#5c5650] md:max-w-xl md:text-[1.1875rem]">
-        A product designer focused on building intuitive tools for complex systems — from generative AI
-        to healthcare platforms.
+        {bio}
       </p>
     </HeroGlassScene>
   )
@@ -545,6 +547,7 @@ export function HeroGlassProject({
   sectionBgClassName,
   frostTintClassName,
 }: HeroGlassProjectProps) {
+  const { t } = useLanguage()
   return (
     <HeroGlassScene
       tempF={tempF}
@@ -558,7 +561,7 @@ export function HeroGlassProject({
       frostTintClassName={frostTintClassName}
     >
       <div className="mb-8 sm:mb-10">
-        <ul className="case-glass-project-tags" aria-label="Project tags">
+        <ul className="case-glass-project-tags" aria-label={t('caseStudy.projectTags')}>
           {tags.map((tag) => (
             <li key={tag} className="case-glass-project-tag">
               {tag}

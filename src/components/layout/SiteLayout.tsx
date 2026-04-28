@@ -1,6 +1,8 @@
 import type { ReactNode } from 'react'
 import { useCallback, useLayoutEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
+import { useLanguage } from '../../i18n/LanguageContext'
+import type { Locale } from '../../i18n/messages'
 import { HeaderSocialNav } from '../HeaderSocialNav'
 
 const FOOTER_EMAIL = 'mailto:designer.chenli@gmail.com'
@@ -100,7 +102,40 @@ function PrimaryNavSlide({ label }: { label: string }) {
   )
 }
 
+function LanguageToggle() {
+  const { locale, setLocale, t } = useLanguage()
+  const set = (next: Locale) => () => setLocale(next)
+  return (
+    <nav className="site-lang-nav" aria-label={t('lang.switchNav')}>
+      <div className="site-lang-icon-wrap">
+        <div className="site-lang-icon-split" role="group">
+          <button
+            type="button"
+            className={`site-lang-icon-btn${locale === 'en' ? ' site-lang-icon-btn--active' : ''}`}
+            onClick={set('en')}
+            aria-pressed={locale === 'en'}
+          >
+            {t('lang.enShort')}
+          </button>
+          <span className="site-lang-icon-sep" aria-hidden>
+            /
+          </span>
+          <button
+            type="button"
+            className={`site-lang-icon-btn${locale === 'zh' ? ' site-lang-icon-btn--active' : ''}`}
+            onClick={set('zh')}
+            aria-pressed={locale === 'zh'}
+          >
+            {t('lang.zhShort')}
+          </button>
+        </div>
+      </div>
+    </nav>
+  )
+}
+
 export function SiteLayout({ children }: { children: ReactNode }) {
+  const { t } = useLanguage()
   return (
     <div className="site">
       <header className="site-header">
@@ -110,7 +145,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
               to="/"
               className="site-logo"
               end
-              aria-label="li.design — home"
+              aria-label={t('nav.homeAria')}
             >
               <img
                 className="site-logo-img"
@@ -121,11 +156,11 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                 decoding="async"
               />
             </NavLink>
-            <nav aria-label="Primary">
+            <nav aria-label={t('nav.primary')}>
               <ul className="site-nav">
                 <li>
                   <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')} end>
-                    <PrimaryNavSlide label="Design" />
+                    <PrimaryNavSlide label={t('nav.design')} />
                   </NavLink>
                 </li>
                 <li>
@@ -133,7 +168,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                     to="/side-work"
                     className={({ isActive }) => (isActive ? 'active' : '')}
                   >
-                    <PrimaryNavSlide label="Side Work" />
+                    <PrimaryNavSlide label={t('nav.sideWork')} />
                   </NavLink>
                 </li>
                 <li>
@@ -141,13 +176,16 @@ export function SiteLayout({ children }: { children: ReactNode }) {
                     to="/about"
                     className={({ isActive }) => (isActive ? 'active' : '')}
                   >
-                    <PrimaryNavSlide label="About Me" />
+                    <PrimaryNavSlide label={t('nav.about')} />
                   </NavLink>
                 </li>
               </ul>
             </nav>
           </div>
-          <HeaderSocialNav />
+          <div className="site-header-end">
+            <HeaderSocialNav />
+            <LanguageToggle />
+          </div>
         </div>
       </header>
 
@@ -156,17 +194,17 @@ export function SiteLayout({ children }: { children: ReactNode }) {
       <footer className="site-footer">
         <hr className="site-footer-divider" aria-hidden="true" />
         <div className="site-footer-inner">
-          <nav className="site-footer-links" aria-label="Contact links">
-            <SiteFooterLink href={FOOTER_EMAIL} label="Email" />
-            <SiteFooterLink href={FOOTER_LINKEDIN} label="LinkedIn" external />
-            <SiteFooterLink href={FOOTER_RESUME} label="Resume" external />
+          <nav className="site-footer-links" aria-label={t('footer.contactLinks')}>
+            <SiteFooterLink href={FOOTER_EMAIL} label={t('footer.email')} />
+            <SiteFooterLink href={FOOTER_LINKEDIN} label={t('footer.linkedin')} external />
+            <SiteFooterLink href={FOOTER_RESUME} label={t('footer.resume')} external />
           </nav>
           <div className="site-footer-stack">
             <span className="site-footer-copyright">© Li Chen {new Date().getFullYear()}</span>
             <span className="site-footer-meta">
-              <span>Vibe coded 4/2026</span>
-              <span aria-hidden="true">with</span>
-              <span aria-label="love">💜</span>
+              <span>{t('footer.vibeCoded')}</span>
+              <span aria-hidden="true">{t('footer.with')}</span>
+              <span aria-label={t('footer.love')}>💜</span>
             </span>
           </div>
         </div>
