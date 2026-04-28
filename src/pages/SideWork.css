@@ -64,6 +64,21 @@
   text-underline-offset: 0.15em;
 }
 
+button.side-work-dataviz__title-link {
+  font-family: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  text-align: inherit;
+}
+
+button.side-work-dataviz__title-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
 @media (max-width: 540px) {
   .side-work-dataviz__title-row {
     grid-template-columns: 1fr;
@@ -333,13 +348,13 @@
   color: var(--text-heading);
 }
 
-.side-work-motion-tile--vimeo-trigger {
-  cursor: pointer;
+.side-work-motion__title-row {
+  width: 100%;
 }
 
-.side-work-motion-tile--vimeo-trigger:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 3px;
+.side-work-motion__title-row .side-work-motion-tile-title {
+  margin: 0;
+  min-width: 0;
 }
 
 .side-work-bento__tag {

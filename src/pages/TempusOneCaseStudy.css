@@ -313,6 +313,24 @@
   color: #4972ff;
 }
 
+.case-connect-cta {
+  margin-top: clamp(1.5rem, 4vw, 2.25rem);
+  width: 100%;
+  max-width: 38rem;
+  min-width: 0;
+}
+
+/* Match `.case-tempus-impact-list li` */
+.case-connect-cta__text {
+  margin: 0;
+  font-family: var(--font-ui);
+  font-size: clamp(0.98rem, 1.35vw, 1.06rem);
+  font-weight: 400;
+  line-height: 1.55;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
 /* Cross-links to other case studies — rhythm matches impact / problem */
 .case-more-projects {
   margin-top: clamp(2.25rem, 5vw, 3.5rem);

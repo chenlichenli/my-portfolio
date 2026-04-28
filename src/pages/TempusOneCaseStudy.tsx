@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
+import { CaseStudyConnectCta } from '../components/CaseStudyConnectCta'
 import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
 import { useAustinWeather } from '../hooks/useAustinWeather'
@@ -226,6 +227,8 @@ export function TempusOneCaseStudy() {
           ))}
         </ul>
       </section>
+
+      <CaseStudyConnectCta />
 
       <CaseStudyMoreProjects excludeSlug="tempus-one" />
     </article>

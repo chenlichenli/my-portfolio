@@ -1,5 +1,6 @@
 import type { ReactNode } from 'react'
 import { useMemo } from 'react'
+import { CaseStudyConnectCta } from '../components/CaseStudyConnectCta'
 import { CaseStudyDesignDetails } from '../components/CaseStudyDesignDetails'
 import { CaseStudyMoreProjects } from '../components/CaseStudyMoreProjects'
 import { HeroGlassProject } from '../components/HeroGlassLanding'
@@ -136,6 +137,8 @@ export function HubOnlineOrderingCaseStudy() {
           ))}
         </ul>
       </section>
+
+      <CaseStudyConnectCta />
 
       <CaseStudyMoreProjects excludeSlug="hub-online-ordering" />
     </article>
