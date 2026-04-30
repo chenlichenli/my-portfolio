@@ -24,7 +24,7 @@ export const enMessages = {
     resume: 'Resume',
     with: 'with',
     love: 'love',
-    vibeCoded: 'Vibe coded 4/2026',
+    vibeCoded: 'Vibe coded 5/2026',
   },
   social: {
     linkedin: 'LinkedIn profile',
@@ -188,6 +188,8 @@ export const enMessages = {
     dataVizIframe:
       'The Development of Programming Language — interactive visualization',
     motionTag: 'Motion graphics',
+    vibeCodingTag: 'Vibe Coding',
+    typoSandIframe: 'TypoSand — embedded site',
     alice: 'Alice Wonderland',
     ipl: 'I am Programming Language',
     giveMeFish: 'Give Me Fish',
@@ -328,7 +330,7 @@ export const zhMessages = {
     resume: '简历',
     with: '使用',
     love: '喜爱',
-    vibeCoded: '2026 年 4 月 Vibe coding',
+    vibeCoded: '2026 年 5 月 Vibe coding',
   },
   social: {
     linkedin: '领英个人主页',
@@ -490,6 +492,8 @@ export const zhMessages = {
       '交互式数据可视化：探索编程语言如何随国籍、母语、性别与年代传播。',
     dataVizIframe: '《编程语言的发展》交互式可视化',
     motionTag: '动效与图形',
+    vibeCodingTag: 'Vibe 编程',
+    typoSandIframe: 'TypoSand — 嵌入站点',
     alice: 'Alice Wonderland',
     ipl: 'I am Programming Language',
     giveMeFish: 'Give Me Fish',

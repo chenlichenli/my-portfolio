@@ -109,6 +109,23 @@ button.side-work-dataviz__title-link:focus-visible {
   border: 0;
 }
 
+/* Shorter embed (e.g. TypoSand) — default frame is tall for full data viz */
+.side-work-dataviz__frame--compact {
+  height: min(46vh, 28rem);
+  min-height: 14rem;
+}
+
+.side-work-typo-sand__bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
 /* Bento grid: each card shrinks to the GIF’s aspect + size (capped by column width) */
 .side-work-motion-bento {
   display: grid;
@@ -376,6 +393,11 @@ button.side-work-dataviz__title-link:focus-visible {
 .side-work-bento__tag--dataviz {
   color: #3d52c9;
   background: var(--accent-soft);
+}
+
+.side-work-bento__tag--vibe {
+  color: #6b2d8a;
+  background: rgba(139, 92, 246, 0.14);
 }
 
 .side-work-bento__cell {

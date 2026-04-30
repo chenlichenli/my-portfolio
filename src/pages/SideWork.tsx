@@ -21,7 +21,7 @@ const SIDE_WORK_VIMEO: Record<SideWorkVimeoKey, { page: string; embed: string }>
   },
 }
 
-export type SideWorkTag = 'Motion graphics' | 'Data viz'
+export type SideWorkTag = 'Motion graphics' | 'Data viz' | 'Vibe Coding'
 
 /** Single-GIF tiles (excludes composite groups below). */
 const MOTION_GRAPHICS_GIFS = ['GiveMeFish_Li.gif', 'TomatoUFO.gif'] as const
@@ -44,6 +44,9 @@ const MOTION_GRAPHICS_BASE = '/Motion Graphics'
 
 /** Embedded interactive piece (GitHub Pages). */
 const DATA_VIZ_URL = 'https://chenlichenli.github.io/DVIA_F18_Social/'
+
+/** TypoSand — vibe-coded web piece (Vercel). */
+const TYPOSAND_URL = 'https://typo-sands.vercel.app/'
 
 /** Display titles that shouldn’t be derived from the filename alone. */
 const MOTION_GIF_TITLE_OVERRIDES: Record<string, string> = {
@@ -134,6 +137,29 @@ export function SideWork() {
     <>
     <article className="side-work" aria-label={t('sideWork.pageAria')}>
       <div className="side-work-unified" ref={sideWorkRevealRootRef}>
+        <div className="side-work-dataviz-card side-work-bento__cell side-work-reveal-card">
+          <div className="side-work-typo-sand__bar">
+            <span className="side-work-bento__tag side-work-bento__tag--vibe">{t('sideWork.vibeCodingTag')}</span>
+            <a
+              className="side-work-dataviz__title-link"
+              href={TYPOSAND_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('sideWork.dataVizOpenTab')}
+            </a>
+          </div>
+          <div className="side-work-dataviz__frame side-work-dataviz__frame--compact">
+            <iframe
+              src={TYPOSAND_URL}
+              title={t('sideWork.typoSandIframe')}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              allow="fullscreen"
+            />
+          </div>
+        </div>
+
         <div className="side-work-motion-bento">
           <figure className="side-work-motion-tile side-work-motion-tile--alice side-work-reveal-card">
             <div className="side-work-motion-tile-media side-work-motion-tile-media--alice">
