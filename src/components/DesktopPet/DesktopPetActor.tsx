@@ -6,6 +6,7 @@ import {
   behaviorDef,
   petDisplaySize,
   petSpriteSrc,
+  preloadPetSprites,
 } from './petConfigs'
 import { useDesktopPets } from './DesktopPetsContext'
 import { directionAwayFrom, type PetAabb } from './petCollision'
@@ -49,10 +50,20 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   const collisionCooldownUntilRef = useRef(0)
   const edgeHideCooldownUntilRef = useRef(0)
   const landGroundCyclesRef = useRef(0)
+  const frameRef = useRef(1)
+  const spriteRef = useRef<HTMLImageElement>(null)
   const [behavior, setBehavior] = useState<PetBehaviorId>('walk')
   const [direction, setDirection] = useState<-1 | 1>(1)
-  const [frame, setFrame] = useState(1)
   const [isDragging, setIsDragging] = useState(false)
+
+  const applyFrame = useCallback(
+    (frame: number, behaviorId: PetBehaviorId = behaviorRef.current) => {
+      frameRef.current = frame
+      const img = spriteRef.current
+      if (img) img.src = petSpriteSrc(config, behaviorId, frame)
+    },
+    [config],
+  )
   const displaySize = Math.round(basePetSize * (config.behaviorDisplayScale?.[behavior] ?? 1))
   const initialX = initialXForRatio(config.initialXRatio, basePetSize)
 
@@ -152,7 +163,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       const next = config.pickNext()
       behaviorRef.current = next
       setBehavior(next)
-      setFrame(1)
+      applyFrame(1)
       if (
         config.locomotion.includes(next) &&
         (!config.locomotion.includes(current) || next === 'jump')
@@ -161,7 +172,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       }
       scheduleNext()
     }, config.stateDuration(current))
-  }, [clearSchedule, config])
+  }, [clearSchedule, config, applyFrame])
 
   const triggerHideAtEdge = useCallback(() => {
     if (!config.hideAtViewportEdge || !config.behaviors.hide) return
@@ -172,7 +183,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     clearSchedule()
     behaviorRef.current = 'hide'
     setBehavior('hide')
-    setFrame(1)
+    applyFrame(1)
     scheduleNext()
   }, [config, clearSchedule, scheduleNext])
 
@@ -193,7 +204,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       clearSchedule()
       behaviorRef.current = 'jump'
       setBehavior('jump')
-      setFrame(1)
+      applyFrame(1)
       scheduleNext()
     },
     [config, clearSchedule, scheduleNext],
@@ -216,7 +227,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       clearSchedule()
       behaviorRef.current = 'walk'
       setBehavior('walk')
-      setFrame(1)
+      applyFrame(1)
       scheduleNext()
     },
     [config, clearSchedule, scheduleNext],
@@ -281,7 +292,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     clearSchedule()
     behaviorRef.current = 'rolling'
     setBehavior('rolling')
-    setFrame(1)
+    applyFrame(1)
     scheduleNext()
   }, [clearSchedule, scheduleNext, config])
 
@@ -290,7 +301,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     clearSchedule()
     behaviorRef.current = 'annoyed'
     setBehavior('annoyed')
-    setFrame(1)
+    applyFrame(1)
     scheduleNext()
   }, [clearSchedule, scheduleNext, config])
 
@@ -305,16 +316,21 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     clearSchedule()
     behaviorRef.current = 'pickup'
     setBehavior('pickup')
-  }, [clearSchedule])
+    applyFrame(1, 'pickup')
+  }, [clearSchedule, applyFrame])
 
   const exitPickup = useCallback(() => {
     if (behaviorRef.current !== 'pickup') return
     const restored = behaviorBeforeDragRef.current
     behaviorRef.current = restored
     setBehavior(restored)
-    setFrame(1)
+    applyFrame(1)
     scheduleNext()
-  }, [scheduleNext])
+  }, [scheduleNext, applyFrame])
+
+  useEffect(() => {
+    applyFrame(frameRef.current, behavior)
+  }, [behavior, applyFrame])
 
   const isAirborne = useCallback(
     () => bottomRef.current > floorBottom + LAND_GROUND_EPS,
@@ -324,10 +340,10 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   const finishLand = useCallback(() => {
     behaviorRef.current = 'walk'
     setBehavior('walk')
-    setFrame(1)
+    applyFrame(1)
     applyFloorPosition(xRef.current)
     scheduleNext()
-  }, [scheduleNext, applyFloorPosition])
+  }, [scheduleNext, applyFloorPosition, applyFrame])
 
   const enterLand = useCallback(() => {
     const landDef = config.behaviors.land
@@ -338,8 +354,8 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     setBehavior('land')
     const airFrame = landDef.landAirHoldFrame ?? 4
     const groundStart = landDef.landGroundStartFrame ?? 5
-    setFrame(isAirborne() ? airFrame : groundStart)
-  }, [config, clearSchedule, isAirborne])
+    applyFrame(isAirborne() ? airFrame : groundStart)
+  }, [config, clearSchedule, isAirborne, applyFrame])
 
   const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
     if (e.button !== 0 || !petRef.current) return
@@ -417,7 +433,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
 
   useLayoutEffect(() => {
     enforceBounds()
-  }, [x, bottom, behavior, direction, frame, enforceBounds])
+  }, [x, bottom, behavior, direction, displaySize, enforceBounds])
 
   useEffect(() => {
     behaviorRef.current = behavior
@@ -436,14 +452,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   }, [applyFloorPosition])
 
   useEffect(() => {
-    for (const id of config.preloadBehaviors ?? []) {
-      const def = config.behaviors[id]
-      if (!def) continue
-      for (let i = 1; i <= def.frameCount; i += 1) {
-        const img = new Image()
-        img.src = petSpriteSrc(config, id, i)
-      }
-    }
+    preloadPetSprites(config)
   }, [config])
 
   useEffect(() => {
@@ -459,21 +468,21 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
 
     const frameId = window.setInterval(() => {
       if (!isAirborne()) {
-        setFrame((prev) => {
-          let next = prev < groundStart ? groundStart : prev + 1
-          if (next > landDef.frameCount) {
-            landGroundCyclesRef.current += 1
-            if (landGroundCyclesRef.current >= groundCycles && !finishQueued) {
-              finishQueued = true
-              window.setTimeout(() => finishLand(), 0)
-              return landDef.frameCount
-            }
-            return groundStart
+        const prev = frameRef.current
+        let next = prev < groundStart ? groundStart : prev + 1
+        if (next > landDef.frameCount) {
+          landGroundCyclesRef.current += 1
+          if (landGroundCyclesRef.current >= groundCycles && !finishQueued) {
+            finishQueued = true
+            window.setTimeout(() => finishLand(), 0)
+            next = landDef.frameCount
+          } else {
+            next = groundStart
           }
-          return next
-        })
+        }
+        applyFrame(next)
       } else {
-        setFrame(airFrame)
+        applyFrame(airFrame)
       }
     }, landDef.frameMs)
 
@@ -500,6 +509,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     finishLand,
     applyFloorPosition,
     applyFreePosition,
+    applyFrame,
   ])
 
   useEffect(() => {
@@ -509,31 +519,31 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     if (!def) return undefined
 
     if (def.playOnce) {
-      setFrame(1)
+      applyFrame(1)
       let current = 1
       const holdFrame = def.holdFrame ?? def.frameCount
       const id = window.setInterval(() => {
         if (current >= def.frameCount) {
           window.clearInterval(id)
-          setFrame(holdFrame)
+          applyFrame(holdFrame)
           return
         }
         current += 1
-        setFrame(current)
+        applyFrame(current)
       }, def.frameMs)
       return () => window.clearInterval(id)
     }
 
     if (def.loop && def.landAirHoldFrame == null) {
-      setFrame(1)
+      applyFrame(1)
       const id = window.setInterval(() => {
-        setFrame((prev) => (prev % def.frameCount) + 1)
+        applyFrame((frameRef.current % def.frameCount) + 1)
       }, def.frameMs)
       return () => window.clearInterval(id)
     }
 
     return undefined
-  }, [behavior, config])
+  }, [behavior, config, applyFrame])
 
   useEffect(() => {
     if (!config.locomotion.includes(behavior)) return undefined
@@ -616,13 +626,6 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     return () => cancelAnimationFrame(rafId)
   }, [behavior, direction, config, applyFloorPosition, triggerHideAtEdge])
 
-  const spriteKey =
-    behavior === 'pickup'
-      ? 'pickup'
-      : behavior === 'eat'
-        ? `eat-${frame}`
-        : `${behavior}-${frame}`
-
   return (
     <div
       ref={petRef}
@@ -649,12 +652,13 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       aria-label={ariaLabel}
     >
       <img
+        ref={spriteRef}
         className="desktop-pet__sprite"
-        key={spriteKey}
-        src={petSpriteSrc(config, behavior, frame)}
+        src={petSpriteSrc(config, 'walk', 1)}
         alt=""
         width={SPRITE_PX}
         height={SPRITE_PX}
+        decoding="sync"
         draggable={false}
       />
     </div>

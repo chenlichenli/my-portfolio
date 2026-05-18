@@ -357,3 +357,21 @@ export function behaviorDef(
   if (behavior === 'pickup') return config.pickup
   return config.behaviors[behavior]
 }
+
+/** Decode all behavior frames up front to avoid flashes on state / frame changes. */
+export function preloadPetSprites(config: DesktopPetConfig): void {
+  const seen = new Set<string>()
+  const load = (behavior: PetBehaviorId, def: PetBehaviorDef) => {
+    for (let i = 1; i <= def.frameCount; i += 1) {
+      const url = petSpriteSrc(config, behavior, i)
+      if (seen.has(url)) continue
+      seen.add(url)
+      const img = new Image()
+      img.src = url
+    }
+  }
+  load('pickup', config.pickup)
+  for (const [id, def] of Object.entries(config.behaviors)) {
+    load(id, def)
+  }
+}
