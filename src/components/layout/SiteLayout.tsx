@@ -3,6 +3,8 @@ import { useCallback, useLayoutEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import type { Locale } from '../../i18n/messages'
+import { DesktopPetShell } from '../DesktopPet/DesktopPet'
+import { DesktopPetFooterToggles } from '../DesktopPet/DesktopPetFooterToggles'
 import { HeaderSocialNav } from '../HeaderSocialNav'
 
 const FOOTER_EMAIL = 'mailto:designer.chenli@gmail.com'
@@ -137,6 +139,7 @@ function LanguageToggle() {
 export function SiteLayout({ children }: { children: ReactNode }) {
   const { t } = useLanguage()
   return (
+    <DesktopPetShell>
     <div className="site">
       <header className="site-header">
         <div className="site-header-inner">
@@ -199,6 +202,7 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <SiteFooterLink href={FOOTER_LINKEDIN} label={t('footer.linkedin')} external />
             <SiteFooterLink href={FOOTER_RESUME} label={t('footer.resume')} external />
           </nav>
+          <DesktopPetFooterToggles />
           <div className="site-footer-stack">
             <span className="site-footer-copyright">© Li Chen {new Date().getFullYear()}</span>
             <span className="site-footer-meta">
@@ -210,5 +214,6 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         </div>
       </footer>
     </div>
+    </DesktopPetShell>
   )
 }

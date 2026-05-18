@@ -17,6 +17,10 @@ export const enMessages = {
     homeAria: 'li.design — home',
     externalLinks: 'External links',
   },
+  pet: {
+    aria: 'Desktop pet Vinny — click to roll, drag to pick up',
+    nalaAria: 'Desktop pet Nala — click when annoyed, drag to pick up',
+  },
   footer: {
     contactLinks: 'Contact links',
     email: 'Email',
@@ -25,6 +29,13 @@ export const enMessages = {
     with: 'with',
     love: 'love',
     vibeCoded: 'Vibe coded 5/2026',
+    pet: {
+      controls: 'Desktop pets',
+      vinnyHi: 'Say Hi to Vinny',
+      vinnyBye: 'Say bye to Vinny',
+      nalaHi: 'Say Hi to Nala',
+      nalaBye: 'Say bye to Nala',
+    },
   },
   social: {
     linkedin: 'LinkedIn profile',
@@ -323,6 +334,10 @@ export const zhMessages = {
     homeAria: 'li.design — 首页',
     externalLinks: '外部链接',
   },
+  pet: {
+    aria: '桌面电子宠物 Vinny — 点击翻滚，拖动拎起',
+    nalaAria: '桌面电子宠物 Nala — 点击表示烦躁，拖动拎起',
+  },
   footer: {
     contactLinks: '联系方式',
     email: '邮箱',
@@ -331,6 +346,13 @@ export const zhMessages = {
     with: '使用',
     love: '喜爱',
     vibeCoded: '2026 年 5 月 Vibe coding',
+    pet: {
+      controls: '桌面宠物',
+      vinnyHi: '和 Vinny 打个招呼',
+      vinnyBye: '和 Vinny 说再见',
+      nalaHi: '和 Nala 打个招呼',
+      nalaBye: '和 Nala 说再见',
+    },
   },
   social: {
     linkedin: '领英个人主页',
