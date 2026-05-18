@@ -1,8 +1,8 @@
 .desktop-pet {
   position: fixed;
   z-index: 40;
-  width: var(--pet-size, 168px);
-  height: var(--pet-size, 168px);
+  width: var(--pet-size, 134px);
+  height: var(--pet-size, 134px);
   pointer-events: auto;
   cursor: grab;
   touch-action: none;

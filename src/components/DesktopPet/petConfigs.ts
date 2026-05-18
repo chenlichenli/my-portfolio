@@ -1,5 +1,5 @@
 export const SPRITE_PX = 320
-export const VINNY_PET_SCALE = 0.524
+export const VINNY_PET_SCALE = 0.524 * 0.8
 export const NALA_PET_SCALE = VINNY_PET_SCALE * 0.7 * 1.2
 export const BOTTOM_OFFSET = 0
 
