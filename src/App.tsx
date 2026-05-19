@@ -3,6 +3,7 @@ import './App.css'
 import { ScrollToTop, SiteLayout } from './components/layout'
 import { LanguageProvider } from './i18n/LanguageContext'
 import { AppRoutes } from './routes'
+import { Analytics } from "@vercel/analytics/next"
 
 export default function App() {
   return (
@@ -13,6 +14,7 @@ export default function App() {
           <AppRoutes />
         </SiteLayout>
       </LanguageProvider>
+      <Analytics />
     </BrowserRouter>
   )
 }
