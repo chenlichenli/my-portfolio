@@ -90,8 +90,20 @@ const HIDE_SIT_MAX_MS = 8000
 
 const EAT_ASSET_VERSION = '2'
 
+import { hasRoomToWalk, isMobilePetLayout } from './petViewport'
+
 /** Random idle weight; other behaviors keep their prior ratios within the remainder. */
 const IDLE_PICK_WEIGHT = 0.6
+
+/** Share of non-idle time for walk (desktop ≈43% of non-idle; mobile much lower). */
+const VINNY_WALK_NUM = { desktop: 0.3, mobile: 0.08 }
+const VINNY_SLEEP_NUM = { desktop: 0.3, mobile: 0.26 }
+const VINNY_EAT_NUM = { desktop: 0.1, mobile: 0.06 }
+const NALA_WALK_NUM = { desktop: 0.3, mobile: 0.08 }
+const NALA_SLEEP_NUM = { desktop: 0.3, mobile: 0.26 }
+
+const MOBILE_WALK_MIN_MS = 1400
+const MOBILE_WALK_MAX_MS = 2600
 
 function idleStateDuration(frameCount: number, frameMs: number): number {
   return (
@@ -101,22 +113,57 @@ function idleStateDuration(frameCount: number, frameMs: number): number {
   )
 }
 
-function vinnyPickNext(): PetBehaviorId {
+function pickWeightedBehavior(weights: {
+  walk: number
+  sleep: number
+  eat?: number
+}): PetBehaviorId {
+  const walkN = weights.walk
+  const sleepN = weights.sleep
+  const eatN = weights.eat ?? 0
+  const denom = walkN + sleepN + eatN
+  const walk = (walkN / denom) * (1 - IDLE_PICK_WEIGHT)
+  const sleep = (sleepN / denom) * (1 - IDLE_PICK_WEIGHT)
+  const eat = eatN > 0 ? (eatN / denom) * (1 - IDLE_PICK_WEIGHT) : 0
+
   const r = Math.random()
-  const walk = (0.3 / 0.7) * (1 - IDLE_PICK_WEIGHT)
-  const sleep = walk
   if (r < walk) return 'walk'
   if (r < walk + IDLE_PICK_WEIGHT) return 'idle'
+  if (eat > 0) {
+    if (r < walk + IDLE_PICK_WEIGHT + sleep) return 'sleep'
+    return 'eat'
+  }
   if (r < walk + IDLE_PICK_WEIGHT + sleep) return 'sleep'
-  return 'eat'
+  return 'sleep'
+}
+
+function resolveWalk(
+  behavior: PetBehaviorId,
+  petScale: number,
+): PetBehaviorId {
+  if (behavior !== 'walk') return behavior
+  if (!isMobilePetLayout()) return behavior
+  if (hasRoomToWalk(petDisplaySize(petScale))) return behavior
+  return 'idle'
+}
+
+function vinnyPickNext(): PetBehaviorId {
+  const mobile = isMobilePetLayout()
+  const pick = pickWeightedBehavior({
+    walk: mobile ? VINNY_WALK_NUM.mobile : VINNY_WALK_NUM.desktop,
+    sleep: mobile ? VINNY_SLEEP_NUM.mobile : VINNY_SLEEP_NUM.desktop,
+    eat: mobile ? VINNY_EAT_NUM.mobile : VINNY_EAT_NUM.desktop,
+  })
+  return resolveWalk(pick, VINNY_PET_SCALE)
 }
 
 function nalaPickNext(): PetBehaviorId {
-  const r = Math.random()
-  const walk = (0.3 / 0.6) * (1 - IDLE_PICK_WEIGHT)
-  if (r < walk) return 'walk'
-  if (r < walk + IDLE_PICK_WEIGHT) return 'idle'
-  return 'sleep'
+  const mobile = isMobilePetLayout()
+  const pick = pickWeightedBehavior({
+    walk: mobile ? NALA_WALK_NUM.mobile : NALA_WALK_NUM.desktop,
+    sleep: mobile ? NALA_SLEEP_NUM.mobile : NALA_SLEEP_NUM.desktop,
+  })
+  return resolveWalk(pick, NALA_PET_SCALE)
 }
 
 function vinnyStateDuration(behavior: PetBehaviorId): number {
@@ -131,6 +178,9 @@ function vinnyStateDuration(behavior: PetBehaviorId): number {
     )
   }
   if (behavior === 'walk') {
+    if (isMobilePetLayout()) {
+      return MOBILE_WALK_MIN_MS + Math.random() * (MOBILE_WALK_MAX_MS - MOBILE_WALK_MIN_MS)
+    }
     return WALK_MIN_MS + Math.random() * (WALK_MAX_MS - WALK_MIN_MS)
   }
   if (behavior === 'eat') {
@@ -158,6 +208,9 @@ function nalaStateDuration(behavior: PetBehaviorId): number {
     )
   }
   if (behavior === 'walk') {
+    if (isMobilePetLayout()) {
+      return MOBILE_WALK_MIN_MS + Math.random() * (MOBILE_WALK_MAX_MS - MOBILE_WALK_MIN_MS)
+    }
     return WALK_MIN_MS + Math.random() * (WALK_MAX_MS - WALK_MIN_MS)
   }
   if (behavior === 'annoyed') {
