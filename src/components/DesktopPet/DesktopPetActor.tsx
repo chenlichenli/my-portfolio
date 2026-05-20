@@ -1,13 +1,16 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { DesktopPetConfig, PetBehaviorId } from './petConfigs'
 import {
-  DRAG_CLICK_THRESHOLD,
   SPRITE_PX,
   behaviorDef,
   petDisplaySize,
   petSpriteSrc,
   preloadPetSprites,
 } from './petConfigs'
+import {
+  getDragClickThreshold,
+  isMobilePetLayout,
+} from './petViewport'
 import { useDesktopPets } from './DesktopPetsContext'
 import { directionAwayFrom, type PetAabb } from './petCollision'
 import './DesktopPet.css'
@@ -52,6 +55,8 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   const landGroundCyclesRef = useRef(0)
   const frameRef = useRef(1)
   const spriteRef = useRef<HTMLImageElement>(null)
+  const pointerKindRef = useRef<'mouse' | 'touch' | 'pen'>('mouse')
+  const locomotionFrameRef = useRef(0)
   const [behavior, setBehavior] = useState<PetBehaviorId>('walk')
   const [direction, setDirection] = useState<-1 | 1>(1)
   const [isDragging, setIsDragging] = useState(false)
@@ -370,29 +375,45 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     applyFrame(isAirborne() ? airFrame : groundStart)
   }, [config, clearSchedule, isAirborne, applyFrame])
 
-  const handlePointerDown = useCallback((e: React.PointerEvent<HTMLDivElement>) => {
-    if (e.button !== 0 || !petRef.current) return
+  const handlePointerDown = useCallback(
+    (e: React.PointerEvent<HTMLDivElement>) => {
+      if (!petRef.current) return
+      if (e.pointerType === 'mouse' && e.button !== 0) return
+      if (e.pointerType === 'touch' && e.button !== 0) return
 
-    behaviorBeforeDragRef.current = behaviorRef.current
-    const rect = petRef.current.getBoundingClientRect()
-    dragOffsetRef.current = {
-      x: e.clientX - rect.left,
-      yFromBottom: rect.bottom - e.clientY,
-    }
-    dragStartRef.current = { x: e.clientX, y: e.clientY }
-    dragMovedRef.current = false
-    isDraggingRef.current = true
-    setIsDragging(true)
-    petRef.current.setPointerCapture(e.pointerId)
-  }, [])
+      pointerKindRef.current =
+        e.pointerType === 'touch' || e.pointerType === 'pen' ? e.pointerType : 'mouse'
+
+      if (e.pointerType === 'touch') {
+        e.preventDefault()
+      }
+
+      behaviorBeforeDragRef.current = behaviorRef.current
+      const rect = petRef.current.getBoundingClientRect()
+      dragOffsetRef.current = {
+        x: e.clientX - rect.left,
+        yFromBottom: rect.bottom - e.clientY,
+      }
+      dragStartRef.current = { x: e.clientX, y: e.clientY }
+      dragMovedRef.current = false
+      isDraggingRef.current = true
+      setIsDragging(true)
+      petRef.current.setPointerCapture(e.pointerId)
+    },
+    [],
+  )
 
   const handlePointerMove = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
       if (!isDraggingRef.current) return
 
+      if (e.pointerType === 'touch') {
+        e.preventDefault()
+      }
+
       const dx = e.clientX - dragStartRef.current.x
       const dy = e.clientY - dragStartRef.current.y
-      if (Math.hypot(dx, dy) > DRAG_CLICK_THRESHOLD) {
+      if (Math.hypot(dx, dy) > getDragClickThreshold()) {
         if (!dragMovedRef.current) {
           dragMovedRef.current = true
           enterPickup()
@@ -424,12 +445,15 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
           exitPickup()
         }
       }
+
+      dragMovedRef.current = false
     },
     [exitPickup, enterLand, applyFreePosition, config.landOnDragRelease, config.behaviors.land],
   )
 
   const handleClick = useCallback(() => {
     if (dragMovedRef.current) return
+    if (pointerKindRef.current === 'touch') return
     triggerClickBehavior()
   }, [triggerClickBehavior])
 
@@ -577,7 +601,17 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
         return
       }
 
-      const speed = config.locomotionSpeed?.[behavior] ?? WALK_SPEED
+      const mobile = isMobilePetLayout()
+      if (mobile) {
+        locomotionFrameRef.current += 1
+        if (locomotionFrameRef.current % 2 !== 0) {
+          rafId = requestAnimationFrame(tick)
+          return
+        }
+      }
+
+      const speed =
+        (config.locomotionSpeed?.[behavior] ?? WALK_SPEED) * (mobile && behavior === 'walk' ? 0.65 : 1)
       let nextX = xRef.current + direction * speed
       const el = petRef.current
 
@@ -614,6 +648,16 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
         return
       }
 
+      if (hitViewportEdge && mobile && behavior === 'walk') {
+        applyFloorPosition(nextX)
+        clearSchedule()
+        behaviorRef.current = 'idle'
+        setBehavior('idle')
+        applyFrame(1)
+        scheduleNext()
+        return
+      }
+
       if (el) {
         const rect = el.getBoundingClientRect()
         const style = getComputedStyle(el)
@@ -645,7 +689,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
 
     rafId = requestAnimationFrame(tick)
     return () => cancelAnimationFrame(rafId)
-  }, [behavior, direction, config, applyFloorPosition, triggerHideAtEdge])
+  }, [behavior, direction, config, applyFloorPosition, triggerHideAtEdge, clearSchedule, scheduleNext, applyFrame])
 
   return (
     <div
@@ -660,6 +704,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       onPointerCancel={handlePointerUp}
+      onLostPointerCapture={handlePointerUp}
       onClick={config.onClick ? handleClick : undefined}
       onKeyDown={
         config.onClick
