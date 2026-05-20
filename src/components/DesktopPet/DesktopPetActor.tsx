@@ -514,14 +514,17 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
         ensureFloorLocked()
       }
 
-      dragMovedRef.current = false
+      /* Keep dragMovedRef true until click runs — mouse fires click after pointerup and
+         would otherwise trigger roll/annoyed and cancel land (touch has no click). */
     },
     [exitPickup, enterLand, syncPositionFromDom, ensureFloorLocked, config.landOnDragRelease, config.behaviors.land],
   )
 
   const handleClick = useCallback(() => {
-    if (dragMovedRef.current) return
-    if (pointerKindRef.current === 'touch') return
+    if (dragMovedRef.current) {
+      dragMovedRef.current = false
+      return
+    }
     triggerClickBehavior()
   }, [triggerClickBehavior])
 
