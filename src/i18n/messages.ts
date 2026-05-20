@@ -15,6 +15,8 @@ export const enMessages = {
     sideWork: 'Side Work',
     about: 'About Me',
     homeAria: 'li.design — home',
+    menuToggle: 'Open site menu',
+    menuClose: 'Close site menu',
     externalLinks: 'External links',
   },
   pet: {
@@ -332,6 +334,8 @@ export const zhMessages = {
     sideWork: '副业创作',
     about: '关于我',
     homeAria: 'li.design — 首页',
+    menuToggle: '打开网站菜单',
+    menuClose: '关闭网站菜单',
     externalLinks: '外部链接',
   },
   pet: {

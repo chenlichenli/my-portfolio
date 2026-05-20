@@ -8,11 +8,15 @@ import {
   preloadPetSprites,
 } from './petConfigs'
 import {
+  bottomFromRect,
   getDragClickThreshold,
+  getViewportHeight,
+  getViewportWidth,
   isMobilePetLayout,
+  petTouchesViewportGround,
 } from './petViewport'
 import { useDesktopPets } from './DesktopPetsContext'
-import { directionAwayFrom, type PetAabb } from './petCollision'
+import { directionAwayFrom, PET_FLOOR_EPS, type PetAabb } from './petCollision'
 import './DesktopPet.css'
 
 const WALK_SPEED = 2
@@ -22,7 +26,8 @@ function pickDirection(): -1 | 1 {
 }
 
 function initialXForRatio(ratio: number, petSize: number): number {
-  return Math.max(0, Math.min(window.innerWidth - petSize, ratio * window.innerWidth - petSize / 2))
+  const vw = getViewportWidth()
+  return Math.max(0, Math.min(vw - petSize, ratio * vw - petSize / 2))
 }
 
 type DesktopPetActorProps = {
@@ -35,7 +40,7 @@ const NALA_JUMP_COLLISION_MS = 2400
 const VINNY_WALK_COLLISION_MS = 2000
 const LAND_FALL_SPEED = 8
 const LAND_GROUND_CYCLES = 2
-const LAND_GROUND_EPS = 2
+const LAND_GROUND_EPS = PET_FLOOR_EPS
 
 export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   const { register, resolvePosition } = useDesktopPets()
@@ -53,6 +58,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   const collisionCooldownUntilRef = useRef(0)
   const edgeHideCooldownUntilRef = useRef(0)
   const landGroundCyclesRef = useRef(0)
+  const landHasTouchedGroundRef = useRef(false)
   const frameRef = useRef(1)
   const spriteRef = useRef<HTMLImageElement>(null)
   const pointerKindRef = useRef<'mouse' | 'touch' | 'pen'>('mouse')
@@ -85,8 +91,10 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     const size = displaySizeRef.current
     const el = petRef.current
     if (!el) {
-      const maxX = Math.max(0, window.innerWidth - size)
-      const maxBottom = Math.max(0, window.innerHeight - size)
+      const vw = getViewportWidth()
+      const vh = getViewportHeight()
+      const maxX = Math.max(0, vw - size)
+      const maxBottom = Math.max(0, vh - size)
       return {
         x: Math.max(0, Math.min(left, maxX)),
         bottom: Math.max(0, Math.min(bottomPos, maxBottom)),
@@ -110,12 +118,14 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     }
 
     if (predicted.left < 0) nextLeft -= predicted.left
-    if (predicted.right > window.innerWidth) {
-      nextLeft -= predicted.right - window.innerWidth
+    const vw = getViewportWidth()
+    const vh = getViewportHeight()
+    if (predicted.right > vw) {
+      nextLeft -= predicted.right - vw
     }
     if (predicted.top < 0) nextBottom += predicted.top
-    if (predicted.bottom > window.innerHeight) {
-      nextBottom -= predicted.bottom - window.innerHeight
+    if (predicted.bottom > vh) {
+      nextBottom -= predicted.bottom - vh
     }
 
     return {
@@ -133,10 +143,12 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     let dBottom = 0
 
     if (rect.left < 0) dx = -rect.left
-    if (rect.right > window.innerWidth) dx = window.innerWidth - rect.right
+    const vw = getViewportWidth()
+    const vh = getViewportHeight()
+    if (rect.right > vw) dx = vw - rect.right
     if (rect.top < 0) dBottom = rect.top
-    if (rect.bottom > window.innerHeight) {
-      dBottom = -(rect.bottom - window.innerHeight)
+    if (rect.bottom > vh) {
+      dBottom = -(rect.bottom - vh)
     }
 
     const EPS = 1
@@ -177,6 +189,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   const scheduleNext = useCallback(() => {
     clearSchedule()
     const current = behaviorRef.current
+    if (current === 'land' || current === 'pickup') return
     timeoutRef.current = window.setTimeout(() => {
       const next = config.pickNext()
       behaviorRef.current = next
@@ -272,13 +285,22 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     [config, triggerJumpAwayFrom, triggerWalkAwayFrom],
   )
 
+  type CommitOptions = { lockFloor?: number; horizontalOnly?: boolean }
+
   const commitPosition = useCallback(
-    (nextX: number, nextBottom: number) => {
+    (nextX: number, nextBottom: number, options?: CommitOptions) => {
       const clamped = clampPosition(nextX, nextBottom)
+      const resolveOpts =
+        options?.lockFloor != null
+          ? { lockFloor: options.lockFloor }
+          : options?.horizontalOnly
+            ? { horizontalOnly: true as const }
+            : undefined
       const resolved = resolvePosition(
         config.id,
         { x: clamped.x, bottom: clamped.bottom, petSize: displaySizeRef.current },
         handlePeerContact,
+        resolveOpts,
       )
       const final = clampPosition(resolved.x, resolved.bottom)
       xRef.current = final.x
@@ -289,18 +311,34 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     [clampPosition, resolvePosition, config.id, handlePeerContact],
   )
 
+  const syncPositionFromDom = useCallback(() => {
+    const el = petRef.current
+    if (!el) return
+
+    const rect = el.getBoundingClientRect()
+    const vw = getViewportWidth()
+    const size = displaySizeRef.current
+    const syncedX = Math.max(0, Math.min(Math.round(rect.left), Math.max(0, vw - size)))
+    const syncedBottom = bottomFromRect(rect, floorBottom)
+
+    xRef.current = syncedX
+    bottomRef.current = syncedBottom
+    setX(syncedX)
+    setBottom(syncedBottom)
+  }, [floorBottom])
+
   /** Autonomous movement — window bottom is the ground. */
   const applyFloorPosition = useCallback(
     (nextX: number) => {
-      commitPosition(nextX, floorBottom)
+      commitPosition(nextX, floorBottom, { lockFloor: floorBottom })
     },
     [commitPosition, floorBottom],
   )
 
   /** Drag / pickup — free placement in the viewport. */
   const applyFreePosition = useCallback(
-    (nextX: number, nextBottom: number) => {
-      commitPosition(nextX, nextBottom)
+    (nextX: number, nextBottom: number, options?: Pick<CommitOptions, 'horizontalOnly'>) => {
+      commitPosition(nextX, nextBottom, options)
     },
     [commitPosition],
   )
@@ -328,6 +366,28 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     else if (config.onClick === 'annoyed') triggerAnnoyed()
   }, [config.onClick, triggerRolling, triggerAnnoyed])
 
+  useEffect(() => {
+    if (behavior === 'land' || behavior === 'pickup') return
+    applyFrame(frameRef.current, behavior)
+  }, [behavior, applyFrame])
+
+  const isAirborne = useCallback(() => {
+    if (petTouchesViewportGround(petRef.current)) return false
+    return bottomRef.current > floorBottom + LAND_GROUND_EPS
+  }, [floorBottom])
+
+  const touchesGround = useCallback(() => petTouchesViewportGround(petRef.current), [])
+
+  /** Keep autonomous pets on the window floor (pickup / land / drag exempt). */
+  const ensureFloorLocked = useCallback(() => {
+    if (isDraggingRef.current) return
+    const current = behaviorRef.current
+    if (current === 'pickup' || current === 'land') return
+    if (isAirborne()) {
+      applyFloorPosition(xRef.current)
+    }
+  }, [applyFloorPosition, isAirborne])
+
   const enterPickup = useCallback(() => {
     if (behaviorRef.current === 'pickup') return
     behaviorBeforeDragRef.current = behaviorRef.current
@@ -344,21 +404,13 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     setBehavior(restored)
     applyFrame(1)
     scheduleNext()
-  }, [scheduleNext, applyFrame])
-
-  useEffect(() => {
-    applyFrame(frameRef.current, behavior)
-  }, [behavior, applyFrame])
-
-  const isAirborne = useCallback(
-    () => bottomRef.current > floorBottom + LAND_GROUND_EPS,
-    [floorBottom],
-  )
+    ensureFloorLocked()
+  }, [scheduleNext, applyFrame, ensureFloorLocked])
 
   const finishLand = useCallback(() => {
     behaviorRef.current = 'walk'
     setBehavior('walk')
-    applyFrame(1)
+    applyFrame(1, 'walk')
     applyFloorPosition(xRef.current)
     scheduleNext()
   }, [scheduleNext, applyFloorPosition, applyFrame])
@@ -368,12 +420,27 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     if (!landDef) return
     clearSchedule()
     landGroundCyclesRef.current = 0
+    landHasTouchedGroundRef.current = false
     behaviorRef.current = 'land'
     setBehavior('land')
     const airFrame = landDef.landAirHoldFrame ?? 4
-    const groundStart = landDef.landGroundStartFrame ?? 5
-    applyFrame(isAirborne() ? airFrame : groundStart)
-  }, [config, clearSchedule, isAirborne, applyFrame])
+    applyFrame(airFrame, 'land')
+  }, [config, clearSchedule, applyFrame])
+
+  const landRuntimeRef = useRef({
+    finishLand,
+    applyFloorPosition,
+    applyFreePosition,
+    applyFrame,
+    touchesGround,
+  })
+  landRuntimeRef.current = {
+    finishLand,
+    applyFloorPosition,
+    applyFreePosition,
+    applyFrame,
+    touchesGround,
+  }
 
   const handlePointerDown = useCallback(
     (e: React.PointerEvent<HTMLDivElement>) => {
@@ -422,7 +489,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
 
       applyFreePosition(
         e.clientX - dragOffsetRef.current.x,
-        window.innerHeight - e.clientY - dragOffsetRef.current.yFromBottom,
+        getViewportHeight() - e.clientY - dragOffsetRef.current.yFromBottom,
       )
     },
     [applyFreePosition, enterPickup],
@@ -437,18 +504,19 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       setIsDragging(false)
       petRef.current?.releasePointerCapture(e.pointerId)
 
-      if (wasDrag) {
-        applyFreePosition(xRef.current, bottomRef.current)
-        if (config.landOnDragRelease && config.behaviors.land) {
-          enterLand()
-        } else {
-          exitPickup()
-        }
+      syncPositionFromDom()
+
+      if (config.landOnDragRelease && config.behaviors.land) {
+        enterLand()
+      } else if (wasDrag) {
+        exitPickup()
+      } else {
+        ensureFloorLocked()
       }
 
       dragMovedRef.current = false
     },
-    [exitPickup, enterLand, applyFreePosition, config.landOnDragRelease, config.behaviors.land],
+    [exitPickup, enterLand, syncPositionFromDom, ensureFloorLocked, config.landOnDragRelease, config.behaviors.land],
   )
 
   const handleClick = useCallback(() => {
@@ -468,17 +536,29 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
 
   useLayoutEffect(() => {
     enforceBounds()
-  }, [behavior, displaySize, enforceBounds])
+    ensureFloorLocked()
+  }, [behavior, displaySize, enforceBounds, ensureFloorLocked])
+
+  useLayoutEffect(() => {
+    if (behavior !== 'land' || landHasTouchedGroundRef.current) return
+    const landDef = config.behaviors.land
+    if (!landDef) return
+    const airFrame = landDef.landAirHoldFrame ?? 4
+    applyFrame(airFrame, 'land')
+  }, [behavior, displaySize, config.behaviors.land, applyFrame])
 
   useEffect(() => {
-    const onResize = () => enforceBounds()
+    const onResize = () => {
+      enforceBounds()
+      ensureFloorLocked()
+    }
     window.addEventListener('resize', onResize, { passive: true })
     window.visualViewport?.addEventListener('resize', onResize, { passive: true })
     return () => {
       window.removeEventListener('resize', onResize)
       window.visualViewport?.removeEventListener('resize', onResize)
     }
-  }, [enforceBounds])
+  }, [enforceBounds, ensureFloorLocked])
 
   useEffect(() => {
     behaviorRef.current = behavior
@@ -509,35 +589,51 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     const airFrame = landDef.landAirHoldFrame ?? 4
     const groundStart = landDef.landGroundStartFrame ?? 5
     const groundCycles = landDef.landGroundCycles ?? LAND_GROUND_CYCLES
+    const landBehavior = 'land' as const
+    const landStartedAt = performance.now()
+    const minAirMs = 120
     let finishQueued = false
 
+    landRuntimeRef.current.applyFrame(airFrame, landBehavior)
+
     const frameId = window.setInterval(() => {
-      if (!isAirborne()) {
-        const prev = frameRef.current
-        let next = prev < groundStart ? groundStart : prev + 1
-        if (next > landDef.frameCount) {
-          landGroundCyclesRef.current += 1
-          if (landGroundCyclesRef.current >= groundCycles && !finishQueued) {
-            finishQueued = true
-            window.setTimeout(() => finishLand(), 0)
-            next = landDef.frameCount
-          } else {
-            next = groundStart
-          }
-        }
-        applyFrame(next)
-      } else {
-        applyFrame(airFrame)
+      const runtime = landRuntimeRef.current
+      if (!landHasTouchedGroundRef.current) {
+        runtime.applyFrame(airFrame, landBehavior)
+        return
       }
+
+      const prev = frameRef.current
+      let next = prev < groundStart ? groundStart : prev + 1
+      if (next > landDef.frameCount) {
+        landGroundCyclesRef.current += 1
+        if (landGroundCyclesRef.current >= groundCycles && !finishQueued) {
+          finishQueued = true
+          window.setTimeout(() => runtime.finishLand(), landDef.frameMs)
+          next = landDef.frameCount
+        } else {
+          next = groundStart
+        }
+      }
+      runtime.applyFrame(next, landBehavior)
     }, landDef.frameMs)
 
     let rafId = 0
     const fallTick = () => {
-      if (bottomRef.current <= floorBottom + LAND_GROUND_EPS) {
-        applyFloorPosition(xRef.current)
-      } else {
-        applyFreePosition(xRef.current, bottomRef.current - LAND_FALL_SPEED)
+      if (landHasTouchedGroundRef.current) return
+
+      const runtime = landRuntimeRef.current
+      const airElapsed = performance.now() - landStartedAt >= minAirMs
+
+      if (airElapsed && runtime.touchesGround()) {
+        landHasTouchedGroundRef.current = true
+        runtime.applyFloorPosition(xRef.current)
+        return
       }
+
+      runtime.applyFreePosition(xRef.current, bottomRef.current - LAND_FALL_SPEED, {
+        horizontalOnly: true,
+      })
       rafId = requestAnimationFrame(fallTick)
     }
     rafId = requestAnimationFrame(fallTick)
@@ -546,19 +642,13 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       window.clearInterval(frameId)
       cancelAnimationFrame(rafId)
     }
-  }, [
-    behavior,
-    config,
-    floorBottom,
-    isAirborne,
-    finishLand,
-    applyFloorPosition,
-    applyFreePosition,
-    applyFrame,
-  ])
+  }, [behavior, config.id, config.behaviors.land])
 
   useEffect(() => {
     if (behavior === 'pickup' || behavior === 'land') return undefined
+    if (!config.locomotion.includes(behavior)) {
+      ensureFloorLocked()
+    }
 
     const def = behaviorDef(config, behavior)
     if (!def) return undefined
@@ -588,7 +678,22 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
     }
 
     return undefined
-  }, [behavior, config, applyFrame])
+  }, [behavior, config, applyFrame, ensureFloorLocked])
+
+  useEffect(() => {
+    if (config.locomotion.includes(behavior)) return undefined
+    if (behavior === 'pickup' || behavior === 'land') return undefined
+
+    let guardId = 0
+    const guardFloor = () => {
+      if (!isDraggingRef.current && behaviorRef.current === behavior) {
+        ensureFloorLocked()
+      }
+      guardId = requestAnimationFrame(guardFloor)
+    }
+    guardId = requestAnimationFrame(guardFloor)
+    return () => cancelAnimationFrame(guardId)
+  }, [behavior, config.locomotion, ensureFloorLocked])
 
   useEffect(() => {
     if (!config.locomotion.includes(behavior)) return undefined
@@ -616,7 +721,8 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       const el = petRef.current
 
       const size = displaySizeRef.current
-      const maxX = Math.max(0, window.innerWidth - size)
+      const vw = getViewportWidth()
+      const maxX = Math.max(0, vw - size)
       let hitViewportEdge = false
 
       if (el) {
@@ -630,7 +736,7 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
         if (predictedLeft < 0) {
           hitViewportEdge = true
           nextX = 0
-        } else if (predictedRight > window.innerWidth) {
+        } else if (predictedRight > vw) {
           hitViewportEdge = true
           nextX = maxX
         }
@@ -669,9 +775,9 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
         if (predictedLeft < 0) {
           setDirection(1)
           nextX -= predictedLeft
-        } else if (predictedRight > window.innerWidth) {
+        } else if (predictedRight > vw) {
           setDirection(-1)
-          nextX -= predictedRight - window.innerWidth
+          nextX -= predictedRight - vw
         }
       } else {
         if (nextX <= 0) {
