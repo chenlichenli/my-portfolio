@@ -120,8 +120,11 @@ export function CaseStudyDesignDetails({
               ref={setFigureRef(index)}
               id={`${idPrefix}-figure-${slide.id}`}
               className="case-iqueue-design-figure"
-              aria-labelledby={`${idPrefix}-nav-${slide.id}`}
+              aria-labelledby={`${idPrefix}-label-${slide.id}`}
             >
+              <p id={`${idPrefix}-label-${slide.id}`} className="case-iqueue-design-figure-label">
+                {slide.title}
+              </p>
               <img
                 src={getSrc(slide.file)}
                 alt={slide.imageAlt}
