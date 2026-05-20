@@ -3,7 +3,6 @@ import { useCallback, useLayoutEffect, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import type { Locale } from '../../i18n/messages'
-import { DesktopPetShell } from '../DesktopPet/DesktopPet'
 import { DesktopPetFooterToggles } from '../DesktopPet/DesktopPetFooterToggles'
 import { HeaderSocialNav } from '../HeaderSocialNav'
 
@@ -139,7 +138,6 @@ function LanguageToggle() {
 export function SiteLayout({ children }: { children: ReactNode }) {
   const { t } = useLanguage()
   return (
-    <DesktopPetShell>
     <div className="site">
       <header className="site-header">
         <div className="site-header-inner">
@@ -214,6 +212,5 @@ export function SiteLayout({ children }: { children: ReactNode }) {
         </div>
       </footer>
     </div>
-    </DesktopPetShell>
   )
 }
