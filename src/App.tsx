@@ -1,20 +1,23 @@
 import { BrowserRouter } from 'react-router-dom'
 import './App.css'
+import { DesktopPetShell } from './components/DesktopPet/DesktopPet'
 import { ScrollToTop, SiteLayout } from './components/layout'
+import { VercelAnalytics } from './components/VercelAnalytics'
 import { LanguageProvider } from './i18n/LanguageContext'
 import { AppRoutes } from './routes'
-import { Analytics } from "@vercel/analytics/next"
 
 export default function App() {
   return (
     <BrowserRouter>
       <LanguageProvider>
-        <ScrollToTop />
-        <SiteLayout>
-          <AppRoutes />
-        </SiteLayout>
+        <DesktopPetShell>
+          <ScrollToTop />
+          <SiteLayout>
+            <AppRoutes />
+          </SiteLayout>
+        </DesktopPetShell>
       </LanguageProvider>
-      <Analytics />
+      {import.meta.env.PROD ? <VercelAnalytics /> : null}
     </BrowserRouter>
   )
 }
