@@ -20,6 +20,7 @@
 @media (max-width: 720px) {
   .case-iqueue-design-layout {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 }
 
@@ -27,10 +28,56 @@
 .case-iqueue-design-layout--spy .case-iqueue-design-titles {
   position: sticky;
   top: clamp(4.25rem, 11vh, 5.75rem);
+  z-index: 3;
   align-self: start;
   max-height: calc(100dvh - 6.5rem);
   overflow-y: auto;
   padding-bottom: 0.25rem;
+  background: var(--bg);
+}
+
+@media (max-width: 720px) {
+  /* Sticky title list overlaps images on narrow screens — static horizontal tabs + per-figure labels */
+  .case-iqueue-design-layout--spy .case-iqueue-design-titles {
+    position: static;
+    top: auto;
+    z-index: auto;
+    max-height: none;
+    overflow-x: auto;
+    overflow-y: visible;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+    margin: 0 0 0.15rem;
+    padding: 0 0 0.65rem;
+    background: transparent;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+  }
+
+  .case-iqueue-design-tab {
+    flex: 0 0 auto;
+    width: auto;
+    white-space: nowrap;
+    padding: 0.4rem 0.7rem;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    margin-left: 0;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--border) 40%, transparent);
+  }
+
+  .case-iqueue-design-tab--active {
+    border-left-color: transparent;
+    border-bottom-color: var(--accent);
+    padding-left: 0.7rem;
+    margin-left: 0;
+    background: color-mix(in srgb, var(--accent) 12%, var(--bg));
+  }
+
+  .case-iqueue-design-figure {
+    scroll-margin-top: 1.25rem;
+  }
 }
 
 .case-iqueue-design-stack {
@@ -53,6 +100,25 @@
   display: block;
   width: 100%;
   height: auto;
+}
+
+/* Shown on mobile only — desktop uses sticky nav labels */
+.case-iqueue-design-figure-label {
+  display: none;
+  margin: 0 0 0.55rem;
+  padding: 0 0.1rem;
+  font-family: var(--font-ui);
+  font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+}
+
+@media (max-width: 720px) {
+  .case-iqueue-design-figure-label {
+    display: block;
+  }
 }
 
 .case-iqueue-design-titles {
