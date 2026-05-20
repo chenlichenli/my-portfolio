@@ -295,7 +295,7 @@ export const VINNY_PET: DesktopPetConfig = {
       frameMs: LAND_FRAME_MS,
       landAirHoldFrame: VINNY_LAND_AIR_HOLD_FRAME,
       landGroundStartFrame: VINNY_LAND_GROUND_START_FRAME,
-      landGroundCycles: 1,
+      landGroundCycles: 2,
       folder: 'land',
       fileName: (n) => `land${n}.png`,
     },

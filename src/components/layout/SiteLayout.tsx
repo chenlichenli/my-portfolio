@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
-import { useCallback, useLayoutEffect, useRef } from 'react'
-import { NavLink } from 'react-router-dom'
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { NavLink, useLocation } from 'react-router-dom'
 import { useLanguage } from '../../i18n/LanguageContext'
 import type { Locale } from '../../i18n/messages'
 import { DesktopPetFooterToggles } from '../DesktopPet/DesktopPetFooterToggles'
@@ -103,6 +103,44 @@ function PrimaryNavSlide({ label }: { label: string }) {
   )
 }
 
+function PrimaryNav({ onNavigate }: { onNavigate?: () => void }) {
+  const { t } = useLanguage()
+  return (
+    <nav aria-label={t('nav.primary')}>
+      <ul className="site-nav">
+        <li>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            end
+            onClick={onNavigate}
+          >
+            <PrimaryNavSlide label={t('nav.design')} />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/side-work"
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            onClick={onNavigate}
+          >
+            <PrimaryNavSlide label={t('nav.sideWork')} />
+          </NavLink>
+        </li>
+        <li>
+          <NavLink
+            to="/about"
+            className={({ isActive }) => (isActive ? 'active' : '')}
+            onClick={onNavigate}
+          >
+            <PrimaryNavSlide label={t('nav.about')} />
+          </NavLink>
+        </li>
+      </ul>
+    </nav>
+  )
+}
+
 function LanguageToggle() {
   const { locale, setLocale, t } = useLanguage()
   const set = (next: Locale) => () => setLocale(next)
@@ -137,51 +175,78 @@ function LanguageToggle() {
 
 export function SiteLayout({ children }: { children: ReactNode }) {
   const { t } = useLanguage()
+  const location = useLocation()
+  const headerRef = useRef<HTMLElement>(null)
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
+
+  useEffect(() => {
+    setMobileNavOpen(false)
+  }, [location.pathname])
+
+  useEffect(() => {
+    if (!mobileNavOpen) return undefined
+
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target
+      if (!(target instanceof Node)) return
+      if (headerRef.current?.contains(target)) return
+      setMobileNavOpen(false)
+    }
+
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => document.removeEventListener('pointerdown', onPointerDown)
+  }, [mobileNavOpen])
+
+  const closeMobileNav = useCallback(() => setMobileNavOpen(false), [])
+
+  const logoImg = (
+    <img
+      className="site-logo-img"
+      src="/logo.png"
+      alt=""
+      width={1024}
+      height={1024}
+      decoding="async"
+    />
+  )
+
   return (
     <div className="site">
-      <header className="site-header">
+      <header
+        ref={headerRef}
+        className={`site-header${mobileNavOpen ? ' site-header--nav-open' : ''}`}
+      >
         <div className="site-header-inner">
-          <div className="site-header-start">
-            <NavLink
-              to="/"
-              className="site-logo"
-              end
-              aria-label={t('nav.homeAria')}
+          <div className="site-header-leading">
+            <div className="site-header-start">
+              <NavLink
+                to="/"
+                className="site-logo site-logo--desktop"
+                end
+                aria-label={t('nav.homeAria')}
+              >
+                {logoImg}
+              </NavLink>
+              <button
+                type="button"
+                className="site-logo site-logo-toggle"
+                aria-expanded={mobileNavOpen}
+                aria-controls="site-primary-nav"
+                aria-label={mobileNavOpen ? t('nav.menuClose') : t('nav.menuToggle')}
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setMobileNavOpen((open) => !open)
+                }}
+              >
+                {logoImg}
+              </button>
+            </div>
+            <div
+              id="site-primary-nav"
+              className={`site-nav-panel${mobileNavOpen ? ' site-nav-panel--open' : ''}`}
             >
-              <img
-                className="site-logo-img"
-                src="/logo.png"
-                alt=""
-                width={1024}
-                height={1024}
-                decoding="async"
-              />
-            </NavLink>
-            <nav aria-label={t('nav.primary')}>
-              <ul className="site-nav">
-                <li>
-                  <NavLink to="/" className={({ isActive }) => (isActive ? 'active' : '')} end>
-                    <PrimaryNavSlide label={t('nav.design')} />
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/side-work"
-                    className={({ isActive }) => (isActive ? 'active' : '')}
-                  >
-                    <PrimaryNavSlide label={t('nav.sideWork')} />
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
-                    to="/about"
-                    className={({ isActive }) => (isActive ? 'active' : '')}
-                  >
-                    <PrimaryNavSlide label={t('nav.about')} />
-                  </NavLink>
-                </li>
-              </ul>
-            </nav>
+              <PrimaryNav onNavigate={closeMobileNav} />
+            </div>
           </div>
           <div className="site-header-end">
             <HeaderSocialNav />
@@ -200,14 +265,16 @@ export function SiteLayout({ children }: { children: ReactNode }) {
             <SiteFooterLink href={FOOTER_LINKEDIN} label={t('footer.linkedin')} external />
             <SiteFooterLink href={FOOTER_RESUME} label={t('footer.resume')} external />
           </nav>
-          <DesktopPetFooterToggles />
-          <div className="site-footer-stack">
-            <span className="site-footer-copyright">© Li Chen {new Date().getFullYear()}</span>
-            <span className="site-footer-meta">
-              <span>{t('footer.vibeCoded')}</span>
-              <span aria-hidden="true">{t('footer.with')}</span>
-              <span aria-label={t('footer.love')}>💜</span>
-            </span>
+          <div className="site-footer-bottom">
+            <DesktopPetFooterToggles />
+            <div className="site-footer-stack">
+              <span className="site-footer-copyright">© Li Chen {new Date().getFullYear()}</span>
+              <span className="site-footer-meta">
+                <span>{t('footer.vibeCoded')}</span>
+                <span aria-hidden="true">{t('footer.with')}</span>
+                <span aria-label={t('footer.love')}>💜</span>
+              </span>
+            </div>
           </div>
         </div>
       </footer>

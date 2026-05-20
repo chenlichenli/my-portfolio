@@ -28,6 +28,7 @@ type DesktopPetsContextValue = {
     proposed: PetAabb,
     /** Return false to pass through the other pet (no separation). */
     onContact?: (otherId: string, other: PetAabb) => boolean | void,
+    options?: { lockFloor?: number; horizontalOnly?: boolean },
   ) => PetAabb
 }
 
@@ -48,11 +49,15 @@ export function DesktopPetsProvider({ children }: { children: ReactNode }) {
       selfId: string,
       proposed: PetAabb,
       onContact?: (otherId: string, other: PetAabb) => boolean | void,
+      options?: { lockFloor?: number; horizontalOnly?: boolean },
     ): PetAabb => {
       const self = petsRef.current.get(selfId)
       if (!self) return proposed
 
+      const floorBottom = options?.lockFloor
+      const horizontalOnly = options?.horizontalOnly === true
       let { x, bottom, petSize } = proposed
+      if (floorBottom != null) bottom = floorBottom
 
       for (const [otherId, other] of petsRef.current) {
         if (otherId === selfId) continue
@@ -70,7 +75,9 @@ export function DesktopPetsProvider({ children }: { children: ReactNode }) {
         if (shouldSeparate === false) continue
 
         x = separatePetX(selfPose, otherPose, x)
-        bottom = separatePetBottom({ ...selfPose, x }, otherPose, bottom)
+        if (floorBottom == null && !horizontalOnly) {
+          bottom = separatePetBottom({ ...selfPose, x }, otherPose, bottom, 0)
+        }
 
         const separatedSelf = { x, bottom, petSize }
         if (petAabbOverlap(separatedSelf, otherPose)) {
