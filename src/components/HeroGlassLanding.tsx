@@ -227,6 +227,14 @@ export function HeroGlassScene({
 
   const lastRef = useRef({ x: 0, y: 0, t: 0 })
   const idleRef = useRef<ReturnType<typeof setTimeout>>(undefined)
+  /** Touch scroll fires pointermove on the hero — skip blob physics on coarse pointers. */
+  const pointerMotionEnabledRef = useRef(true)
+
+  useEffect(() => {
+    const coarse = window.matchMedia('(pointer: coarse)').matches
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    pointerMotionEnabledRef.current = !coarse && !reduced
+  }, [reduceMotion])
 
   useEffect(() => {
     return () => {
@@ -282,7 +290,7 @@ export function HeroGlassScene({
 
   const onPointerMove = useCallback(
     (e: React.PointerEvent<HTMLElement>) => {
-      if (reduceMotion) return
+      if (reduceMotion || !pointerMotionEnabledRef.current || e.pointerType !== 'mouse') return
       const el = sectionRef.current
       if (!el) return
       const rect = el.getBoundingClientRect()
@@ -323,7 +331,7 @@ export function HeroGlassScene({
   }, [rawStretch])
 
   const onSeparationFrame = useCallback(() => {
-    if (reduceMotion) return
+    if (reduceMotion || !pointerMotionEnabledRef.current) return
 
     const mx = mouseX.get()
     const my = mouseY.get()
@@ -383,7 +391,7 @@ export function HeroGlassScene({
       ref={sectionRef}
       onPointerMove={onPointerMove}
       onPointerLeave={onPointerLeave}
-      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden ${sectionBgClassName} selection:bg-[#5271FF]/25 ${sectionClassName}`.trim()}
+      className={`relative ${breakoutLayout} ${sectionMinClass} overflow-hidden touch-pan-y ${sectionBgClassName} selection:bg-[#5271FF]/25 ${sectionClassName}`.trim()}
     >
       <div className="absolute inset-0">
         {reduceMotion ? (

@@ -66,12 +66,14 @@ html[lang='zh-Hans'] body {
 
 html {
   height: 100%;
+  overflow-x: clip;
 }
 
 body {
   margin: 0;
   min-height: 100%;
   min-height: 100svh;
+  overflow-x: clip;
 }
 
 /* Flex column so `.site` can flex:1 and fill the viewport between header/footer on short pages */

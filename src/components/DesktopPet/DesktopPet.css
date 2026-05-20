@@ -5,7 +5,7 @@
   height: var(--pet-size, 134px);
   pointer-events: auto;
   cursor: grab;
-  touch-action: none;
+  touch-action: manipulation;
   user-select: none;
   transform-origin: bottom left;
 }
@@ -16,6 +16,7 @@
 
 .desktop-pet--dragging {
   cursor: grabbing;
+  touch-action: none;
 }
 
 .desktop-pet__sprite {

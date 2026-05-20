@@ -134,8 +134,21 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
       dBottom = -(rect.bottom - window.innerHeight)
     }
 
-    if (dx !== 0) setX((v) => v + dx)
-    if (dBottom !== 0) setBottom((v) => v + dBottom)
+    const EPS = 1
+    if (Math.abs(dx) >= EPS) {
+      const nextX = Math.round(xRef.current + dx)
+      if (nextX !== xRef.current) {
+        xRef.current = nextX
+        setX(nextX)
+      }
+    }
+    if (Math.abs(dBottom) >= EPS) {
+      const nextBottom = Math.round(bottomRef.current + dBottom)
+      if (nextBottom !== bottomRef.current) {
+        bottomRef.current = nextBottom
+        setBottom(nextBottom)
+      }
+    }
   }, [])
 
   const clearSchedule = useCallback(() => {
@@ -421,19 +434,27 @@ export function DesktopPetActor({ config, ariaLabel }: DesktopPetActorProps) {
   }, [triggerClickBehavior])
 
   useEffect(() => {
-    const onResize = () => enforceBounds()
-    window.addEventListener('resize', onResize)
-    return () => window.removeEventListener('resize', onResize)
-  }, [enforceBounds])
-
-  useEffect(() => {
     xRef.current = x
     bottomRef.current = bottom
   }, [x, bottom])
 
   useLayoutEffect(() => {
     enforceBounds()
-  }, [x, bottom, behavior, direction, displaySize, enforceBounds])
+  }, [enforceBounds])
+
+  useLayoutEffect(() => {
+    enforceBounds()
+  }, [behavior, displaySize, enforceBounds])
+
+  useEffect(() => {
+    const onResize = () => enforceBounds()
+    window.addEventListener('resize', onResize, { passive: true })
+    window.visualViewport?.addEventListener('resize', onResize, { passive: true })
+    return () => {
+      window.removeEventListener('resize', onResize)
+      window.visualViewport?.removeEventListener('resize', onResize)
+    }
+  }, [enforceBounds])
 
   useEffect(() => {
     behaviorRef.current = behavior
