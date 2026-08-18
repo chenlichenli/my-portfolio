@@ -18,6 +18,19 @@ const PROJECT_CARDS = [
   { slug: 'iqueue-for-clinics' as const, heroFile: 'hero image_iQueue for Clinics.png', caseStudy: true },
 ] as const
 
+const CAREER_START = { year: 2019, month: 5 } // June 2019
+
+function yearsOfExperience(now = new Date()) {
+  let years = now.getFullYear() - CAREER_START.year
+  if (
+    now.getMonth() < CAREER_START.month ||
+    (now.getMonth() === CAREER_START.month && now.getDate() < 1)
+  ) {
+    years -= 1
+  }
+  return years
+}
+
 function useEqualProjectCardSizes(containerRef: RefObject<HTMLElement | null>) {
   useLayoutEffect(() => {
     const root = containerRef.current
@@ -78,6 +91,7 @@ export function Home() {
     () => blobColorForTempF(weatherStatus === 'ready' ? tempF : null),
     [weatherStatus, tempF],
   )
+  const experienceYears = useMemo(() => yearsOfExperience(), [])
   useEqualProjectCardSizes(projectsRef)
   useRevealOnScroll(projectsRef, '.project-card')
 
@@ -108,7 +122,7 @@ export function Home() {
             <span className="home-stat-colon" aria-hidden="true">
               :
             </span>
-            <span className="home-stat-value">6</span>
+            <span className="home-stat-value">{experienceYears}</span>
           </p>
         </div>
 

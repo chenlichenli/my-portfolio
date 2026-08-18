@@ -44,7 +44,7 @@ export function MrdTestingJourneyCaseStudy() {
         title={project.title.replace('\n', ' ')}
         tags={m.tags}
         subtitle={m.subline}
-        sectionBgClassName="bg-[#4A7C8C]/22"
+        sectionBgClassName="bg-[#001F59]/20"
       />
 
       <section className="case-tempus-intro" aria-labelledby="case-mrd-intro-heading">

@@ -300,6 +300,7 @@
   letter-spacing: -0.03em;
   color: var(--text-heading);
   margin: 0 0 0.65rem;
+  white-space: nowrap;
 }
 
 .project-card-tags {
