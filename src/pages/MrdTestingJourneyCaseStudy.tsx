@@ -22,6 +22,11 @@ const MRD_REFRAMING_IMAGES = {
   result: 'test result.png',
 } as const
 
+const MRD_DESIGNING_IMAGES = {
+  resultTypes: 'Different result types.gif',
+  variableCanvas: 'Variable canvas.gif',
+} as const
+
 export function MrdTestingJourneyCaseStudy() {
   const { t, messages } = useLanguage()
   const m = messages.mrd
@@ -67,13 +72,19 @@ export function MrdTestingJourneyCaseStudy() {
         </div>
       </section>
 
-      <section className="case-tempus-problem" aria-labelledby="case-mrd-problem-heading">
+      <section
+        className="case-tempus-problem case-mrd-my-role"
+        aria-labelledby="case-mrd-problem-heading"
+      >
         <h2 id="case-mrd-problem-heading" className="case-tempus-intro-heading">
           {m.problem}
         </h2>
-        <p className="case-tempus-intro-text case-tempus-problem-detail">{m.problemLead}</p>
-        <p className="case-tempus-intro-text case-tempus-problem-detail">{m.problemDetail}</p>
-        <p className="case-tempus-intro-text case-tempus-problem-detail">{m.roleClosing}</p>
+        <p className="case-tempus-intro-text case-tempus-problem-detail case-mrd-the-problem-summary">
+          {m.problemLead}
+        </p>
+        <p className="case-tempus-intro-text case-tempus-problem-detail case-mrd-the-problem-summary">
+          {m.problemDetail}
+        </p>
       </section>
 
       <section
@@ -151,10 +162,46 @@ export function MrdTestingJourneyCaseStudy() {
         </p>
       </section>
 
-      <section className="case-tempus-problem" aria-labelledby="case-mrd-designing-system-heading">
+      <section
+        className="case-tempus-problem case-mrd-designing-system"
+        aria-labelledby="case-mrd-designing-system-heading"
+      >
         <h2 id="case-mrd-designing-system-heading" className="case-tempus-intro-heading">
           {m.designingSystem}
         </h2>
+        <div className="case-mrd-problem-compare">
+          <p className="case-mrd-problem-compare-label case-mrd-problem-compare-label--result-types">
+            {m.designingResultTypes}
+          </p>
+          <p className="case-mrd-problem-compare-label case-mrd-problem-compare-label--variable-canvas">
+            {m.designingVariableCanvas}
+          </p>
+          <figure className="case-mrd-problem-compare-media case-mrd-problem-compare-media--result-types">
+            <img
+              src={mrdAssetSrc(MRD_DESIGNING_IMAGES.resultTypes)}
+              alt={m.designingResultTypesImageAlt}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+          <figure className="case-mrd-problem-compare-media case-mrd-problem-compare-media--variable-canvas">
+            <img
+              src={mrdAssetSrc(MRD_DESIGNING_IMAGES.variableCanvas)}
+              alt={m.designingVariableCanvasImageAlt}
+              loading="lazy"
+              decoding="async"
+            />
+          </figure>
+        </div>
+      </section>
+
+      <section className="case-tempus-problem case-mrd-outcome" aria-labelledby="case-mrd-outcome-heading">
+        <h2 id="case-mrd-outcome-heading" className="case-tempus-intro-heading">
+          {m.outcome}
+        </h2>
+        <p className="case-tempus-intro-text case-tempus-problem-detail case-mrd-the-problem-summary">
+          {m.outcomeText}
+        </p>
       </section>
 
       <CaseStudyConnectCta />

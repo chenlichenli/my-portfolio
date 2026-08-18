@@ -54,7 +54,7 @@ export const enMessages = {
       title: 'Reimagining the MRD\nTesting Journey',
       tag0: 'Healthcare',
       tag1: 'Clinical UX',
-      tag2: 'Enterprise UX',
+      tag2: 'Information Architecture',
       description:
         'Redefining how clinicians track, understand, and act on recurring test progress and results.',
     },
@@ -331,7 +331,7 @@ export const enMessages = {
   },
   mrd: {
     articleAria: 'Reimagining the MRD Testing Journey case study',
-    tags: ['Healthcare', 'Clinical UX', 'Enterprise UX'],
+    tags: ['Healthcare', 'Clinical UX', 'Information Architecture'],
     subline:
       'Redefining how clinicians track, understand, and act on recurring test progress and results.',
     intro:
@@ -355,7 +355,6 @@ export const enMessages = {
       'As the design lead, I identified the gap and redefined the tracking experience to help clinicians understand the progress and status of an entire monitoring journey.',
     problemDetail:
       'During the project, I uncovered the same underlying information architecture problem in the results experience. Rather than solving them independently, I developed a unified design approach that created a more cohesive experience across both tracking and results.',
-    roleClosing: 'The experience launched in Q1 2026.',
     reframingProblem: 'Reframing the problem',
     reframingProblemText:
       'I started by exploring a new navigation model. But the problem extended beyond tracking.',
@@ -366,6 +365,13 @@ export const enMessages = {
     reframingProblemClosing:
       'Product and Engineering supported expanding the scope because both experiences were manifestations of the same underlying problem.',
     designingSystem: 'Designing the system',
+    designingResultTypes: 'Different result types',
+    designingResultTypesImageAlt: 'Different result types interaction',
+    designingVariableCanvas: 'Variable canvas',
+    designingVariableCanvasImageAlt: 'Variable canvas interaction',
+    outcome: 'Outcome',
+    outcomeText:
+      'Launched in Q1 2026. Established a unified experience for monitoring test tracking and results, creating a scalable model for supporting the new longitudinal testing workflow.',
   },
 } as const
 
@@ -420,7 +426,7 @@ export const zhMessages = {
       title: 'Reimagining the MRD\nTesting Journey',
       tag0: '医疗',
       tag1: '临床体验',
-      tag2: '企业级体验',
+      tag2: '信息架构',
       description: '重新定义临床医生如何追踪、理解周期性检测进展与结果，并据此采取行动。',
     },
     'tempus-one': {
@@ -686,7 +692,7 @@ export const zhMessages = {
   },
   mrd: {
     articleAria: '重新构想 MRD 检测之旅案例研究',
-    tags: ['医疗', '临床体验', '企业级体验'],
+    tags: ['医疗', '临床体验', '信息架构'],
     subline: '重新定义临床医生如何追踪、理解周期性检测进展与结果，并据此采取行动。',
     intro:
       '新监测检测的推出带来了根本不同的检测工作流。临床医生不再只需处理单次检测，而需要在时间维度上管理与监测一系列检测，因此看清每项检测的状态变得至关重要。我们原有的追踪体验并未围绕这一新的心智模型设计。',
@@ -709,7 +715,6 @@ export const zhMessages = {
       '作为设计负责人，我发现该缺口并重定义了追踪体验，帮助临床医生理解整条监测旅程的进展与状态。',
     problemDetail:
       '项目过程中，我在结果体验中发现了同样的底层信息架构问题。我没有分别解决，而是制定了统一的设计方案，在追踪与结果之间打造更连贯的体验。',
-    roleClosing: '该体验于 2026 年第一季度上线。',
     reframingProblem: '重新框定问题',
     reframingProblemText: '我先从探索新的导航模型入手，但问题并不止于追踪体验。',
     reframingTestTracking: '检测追踪',
@@ -719,5 +724,12 @@ export const zhMessages = {
     reframingProblemClosing:
       '产品与工程团队支持扩大范围，因为两种体验本质上是同一底层问题的不同呈现。',
     designingSystem: '系统设计',
+    designingResultTypes: '不同结果类型',
+    designingResultTypesImageAlt: '不同结果类型交互演示',
+    designingVariableCanvas: '可变画布',
+    designingVariableCanvasImageAlt: '可变画布交互演示',
+    outcome: '成果',
+    outcomeText:
+      '于 2026 年第一季度上线。建立了监测检测追踪与结果的统一体验，为支持新的纵向检测工作流打造了可扩展模式。',
   },
 } as unknown as Messages

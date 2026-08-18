@@ -1,5 +1,8 @@
 .case-mrd-the-problem,
-.case-mrd-reframing {
+.case-mrd-reframing,
+.case-mrd-my-role,
+.case-mrd-designing-system,
+.case-mrd-outcome {
   max-width: none;
 }
 
@@ -20,8 +23,14 @@
 }
 
 .case-mrd-problem-compare-label--monitoring,
-.case-mrd-problem-compare-label--result {
+.case-mrd-problem-compare-label--result,
+.case-mrd-problem-compare-label--variable-canvas {
   grid-column: 2;
+  grid-row: 1;
+}
+
+.case-mrd-problem-compare-label--result-types {
+  grid-column: 1;
   grid-row: 1;
 }
 
@@ -32,8 +41,14 @@
 }
 
 .case-mrd-problem-compare-media--monitoring,
-.case-mrd-problem-compare-media--result {
+.case-mrd-problem-compare-media--result,
+.case-mrd-problem-compare-media--variable-canvas {
   grid-column: 2;
+  grid-row: 2;
+}
+
+.case-mrd-problem-compare-media--result-types {
+  grid-column: 1;
   grid-row: 2;
 }
 
@@ -45,6 +60,11 @@
 .case-mrd-problem-compare-media--tracking,
 .case-mrd-problem-compare-media--result {
   aspect-ratio: 5760 / 3931;
+}
+
+.case-mrd-problem-compare-media--result-types,
+.case-mrd-problem-compare-media--variable-canvas {
+  aspect-ratio: 1180 / 720;
 }
 
 .case-mrd-problem-compare-label {
@@ -107,14 +127,31 @@
   }
 
   .case-mrd-problem-compare-label--monitoring,
-  .case-mrd-problem-compare-label--result {
+  .case-mrd-problem-compare-label--result,
+  .case-mrd-problem-compare-label--variable-canvas {
     grid-column: 1;
     grid-row: 3;
   }
 
   .case-mrd-problem-compare-media--monitoring,
-  .case-mrd-problem-compare-media--result {
+  .case-mrd-problem-compare-media--result,
+  .case-mrd-problem-compare-media--variable-canvas {
     grid-column: 1;
     grid-row: 4;
+  }
+
+  .case-mrd-problem-compare-label--result-types {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .case-mrd-problem-compare-media--result-types {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .case-mrd-problem-compare-label--variable-canvas {
+    grid-column: 1;
+    grid-row: 3;
   }
 }
