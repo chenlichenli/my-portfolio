@@ -49,6 +49,15 @@ export const enMessages = {
     yearsExperience: 'Years of Experience',
   },
   projects: {
+    'mrd-testing-journey': {
+      company: 'Tempus AI',
+      title: 'Reimagining the MRD\nTesting Journey',
+      tag0: 'Healthcare',
+      tag1: 'Clinical UX',
+      tag2: 'Enterprise UX',
+      description:
+        'Redefining how clinicians track, understand, and act on recurring test progress and results.',
+    },
     'tempus-one': {
       company: 'Tempus AI',
       title: 'Tempus One',
@@ -320,6 +329,44 @@ export const enMessages = {
     takeaway1: 'Involving engineering team from the outset can save time in an agile environment',
     takeaway2: "Try to find resources when there aren't enough, be proactive as the only designer on the team",
   },
+  mrd: {
+    articleAria: 'Reimagining the MRD Testing Journey case study',
+    tags: ['Healthcare', 'Clinical UX', 'Enterprise UX'],
+    subline:
+      'Redefining how clinicians track, understand, and act on recurring test progress and results.',
+    intro:
+      "The launch of a new monitoring test introduced a fundamentally different testing workflow. Instead of a single test, clinicians now needed to manage and monitor a series of tests over time, making visibility into each test's status critical. Our existing tracking experience wasn't designed for this new mental model.",
+    team0: '1 Product Designer',
+    team1: '1 Product Manager',
+    team2: '2 Operation Managers',
+    team3: '1 Commercial Strategist',
+    team4: '4 Engineers',
+    timelineRange: 'September 2025 - April 2026',
+    theProblem: 'The problem',
+    theProblemText:
+      'Our existing tracking experience was designed for a single test, making it difficult to understand the status of an ongoing monitoring series.',
+    theProblemSingleTest: 'Single test: Test → Status → Result',
+    theProblemSingleTestImageAlt: 'Single test workflow: test, status, and result',
+    theProblemMonitoring:
+      'Monitoring: Series → Test 1 → Status → Result → Test 2 → Status → Result → Test 3 → Status → Result',
+    theProblemMonitoringImageAlt: 'Monitoring workflow across a series of tests with status and results',
+    problem: 'My role',
+    problemLead:
+      'As the design lead, I identified the gap and redefined the tracking experience to help clinicians understand the progress and status of an entire monitoring journey.',
+    problemDetail:
+      'During the project, I uncovered the same underlying information architecture problem in the results experience. Rather than solving them independently, I developed a unified design approach that created a more cohesive experience across both tracking and results.',
+    roleClosing: 'The experience launched in Q1 2026.',
+    reframingProblem: 'Reframing the problem',
+    reframingProblemText:
+      'I started by exploring a new navigation model. But the problem extended beyond tracking.',
+    reframingTestTracking: 'Test tracking',
+    reframingTestTrackingImageAlt: 'Test tracking experience redesign',
+    reframingTestResult: 'Test result',
+    reframingTestResultImageAlt: 'Test result experience redesign',
+    reframingProblemClosing:
+      'Product and Engineering supported expanding the scope because both experiences were manifestations of the same underlying problem.',
+    designingSystem: 'Designing the system',
+  },
 } as const
 
 export const zhMessages = {
@@ -368,6 +415,14 @@ export const zhMessages = {
     yearsExperience: '从业年数',
   },
   projects: {
+    'mrd-testing-journey': {
+      company: 'Tempus AI',
+      title: 'Reimagining the MRD\nTesting Journey',
+      tag0: '医疗',
+      tag1: '临床体验',
+      tag2: '企业级体验',
+      description: '重新定义临床医生如何追踪、理解周期性检测进展与结果，并据此采取行动。',
+    },
     'tempus-one': {
       company: 'Tempus AI',
       title: 'Tempus One',
@@ -628,5 +683,41 @@ export const zhMessages = {
     takeaway0: '用户说的「想要」并不总是他们真正需要的',
     takeaway1: '在敏捷环境中尽早拉工程参与可以节省时间',
     takeaway2: '作为唯一设计师时要主动寻找资源、积极补位',
+  },
+  mrd: {
+    articleAria: '重新构想 MRD 检测之旅案例研究',
+    tags: ['医疗', '临床体验', '企业级体验'],
+    subline: '重新定义临床医生如何追踪、理解周期性检测进展与结果，并据此采取行动。',
+    intro:
+      '新监测检测的推出带来了根本不同的检测工作流。临床医生不再只需处理单次检测，而需要在时间维度上管理与监测一系列检测，因此看清每项检测的状态变得至关重要。我们原有的追踪体验并未围绕这一新的心智模型设计。',
+    team0: '1 名产品设计师',
+    team1: '1 名产品经理',
+    team2: '2 名运营经理',
+    team3: '1 名商业策略师',
+    team4: '4 名工程师',
+    timelineRange: '2025 年 9 月 — 2026 年 4 月',
+    theProblem: '问题',
+    theProblemText:
+      '我们原有的追踪体验是为单次检测设计的，难以看清持续监测系列中每项检测的状态。',
+    theProblemSingleTest: '单次检测：检测 → 状态 → 结果',
+    theProblemSingleTestImageAlt: '单次检测工作流：检测、状态与结果',
+    theProblemMonitoring:
+      '监测：系列 → 检测 1 → 状态 → 结果 → 检测 2 → 状态 → 结果 → 检测 3 → 状态 → 结果',
+    theProblemMonitoringImageAlt: '监测系列中多项检测的状态与结果工作流',
+    problem: '我的角色',
+    problemLead:
+      '作为设计负责人，我发现该缺口并重定义了追踪体验，帮助临床医生理解整条监测旅程的进展与状态。',
+    problemDetail:
+      '项目过程中，我在结果体验中发现了同样的底层信息架构问题。我没有分别解决，而是制定了统一的设计方案，在追踪与结果之间打造更连贯的体验。',
+    roleClosing: '该体验于 2026 年第一季度上线。',
+    reframingProblem: '重新框定问题',
+    reframingProblemText: '我先从探索新的导航模型入手，但问题并不止于追踪体验。',
+    reframingTestTracking: '检测追踪',
+    reframingTestTrackingImageAlt: '检测追踪体验重设计',
+    reframingTestResult: '检测结果',
+    reframingTestResultImageAlt: '检测结果体验重设计',
+    reframingProblemClosing:
+      '产品与工程团队支持扩大范围，因为两种体验本质上是同一底层问题的不同呈现。',
+    designingSystem: '系统设计',
   },
 } as unknown as Messages

@@ -1,0 +1,120 @@
+.case-mrd-the-problem,
+.case-mrd-reframing {
+  max-width: none;
+}
+
+.case-mrd-problem-compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  column-gap: clamp(1rem, 3vw, 2rem);
+  row-gap: clamp(0.75rem, 2vw, 1rem);
+  margin-top: clamp(1rem, 2.5vw, 1.35rem);
+  width: 100%;
+}
+
+.case-mrd-problem-compare-label--single,
+.case-mrd-problem-compare-label--tracking {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.case-mrd-problem-compare-label--monitoring,
+.case-mrd-problem-compare-label--result {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.case-mrd-problem-compare-media--single,
+.case-mrd-problem-compare-media--tracking {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.case-mrd-problem-compare-media--monitoring,
+.case-mrd-problem-compare-media--result {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.case-mrd-problem-compare-media--single,
+.case-mrd-problem-compare-media--monitoring {
+  aspect-ratio: 2490 / 1518;
+}
+
+.case-mrd-problem-compare-media--tracking,
+.case-mrd-problem-compare-media--result {
+  aspect-ratio: 5760 / 3931;
+}
+
+.case-mrd-problem-compare-label {
+  margin: 0;
+  align-self: start;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.05vw, 0.92rem);
+  font-weight: 500;
+  line-height: 1.55;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+}
+
+.case-mrd-problem-compare-media {
+  width: 100%;
+  margin: 0;
+  overflow: hidden;
+  border-radius: clamp(0.5rem, 1vw, 0.65rem);
+  background: color-mix(in srgb, var(--text-muted) 8%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--border) 85%, transparent);
+}
+
+.case-mrd-problem-compare-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.case-mrd-problem-compare-media--tracking img,
+.case-mrd-problem-compare-media--result img {
+  height: auto;
+  object-fit: unset;
+  object-position: top center;
+}
+
+.case-mrd-the-problem-summary {
+  margin-top: clamp(1.35rem, 3vw, 2rem);
+  max-width: none;
+  width: 100%;
+}
+
+@media (max-width: 720px) {
+  .case-mrd-problem-compare {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto;
+  }
+
+  .case-mrd-problem-compare-label--single,
+  .case-mrd-problem-compare-label--tracking {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .case-mrd-problem-compare-media--single,
+  .case-mrd-problem-compare-media--tracking {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .case-mrd-problem-compare-label--monitoring,
+  .case-mrd-problem-compare-label--result {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .case-mrd-problem-compare-media--monitoring,
+  .case-mrd-problem-compare-media--result {
+    grid-column: 1;
+    grid-row: 4;
+  }
+}

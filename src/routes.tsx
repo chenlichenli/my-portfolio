@@ -4,6 +4,7 @@ import {
   Home,
   HubOnlineOrderingCaseStudy,
   IQueueForClinicsCaseStudy,
+  MrdTestingJourneyCaseStudy,
   PlaceholderPage,
   SideWork,
   TempusOneCaseStudy,
@@ -15,6 +16,7 @@ export function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/side-work" element={<SideWork />} />
       <Route path="/about" element={<About />} />
+      <Route path="/mrd-testing-journey" element={<MrdTestingJourneyCaseStudy />} />
       <Route path="/tempus-one" element={<TempusOneCaseStudy />} />
       <Route path="/hub-online-ordering" element={<HubOnlineOrderingCaseStudy />} />
       <Route path="/iqueue-for-clinics" element={<IQueueForClinicsCaseStudy />} />

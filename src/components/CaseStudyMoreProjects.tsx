@@ -1,12 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 
-const PROJECT_SLUGS = ['tempus-one', 'hub-online-ordering', 'iqueue-for-clinics'] as const
+const PROJECT_SLUGS = [
+  'mrd-testing-journey',
+  'tempus-one',
+  'hub-online-ordering',
+  'iqueue-for-clinics',
+] as const
 
 export type CaseStudyProjectSlug = (typeof PROJECT_SLUGS)[number]
 
 type CaseStudyMoreProjectsProps = {
-  /** Current case study — the other two are linked. */
+  /** Current case study — the other projects are linked. */
   excludeSlug: CaseStudyProjectSlug
 }
 

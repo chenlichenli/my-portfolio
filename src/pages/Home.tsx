@@ -8,9 +8,14 @@ import './Home.css'
 
 /** Filenames in /public — must match `hero image_<name>.png` on disk */
 const PROJECT_CARDS = [
-  { slug: 'tempus-one' as const, heroFile: 'hero image_Tempus One.png' },
-  { slug: 'hub-online-ordering' as const, heroFile: 'hero image_Online Ordering.png' },
-  { slug: 'iqueue-for-clinics' as const, heroFile: 'hero image_iQueue for Clinics.png' },
+  {
+    slug: 'mrd-testing-journey' as const,
+    heroFile: 'hero image_Reimagining the MRD.png',
+    caseStudy: true,
+  },
+  { slug: 'tempus-one' as const, heroFile: 'hero image_Tempus One.png', caseStudy: true },
+  { slug: 'hub-online-ordering' as const, heroFile: 'hero image_Online Ordering.png', caseStudy: true },
+  { slug: 'iqueue-for-clinics' as const, heroFile: 'hero image_iQueue for Clinics.png', caseStudy: true },
 ] as const
 
 function useEqualProjectCardSizes(containerRef: RefObject<HTMLElement | null>) {
@@ -111,33 +116,55 @@ export function Home() {
           {PROJECT_CARDS.map((p) => {
             const copy = messages.projects[p.slug]
             const tags = [copy.tag0, copy.tag1, copy.tag2] as const
-            return (
-            <Link key={p.slug} className="project-card" to={`/${p.slug}`}>
-              <div className="project-card-body">
-                <span className="project-card-company">{copy.company}</span>
-                <h3 className="project-card-title">{copy.title}</h3>
-                <div className="project-card-tags">
-                  {tags.map((tag) => (
-                    <span key={tag} className="project-card-tag">
-                      {tag}
-                    </span>
-                  ))}
+            const longTitle = copy.title.includes('\n')
+            const cardClassName = [
+              'project-card',
+              longTitle && 'project-card--long-title',
+              p.slug === 'mrd-testing-journey' && 'project-card--mrd-hero',
+              !p.caseStudy && 'project-card--preview',
+            ]
+              .filter(Boolean)
+              .join(' ')
+            const cardBody = (
+              <>
+                <div className="project-card-body">
+                  <span className="project-card-company">{copy.company}</span>
+                  <h3 className="project-card-title">{copy.title}</h3>
+                  <div className="project-card-tags">
+                    {tags.map((tag) => (
+                      <span key={tag} className="project-card-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                  <p className="project-card-desc">{copy.description}</p>
                 </div>
-                <p className="project-card-desc">{copy.description}</p>
-              </div>
-              <div className="project-card-hero">
-                <div className="project-card-hero-square">
-                  <img
-                    src={encodeURI(`/${p.heroFile}`)}
-                    alt=""
-                    width={800}
-                    height={500}
-                    loading="lazy"
-                    decoding="async"
-                  />
+                <div className="project-card-hero">
+                  <div className="project-card-hero-square">
+                    {p.heroFile ? (
+                      <img
+                        src={encodeURI(`/${p.heroFile}`)}
+                        alt=""
+                        width={800}
+                        height={500}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      <div className="project-card-hero-placeholder" aria-hidden="true" />
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Link>
+              </>
+            )
+            return p.caseStudy ? (
+              <Link key={p.slug} className={cardClassName} to={`/${p.slug}`}>
+                {cardBody}
+              </Link>
+            ) : (
+              <article key={p.slug} className={cardClassName}>
+                {cardBody}
+              </article>
             )
           })}
         </div>

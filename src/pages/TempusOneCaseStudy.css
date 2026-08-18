@@ -100,6 +100,10 @@
   max-width: 38rem;
 }
 
+.case-tempus-intro-copy .case-tempus-intro-text + .case-tempus-intro-text {
+  margin-top: 1rem;
+}
+
 .case-tempus-meta {
   display: flex;
   flex-direction: column;
@@ -180,6 +184,10 @@
 
 .case-tempus-problem-detail {
   margin-top: 0;
+}
+
+.case-tempus-problem .case-tempus-intro-text + .case-tempus-intro-text {
+  margin-top: 1rem;
 }
 
 /* Visual timeline — reference: continuous line, blue rounded-square markers, mono labels below */
