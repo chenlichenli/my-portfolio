@@ -362,7 +362,7 @@ export const enMessages = {
     timelineRange: 'September 2025 - April 2026',
     theProblem: 'The problem',
     theProblemText:
-      'Our existing tracking experience was designed for a single test, making it difficult to understand the status of an ongoing monitoring series.',
+      'Our product was built around a single-test mental model. Monitoring introduced a fundamentally different one.',
     theProblemSingleTest: 'Single test: Test → Status → Result',
     theProblemSingleTestImageAlt: 'Single test workflow: test, status, and result',
     theProblemMonitoring:
@@ -375,13 +375,18 @@ export const enMessages = {
       'During the project, I uncovered the same underlying information architecture problem in the results experience. Rather than solving them independently, I developed a unified design approach that created a more cohesive experience across both tracking and results.',
     reframingProblem: 'Reframing the problem',
     reframingProblemText:
-      'I started by exploring a new navigation model. But the problem extended beyond tracking.',
+      'I started exploring a new navigation model to address the core challenge: how users track and return to monitoring series. What started as a tracking problem became a product-wide structure problem.',
     reframingTestTracking: 'Test tracking',
+    reframingTestTrackingSub: 'Single test vs. Recurring series',
     reframingTestTrackingImageAlt: 'Test tracking experience redesign',
     reframingTestResult: 'Test result',
+    reframingTestResultSub: 'Individual result vs. Results across a monitoring journey',
     reframingTestResultImageAlt: 'Test result experience redesign',
+    reframingUnderlyingProblemLabel: 'Underlying problem:',
+    reframingUnderlyingProblemText:
+      'The product had no shared structure for understanding a series of tests over time.',
     reframingProblemClosing:
-      'Product and Engineering supported expanding the scope because both experiences were manifestations of the same underlying problem.',
+      'Product and Engineering supported expanding the scope because both tracking and resulting experiences were manifestations of the same underlying problem.',
     designingSystem: 'Designing the system',
     designingResultTypes: 'Different result types',
     designingResultTypesImageAlt: 'Different result types interaction',
@@ -740,7 +745,7 @@ export const zhMessages = {
     timelineRange: '2025 年 9 月 — 2026 年 4 月',
     theProblem: '问题',
     theProblemText:
-      '我们原有的追踪体验是为单次检测设计的，难以看清持续监测系列中每项检测的状态。',
+      '我们的产品建立在单次检测的心智模型之上，而监测引入了一种根本不同的心智模型。',
     theProblemSingleTest: '单次检测：检测 → 状态 → 结果',
     theProblemSingleTestImageAlt: '单次检测工作流：检测、状态与结果',
     theProblemMonitoring:
@@ -752,13 +757,18 @@ export const zhMessages = {
     problemDetail:
       '项目过程中，我在结果体验中发现了同样的底层信息架构问题。我没有分别解决，而是制定了统一的设计方案，在追踪与结果之间打造更连贯的体验。',
     reframingProblem: '重新框定问题',
-    reframingProblemText: '我先从探索新的导航模型入手，但问题并不止于追踪体验。',
+    reframingProblemText:
+      '我开始探索新的导航模型，以应对核心挑战：用户如何追踪并回到监测系列。最初是追踪问题，后来演变为整个产品结构问题。',
     reframingTestTracking: '检测追踪',
+    reframingTestTrackingSub: '单次检测 vs. 周期性系列',
     reframingTestTrackingImageAlt: '检测追踪体验重设计',
     reframingTestResult: '检测结果',
+    reframingTestResultSub: '单项结果 vs. 监测旅程中的多项结果',
     reframingTestResultImageAlt: '检测结果体验重设计',
+    reframingUnderlyingProblemLabel: '底层问题：',
+    reframingUnderlyingProblemText: '产品缺乏用于理解随时间推移的检测系列的共享结构。',
     reframingProblemClosing:
-      '产品与工程团队支持扩大范围，因为两种体验本质上是同一底层问题的不同呈现。',
+      '产品与工程团队支持扩大范围，因为追踪与结果两种体验本质上是同一底层问题的不同呈现。',
     designingSystem: '系统设计',
     designingResultTypes: '不同结果类型',
     designingResultTypesImageAlt: '不同结果类型交互演示',

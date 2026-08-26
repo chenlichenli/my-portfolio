@@ -134,12 +134,14 @@ export function MrdTestingJourneyCaseStudy() {
           {m.reframingProblemText}
         </p>
         <div className="case-mrd-problem-compare">
-          <p className="case-mrd-problem-compare-label case-mrd-problem-compare-label--tracking">
-            {m.reframingTestTracking}
-          </p>
-          <p className="case-mrd-problem-compare-label case-mrd-problem-compare-label--result">
-            {m.reframingTestResult}
-          </p>
+          <div className="case-mrd-problem-compare-label-head case-mrd-problem-compare-label-head--tracking">
+            <p className="case-mrd-problem-compare-label">{m.reframingTestTracking}</p>
+            <p className="case-mrd-problem-compare-sublabel">{m.reframingTestTrackingSub}</p>
+          </div>
+          <div className="case-mrd-problem-compare-label-head case-mrd-problem-compare-label-head--result">
+            <p className="case-mrd-problem-compare-label">{m.reframingTestResult}</p>
+            <p className="case-mrd-problem-compare-sublabel">{m.reframingTestResultSub}</p>
+          </div>
           <figure className="case-mrd-problem-compare-media case-mrd-problem-compare-media--tracking">
             <img
               src={mrdAssetSrc(MRD_REFRAMING_IMAGES.tracking)}
@@ -157,7 +159,8 @@ export function MrdTestingJourneyCaseStudy() {
             />
           </figure>
         </div>
-        <p className="case-tempus-intro-text case-tempus-problem-detail case-mrd-the-problem-summary">
+        <p className="case-tempus-intro-text case-tempus-problem-detail case-mrd-reframing-underlying-problem">
+          <strong>{m.reframingUnderlyingProblemLabel}</strong> {m.reframingUnderlyingProblemText}{' '}
           {m.reframingProblemClosing}
         </p>
       </section>
