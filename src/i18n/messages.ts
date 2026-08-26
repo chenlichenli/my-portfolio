@@ -65,7 +65,7 @@ export const enMessages = {
       tag1: 'Growth Design',
       tag2: '0-1',
       description:
-        'How can we leverage AI to help physicians access patient data while grow product usage?',
+        'How I turned an underused AI assistant into a growth engine for physicians.',
     },
     'hub-online-ordering': {
       company: 'Tempus AI',
@@ -459,7 +459,7 @@ export const zhMessages = {
       tag1: '增长设计',
       tag2: '0-1',
       description:
-        '如何利用 AI 帮助医生获取患者数据，并提升产品使用？',
+        '我如何将一款使用率偏低的 AI 助手，打造成面向医生的增长引擎。',
     },
     'hub-online-ordering': {
       company: 'Tempus AI',
