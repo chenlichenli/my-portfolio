@@ -2,8 +2,8 @@ import { Link } from 'react-router-dom'
 import { useLanguage } from '../i18n/LanguageContext'
 
 const PROJECT_SLUGS = [
-  'mrd-testing-journey',
   'tempus-one',
+  'mrd-testing-journey',
   'hub-online-ordering',
   'iqueue-for-clinics',
 ] as const

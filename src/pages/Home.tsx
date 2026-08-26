@@ -8,12 +8,12 @@ import './Home.css'
 
 /** Filenames in /public — must match `hero image_<name>.png` on disk */
 const PROJECT_CARDS = [
+  { slug: 'tempus-one' as const, heroFile: 'hero image_Tempus One.png', caseStudy: true },
   {
     slug: 'mrd-testing-journey' as const,
     heroFile: 'hero image_Reimagining the MRD.png',
     caseStudy: true,
   },
-  { slug: 'tempus-one' as const, heroFile: 'hero image_Tempus One.png', caseStudy: true },
   { slug: 'hub-online-ordering' as const, heroFile: 'hero image_Online Ordering.png', caseStudy: true },
   { slug: 'iqueue-for-clinics' as const, heroFile: 'hero image_iQueue for Clinics.png', caseStudy: true },
 ] as const

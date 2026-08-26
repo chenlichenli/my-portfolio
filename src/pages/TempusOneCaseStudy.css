@@ -168,8 +168,13 @@
   padding-top: clamp(2rem, 4.5vw, 3rem);
   border-top: 1px solid var(--border);
   width: 100%;
-  max-width: 38rem;
+  max-width: none;
   min-width: 0;
+}
+
+.case-tempus-problem-copy {
+  max-width: 38rem;
+  width: 100%;
 }
 
 .case-tempus-problem-lead {
@@ -184,6 +189,29 @@
 
 .case-tempus-problem-detail {
   margin-top: 0;
+  max-width: none;
+  width: 100%;
+}
+
+.case-tempus-problem > .case-tempus-problem-detail {
+  max-width: none;
+}
+
+.case-tempus-problem-list {
+  margin-top: clamp(0.35rem, 1vw, 0.5rem);
+  max-width: none;
+}
+
+.case-tempus-problem-conclusion {
+  margin-top: clamp(0.75rem, 2vw, 1rem);
+  max-width: none;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+.case-tempus-problem-copy .case-tempus-intro-text {
+  max-width: none;
+  width: 100%;
 }
 
 .case-tempus-problem .case-tempus-intro-text + .case-tempus-intro-text {
@@ -211,6 +239,75 @@
   overflow-y: visible;
   padding-bottom: 0.35rem;
   -webkit-overflow-scrolling: touch;
+}
+
+/* Impact — three stats in one row */
+.case-tempus-impact-stats {
+  margin-top: clamp(2.25rem, 5vw, 3.5rem);
+  padding-top: clamp(2rem, 4.5vw, 3rem);
+  border-top: 1px solid var(--border);
+  width: 100%;
+  max-width: none;
+  min-width: 0;
+}
+
+.case-tempus-impact-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: clamp(1.25rem, 3vw, 2.5rem);
+  row-gap: clamp(1.75rem, 4vw, 2.75rem);
+  margin-top: clamp(0.75rem, 2vw, 1rem);
+}
+
+@media (max-width: 720px) {
+  .case-tempus-impact-stats-grid {
+    grid-template-columns: 1fr;
+    row-gap: clamp(1.5rem, 4vw, 2rem);
+  }
+}
+
+.case-tempus-impact-stat {
+  min-width: 0;
+  text-align: center;
+}
+
+.case-tempus-impact-stat-value {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+  color: #4972ff;
+  white-space: nowrap;
+}
+
+.case-tempus-impact-stat-label {
+  margin: clamp(0.4rem, 1.2vw, 0.55rem) 0 0;
+  font-family: var(--font-ui);
+  font-size: clamp(0.88rem, 1.15vw, 0.98rem);
+  font-weight: 400;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  text-wrap: balance;
+}
+
+.case-tempus-impact-summary {
+  margin: clamp(1.5rem, 3.5vw, 2.25rem) 0 0;
+  max-width: none;
+  text-align: left;
+  white-space: nowrap;
+  font-weight: 600;
+  color: var(--text-heading);
+}
+
+@media (max-width: 900px) {
+  .case-tempus-impact-summary {
+    white-space: normal;
+    max-width: 38rem;
+    text-wrap: balance;
+  }
 }
 
 /* Customer Assistant Launch — copy + Figma prototype (two columns) */
@@ -267,6 +364,10 @@
   border: 0;
 }
 
+.case-tempus-customer-assistant-intro {
+  margin: 0 0 clamp(1rem, 2.5vw, 1.35rem);
+}
+
 .case-tempus-customer-assistant-success-heading {
   margin: 0 0 clamp(0.55rem, 1.5vw, 0.75rem);
   font-family: var(--font-ui);
@@ -283,6 +384,59 @@
 
 .case-tempus-customer-assistant-stat:last-of-type {
   margin-bottom: 0;
+}
+
+.case-tempus-ordering-features {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  margin-top: clamp(1.75rem, 4vw, 2.75rem);
+  width: 100%;
+}
+
+@media (max-width: 900px) {
+  .case-tempus-ordering-features {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 520px) {
+  .case-tempus-ordering-features {
+    grid-template-columns: 1fr;
+  }
+}
+
+.case-tempus-ordering-feature {
+  margin: 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.55rem, 1.5vw, 0.75rem);
+}
+
+.case-tempus-ordering-feature-label {
+  margin: 0;
+  width: 100%;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: clamp(0.78rem, 1.05vw, 0.92rem);
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: var(--text-heading);
+}
+
+.case-tempus-ordering-feature-media {
+  width: 100%;
+  margin: 0;
+}
+
+.case-tempus-ordering-feature-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 0;
 }
 
 /* Impact — same rhythm as product problem; readable measure */
